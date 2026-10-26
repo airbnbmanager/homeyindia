@@ -2,14 +2,14 @@
 
 import React from "react";
 import Link from "next/link";
-import { Calendar, MessageCircle, Home } from "lucide-react";
+import { Calendar, MessageCircle, BedDouble } from "lucide-react";
 
 export default function FloatingWidget() {
   return (
     <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-2.5 pointer-events-auto">
       <Link
         href="/book-a-demo"
-        className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-gray-950/90 hover:bg-black text-white text-xs font-semibold shadow-xl backdrop-blur-md border border-gray-800 hover:scale-105 transition-all group"
+        className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#111827] hover:bg-black text-white text-xs font-semibold shadow-xl backdrop-blur-md border border-gray-700/80 hover:scale-105 transition-all group"
       >
         <Calendar className="w-3.5 h-3.5 text-amber-400 group-hover:scale-110 transition-transform" />
         <span>Book a Demo</span>
@@ -26,11 +26,11 @@ export default function FloatingWidget() {
       </a>
 
       <Link
-        href="/start-trial"
-        className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#ff3823] hover:bg-[#e5220d] text-white text-xs font-semibold shadow-xl shadow-[#ff3823]/30 hover:scale-105 transition-all"
+        href="/stays"
+        className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#111827] hover:bg-black text-white text-xs font-semibold shadow-xl border border-gray-700 hover:scale-105 transition-all group"
       >
-        <Home className="w-3.5 h-3.5" />
-        <span>Start Free Trial</span>
+        <BedDouble className="w-3.5 h-3.5 text-[#ff3823] group-hover:scale-110 transition-transform" />
+        <span>Book your stay</span>
       </Link>
     </div>
   );

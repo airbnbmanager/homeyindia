@@ -5,113 +5,136 @@ import Link from "next/link";
 import { 
   Star, ArrowRight, PhoneCall, CheckCircle2, Lock, 
   RotateCw, Phone, Globe, Wallet, Mail, Users, AlertTriangle, 
-  Play, Pause, Sparkles, Calendar as CalendarIcon
+  Calendar as CalendarIcon, Play, Pause, ChevronRight, MessageSquare, 
+  Send, Search, Check, ShieldCheck, BedDouble, Building, ExternalLink
 } from "lucide-react";
 
 export default function Hero() {
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [syncedMode, setSyncedMode] = useState(false); // false = without channel manager, true = with Homey India
   const [activeFeature, setActiveFeature] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [syncedMode, setSyncedMode] = useState(false); // for Channel Manager tab
+  const [offlineSource, setOfflineSource] = useState("WhatsApp");
+  const [inboxTab, setInboxTab] = useState("airbnb");
 
+  const channels = [
+    { name: "Airbnb", color: "#ff5a5f", dot: true, bg: "bg-[#ff5a5f]/10", border: "border-[#ff5a5f]/30" },
+    { name: "Booking.com", color: "#003b95", dot: true, bg: "bg-[#003b95]/10", border: "border-[#003b95]/30" },
+    { name: "Vrbo", color: "#3563e9", dot: false, bg: "bg-[#3563e9]/10", border: "border-[#3563e9]/30" },
+    { name: "MakeMyTrip", color: "#e5195e", dot: true, bg: "bg-[#e5195e]/10", border: "border-[#e5195e]/30" },
+    { name: "Agoda", color: "#6c3fd1", dot: true, bg: "bg-[#6c3fd1]/10", border: "border-[#6c3fd1]/30" },
+    { name: "Goibibo", color: "#ec5b24", dot: false, bg: "bg-[#ec5b24]/10", border: "border-[#ec5b24]/30" },
+    { name: "Direct Website", color: "#0d9488", dot: true, bg: "bg-[#0d9488]/10", border: "border-[#0d9488]/30" },
+  ];
+
+  const features = [
+    { title: "Channel Manager", desc: "Real-time sync across all channels", icon: RotateCw, href: "/channel-manager" },
+    { title: "Offline Booking", desc: "Walk-in, phone and social media bookings", icon: Phone, href: "/offline-bookings" },
+    { title: "Direct Website", desc: "Your own website with online payments", icon: Globe, href: "/direct-booking-website" },
+    { title: "Expenses & Profits", desc: "Know your true profits", icon: Wallet, href: "/expenses-and-profits" },
+    { title: "Unified Inbox", desc: "Airbnb, Booking.com messages in one inbox", icon: Mail, href: "/unified-inbox", badge: "New" },
+    { title: "Co-Hosts & Team", desc: "Let your team manage your business", icon: Users, href: "/co-hosts-and-team" },
+  ];
+
+  // Auto rotation if playing
   useEffect(() => {
     if (!isPlaying) return;
     const interval = setInterval(() => {
+      // Toggle sync mode when on channel manager tab
       setSyncedMode((prev) => !prev);
     }, 4500);
     return () => clearInterval(interval);
   }, [isPlaying]);
 
-  const channels = [
-    { id: "airbnb", name: "Airbnb", color: "#ff5a5f", letter: "A" },
-    { id: "booking", name: "Booking.com", color: "#003b95", letter: "B." },
-    { id: "vrbo", name: "Vrbo", color: "#3563e9", letter: "V" },
-    { id: "agoda", name: "Agoda", color: "#6c3fd1", letter: "Ag" },
-    { id: "mmt", name: "MakeMyTrip", color: "#e5195e", letter: "my" },
-    { id: "goibibo", name: "Goibibo", color: "#f58220", letter: "go" },
-    { id: "website", name: "Your Website", color: "#0d9488", letter: "🌐" },
-  ];
-
-  const features = [
-    { title: "Channel Manager", desc: "Realtime sync across all channels", icon: RotateCw, href: "/channel-manager" },
-    { title: "Offline Booking", desc: "Walk-in, phone and social media bookings", icon: Phone, href: "/offline-bookings" },
-    { title: "Direct Website", desc: "Your own website with online payments", icon: Globe, href: "/direct-booking-website" },
-    { title: "Expenses & Profits", desc: "Know your true profits", icon: Wallet, href: "/expenses-and-profits" },
-    { title: "Unified Inbox", desc: "Airbnb, Booking.com messages in one inbox", icon: Mail, badge: "Soon", href: "/unified-inbox" },
-    { title: "Co-Hosts & Team", desc: "Let your team manage your business", icon: Users, href: "/co-hosts-and-team" },
-  ];
-
   return (
-    <section className="relative pt-24 pb-16 bg-white overflow-hidden">
+    <section className="relative pt-36 sm:pt-40 pb-20 overflow-hidden bg-gradient-to-b from-[#faf9f5] via-white to-gray-50/50">
+      {/* Background radial glow */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[450px] bg-gradient-to-tr from-[#ffe8e4]/50 via-[#fff3eb]/40 to-transparent blur-3xl pointer-events-none -z-10" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          {/* Left Column (Copy & Call to Actions) */}
-          <div className="lg:col-span-5 space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start">
+          
+          {/* Left Column: Value Prop */}
+          <div className="lg:col-span-5 space-y-6 pt-2">
+            
             {/* Google Rating Pill */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-gray-200/80 shadow-sm text-xs text-gray-700">
-              <div className="w-4 h-4 rounded-full bg-[#4285f4] flex items-center justify-center text-white font-bold text-[10px]">
-                G
-              </div>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-gray-200/90 shadow-sm text-xs font-semibold text-gray-800">
+              <span className="w-4 h-4 rounded-full bg-blue-500 text-white flex items-center justify-center text-[10px] font-black">G</span>
               <span className="font-bold text-gray-900">4.9</span>
-              <div className="flex text-amber-400 text-xs">
-                ★★★★★
+              <div className="flex items-center text-amber-400">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-3 h-3 fill-current" />
+                ))}
               </div>
-              <span className="text-gray-300">·</span>
-              <span className="text-gray-600">Trusted by <strong className="text-gray-900 font-semibold">6,000+ properties</strong></span>
+              <span className="text-gray-400">·</span>
+              <span className="text-gray-600 font-normal">Trusted by 6,000+ properties across India</span>
             </div>
 
-            {/* Main Headline with Editorial Italic Serif */}
-            <h1 className="text-4xl sm:text-5xl lg:text-[54px] font-extrabold text-gray-900 tracking-tight leading-[1.08] font-display">
-              PMS & Channel <br />
-              Manager for{" "}
-              <span className="font-serif italic font-normal text-[#ff3823] tracking-normal">
-                Vacation Rentals & Homestays
-              </span>
-            </h1>
+            {/* Headline */}
+            <div className="space-y-2">
+              <h1 className="text-4xl sm:text-5xl lg:text-[54px] font-extrabold text-[#0c1838] tracking-tight leading-[1.08] font-display">
+                PMS & Channel Manager for{" "}
+                <span className="font-serif italic font-normal text-[#ff3823] tracking-normal">Vacation Rentals</span>{" "}
+                & Homestays
+              </h1>
+            </div>
 
-            {/* Subtitle */}
-            <p className="text-base text-gray-600 leading-relaxed max-w-lg">
-              Manage Airbnb, Booking.com, Vrbo, direct bookings, pricing and availability from{" "}
-              <strong className="text-[#ff3823] font-bold">one powerful app</strong>.
+            {/* Subheading */}
+            <p className="text-base sm:text-lg text-gray-600 leading-relaxed font-normal max-w-xl">
+              Manage Airbnb, Booking.com, Vrbo, MakeMyTrip, direct bookings, pricing, and availability from{" "}
+              <strong className="font-semibold text-gray-900 underline decoration-[#ff3823]/40 decoration-2 underline-offset-4">
+                one powerful app
+              </strong>
+              .
             </p>
 
-            {/* Sync Channels Strip */}
-            <div className="space-y-2.5 pt-1">
-              <span className="text-xs text-gray-500 font-medium block">
-                Syncs with 50+ channels · from 1 to 1,000 properties
-              </span>
-              <div className="flex items-center gap-2 flex-wrap">
+            {/* Channel Logos Sync Carousel */}
+            <div className="space-y-2 pt-1">
+              <div className="text-xs font-semibold uppercase tracking-wider text-gray-400">
+                Syncs with 50+ channels — from 1 to 1,000 properties
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
                 {channels.map((ch) => (
                   <div
-                    key={ch.id}
-                    title={ch.name}
-                    className="w-10 h-10 rounded-xl bg-white border border-gray-200 shadow-sm flex items-center justify-center font-bold text-xs relative hover:scale-105 transition-transform"
+                    key={ch.name}
+                    className={`relative px-3 py-1.5 rounded-full text-xs font-bold border transition-all ${ch.bg} ${ch.border} flex items-center gap-1.5 shadow-xs hover:scale-105`}
                     style={{ color: ch.color }}
                   >
-                    <span>{ch.letter}</span>
-                    {/* Glowing Sync Dot */}
-                    <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-white animate-pulse" />
+                    <span>{ch.name}</span>
+                    {ch.dot && (
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                      </span>
+                    )}
                   </div>
                 ))}
-                <span className="h-10 px-3 rounded-xl bg-gray-100 border border-gray-200 text-xs font-bold text-gray-600 flex items-center justify-center hover:bg-gray-200 cursor-pointer">
+                <span className="px-2.5 py-1.5 rounded-full bg-gray-100 text-gray-600 text-xs font-bold border border-gray-200">
                   +50
                 </span>
               </div>
             </div>
 
-            {/* CTA Buttons */}
-            <div className="pt-3 flex flex-wrap items-center gap-3.5">
+            {/* Primary CTAs */}
+            <div className="flex flex-wrap items-center gap-3 pt-3">
               <Link
                 href="/start-trial"
-                className="px-7 py-3.5 rounded-full bg-[#ff3823] hover:bg-[#e5220d] text-white font-bold text-sm shadow-lg shadow-[#ff3823]/25 transition-all"
+                className="px-8 py-3.5 rounded-full bg-[#ff3823] hover:bg-[#e5220d] text-white font-bold text-sm shadow-lg shadow-[#ff3823]/30 transition-all hover:scale-[1.02] flex items-center gap-2"
               >
                 Start free trial
               </Link>
               <Link
-                href="/book-a-demo"
-                className="px-6 py-3.5 rounded-full bg-white hover:bg-gray-50 text-gray-800 font-semibold text-sm border border-gray-200/90 shadow-sm transition-all flex items-center gap-2"
+                href="/stays"
+                className="px-6 py-3.5 rounded-full bg-white hover:bg-gray-50 text-gray-900 font-bold text-sm border border-gray-300 shadow-sm transition-all flex items-center gap-2 hover:border-[#ff3823] text-left"
               >
-                <CalendarIcon className="w-4 h-4 text-gray-600" />
-                <span>Talk to our expert</span>
+                <BedDouble className="w-4 h-4 text-[#ff3823]" />
+                <span>Explore Lucknow Stays</span>
+              </Link>
+              <Link
+                href="/book-a-demo"
+                className="px-5 py-3.5 rounded-full bg-transparent hover:bg-gray-100 text-gray-700 font-semibold text-sm transition-all flex items-center gap-1.5"
+              >
+                <CalendarIcon className="w-4 h-4 text-gray-500" />
+                <span>Book Demo</span>
               </Link>
             </div>
 
@@ -123,180 +146,604 @@ export default function Hero() {
                   <div className="font-bold text-gray-900">
                     Special launch offer — <span className="text-[#ff3823]">up to 35% off</span>
                   </div>
-                  <div className="text-gray-500 text-[11px]">New hosts only · Limited time</div>
+                  <div className="text-gray-500 text-[11px]">New hosts & Lucknow property managers only</div>
                 </div>
               </div>
-              <Link
-                href="/pricing"
-                className="px-3 py-1.5 rounded-full bg-white border border-amber-300 font-bold text-gray-900 hover:bg-amber-50 shrink-0 text-[11px]"
-              >
-                See pricing
-              </Link>
+              <div className="flex items-center gap-2 shrink-0">
+                <div className="flex items-center gap-1 font-mono font-bold text-[11px] bg-white px-2 py-1 rounded border border-amber-200">
+                  <span>20</span>
+                  <span className="text-gray-300">:</span>
+                  <span>02</span>
+                  <span className="text-gray-300">:</span>
+                  <span>55</span>
+                </div>
+                <Link href="/pricing" className="text-[11px] font-bold text-[#ff3823] underline hover:text-[#d9220e]">
+                  See pricing
+                </Link>
+              </div>
             </div>
           </div>
 
-          {/* Right Column (Interactive iPad Simulation Widget + 2x3 Grid) */}
-          <div className="lg:col-span-7 space-y-5">
-            {/* Dark Tablet Device Frame */}
-            <div className="bg-[#1c1c20] text-white rounded-[32px] p-4 sm:p-6 shadow-2xl border border-gray-800 relative overflow-hidden">
-              {/* Device Top Control Bar */}
-              <div className="flex items-center justify-between pb-4 border-b border-gray-800/80 mb-4">
-                {/* Simulation Mode Toggle */}
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setSyncedMode(false)}
-                    className={`px-3 py-1 rounded-full text-xs font-semibold transition-all ${
-                      !syncedMode
-                        ? "bg-red-500/20 text-red-400 border border-red-500/40 shadow-sm"
-                        : "text-gray-400 hover:text-white"
-                    }`}
-                  >
-                    Without a channel manager
-                  </button>
-                  <button
-                    onClick={() => setSyncedMode(true)}
-                    className={`px-3 py-1 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 ${
-                      syncedMode
-                        ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm"
-                        : "text-gray-400 hover:text-white"
-                    }`}
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" /> With Homey India (0.8s Sync)
-                  </button>
-                </div>
-
-                {/* Play/Pause Button */}
-                <button
-                  onClick={() => setIsPlaying(!isPlaying)}
-                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 text-[11px] font-mono transition-colors"
-                >
-                  {isPlaying ? (
-                    <>
-                      <Pause className="w-3 h-3 text-amber-400" /> Paused
-                    </>
-                  ) : (
-                    <>
-                      <Play className="w-3 h-3 text-emerald-400" /> Play
-                    </>
-                  )}
-                </button>
-              </div>
-
-              {/* Calendar Simulation Stage */}
-              <div className="overflow-x-auto">
-                <div className="min-w-[540px] text-xs">
-                  {/* Days Row */}
-                  <div className="grid grid-cols-8 gap-1.5 text-center text-gray-400 font-medium mb-3">
-                    <div className="text-left pl-1">Channel</div>
-                    <div>Mon <span className="text-white font-bold">12</span></div>
-                    <div>Tue <span className="text-white font-bold">13</span></div>
-                    <div className="text-[#ff3823] font-bold">Wed 14</div>
-                    <div className="text-[#ff3823] font-bold">Thu 15</div>
-                    <div>Fri <span className="text-white font-bold">16</span></div>
-                    <div>Sat <span className="text-white font-bold">17</span></div>
-                    <div>Sun <span className="text-white font-bold">18</span></div>
-                  </div>
-
-                  {/* Channel Rows */}
-                  {[
-                    { id: "airbnb", name: "Airbnb", logo: "A", color: "#ff5a5f" },
-                    { id: "booking", name: "Booking.com", logo: "B.", color: "#003b95" },
-                    { id: "vrbo", name: "Vrbo", logo: "V", color: "#3563e9" },
-                    { id: "agoda", name: "Agoda", logo: "Ag", color: "#6c3fd1" },
-                    { id: "website", name: "Website", logo: "🌐", color: "#0d9488" },
-                  ].map((row, rIdx) => (
-                    <div key={row.id} className="grid grid-cols-8 gap-1.5 items-center py-2 border-b border-gray-800/50">
-                      <div className="flex items-center gap-2 pl-1 font-semibold text-gray-200 text-[11px]">
-                        <span className="w-5 h-5 rounded-md flex items-center justify-center font-bold text-[10px] shrink-0" style={{ backgroundColor: row.color, color: "#fff" }}>
-                          {row.logo}
-                        </span>
-                        <span className="truncate">{row.name}</span>
+          {/* Right Column: Interactive iPad Device Simulator + 6 Feature Switchers */}
+          <div className="lg:col-span-7 space-y-4">
+            
+            {/* iPad Device Shell */}
+            <div className="relative rounded-[32px] bg-[#1a1b1e] p-3 sm:p-4 shadow-2xl border-4 border-[#2d2e32] transition-all">
+              
+              {/* Inner Screen Surface */}
+              <div className="rounded-[22px] bg-[#111216] p-4 sm:p-5 text-white min-h-[360px] flex flex-col justify-between overflow-hidden relative">
+                
+                {/* 1. CHANNEL MANAGER SCREEN (activeFeature === 0) */}
+                {activeFeature === 0 && (
+                  <div className="space-y-4 animate-in fade-in duration-200">
+                    {/* Top Mode Bar */}
+                    <div className="flex items-center justify-between border-b border-gray-800 pb-3">
+                      <div className="inline-flex rounded-full bg-gray-900 p-1 border border-gray-800">
+                        <button
+                          onClick={() => setSyncedMode(false)}
+                          className={`px-3 py-1 rounded-full text-xs font-semibold transition-all ${
+                            !syncedMode
+                              ? "bg-red-500/20 text-red-400 border border-red-500/30"
+                              : "text-gray-400 hover:text-white"
+                          }`}
+                        >
+                          Without channel manager
+                        </button>
+                        <button
+                          onClick={() => setSyncedMode(true)}
+                          className={`px-3 py-1 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 ${
+                            syncedMode
+                              ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold"
+                              : "text-gray-400 hover:text-white"
+                          }`}
+                        >
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                          With Homey India (0.8s Sync)
+                        </button>
                       </div>
 
-                      {/* Mon 12 */}
-                      <div className="text-center py-1.5 rounded bg-gray-900/60 text-gray-400 text-[11px]">180</div>
-
-                      {/* Tue 13 */}
-                      <div className="text-center py-1.5 rounded bg-gray-900/60 text-gray-400 text-[11px]">180</div>
-
-                      {/* Target Conflict Dates: Wed 14 & Thu 15 */}
-                      {!syncedMode ? (
-                        // WITHOUT CHANNEL MANAGER: DOUBLE BOOKING COLLISION!
-                        rIdx === 0 ? (
-                          <div className="col-span-2 text-center py-1.5 rounded bg-[#ff5a5f] text-white font-bold text-[11px] shadow-sm animate-pulse">
-                            Priya · 2 nights
-                          </div>
-                        ) : rIdx === 1 ? (
-                          <div className="col-span-2 text-center py-1.5 rounded bg-[#003b95] text-white font-bold text-[11px] shadow-sm border border-red-500 animate-pulse">
-                            Tom · 2 nights
-                          </div>
+                      <button
+                        onClick={() => setIsPlaying(!isPlaying)}
+                        className="text-xs text-gray-400 hover:text-white flex items-center gap-1.5 bg-gray-900/80 px-2.5 py-1 rounded-full border border-gray-800"
+                      >
+                        {isPlaying ? (
+                          <>
+                            <Pause className="w-3 h-3 text-amber-400" /> Paused
+                          </>
                         ) : (
                           <>
-                            <div className="text-center py-1.5 rounded bg-gray-900/60 text-gray-400 text-[11px]">220</div>
-                            <div className="text-center py-1.5 rounded bg-gray-900/60 text-gray-400 text-[11px]">220</div>
+                            <Play className="w-3 h-3 text-emerald-400" /> Play
                           </>
-                        )
-                      ) : (
-                        // WITH YOURBNB: CLEAN 0.8s CLOSURE!
-                        rIdx === 0 ? (
-                          <div className="col-span-2 text-center py-1.5 rounded bg-[#ff5a5f] text-white font-bold text-[11px] shadow-md">
-                            Priya · 2 nights
-                          </div>
-                        ) : (
-                          <div className="col-span-2 text-center py-1.5 rounded bg-gray-800/90 text-gray-300 font-semibold text-[10px] border border-gray-700 flex items-center justify-center gap-1">
-                            <Lock className="w-2.5 h-2.5 text-gray-400" /> Closed in 0.8s
-                          </div>
-                        )
-                      )}
-
-                      {/* Fri 16 */}
-                      <div className="text-center py-1.5 rounded bg-gray-900/60 text-gray-400 text-[11px]">260</div>
-
-                      {/* Sat 17 & Sun 18 */}
-                      <div className="text-center py-1.5 rounded bg-gray-900/60 text-gray-400 text-[11px]">280</div>
-                      <div className="text-center py-1.5 rounded bg-gray-900/60 text-gray-400 text-[11px]">240</div>
+                        )}
+                      </button>
                     </div>
-                  ))}
-                </div>
-              </div>
 
-              {/* Status Indicator Banner */}
-              <div className="mt-4 pt-3 border-t border-gray-800 flex items-center justify-between text-xs">
-                {!syncedMode ? (
-                  <div className="flex items-center gap-2 text-red-400 font-semibold">
-                    <AlertTriangle className="w-4 h-4 shrink-0" />
-                    <span>Double booking conflict! Same villa booked on 2 channels simultaneously.</span>
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-2 text-emerald-400 font-semibold">
-                    <CheckCircle2 className="w-4 h-4 shrink-0" />
-                    <span>No double bookings. Ever. All other 4 OTAs locked automatically in 0.8s.</span>
+                    {/* Channel Calendar Grid */}
+                    <div className="overflow-x-auto text-xs">
+                      <div className="min-w-[500px]">
+                        <div className="grid grid-cols-8 gap-1.5 text-center text-gray-400 font-medium mb-2.5">
+                          <div className="text-left pl-1">Channel</div>
+                          <div>Mon 12</div>
+                          <div>Tue 13</div>
+                          <div className="text-[#ff3823] font-bold">Wed 14</div>
+                          <div className="text-[#ff3823] font-bold">Thu 15</div>
+                          <div>Fri 16</div>
+                          <div>Sat 17</div>
+                          <div>Sun 18</div>
+                        </div>
+
+                        {[
+                          { id: "airbnb", name: "Airbnb", logo: "A", color: "#ff5a5f" },
+                          { id: "booking", name: "Booking.com", logo: "B.", color: "#003b95" },
+                          { id: "vrbo", name: "Vrbo", logo: "V", color: "#3563e9" },
+                          { id: "agoda", name: "Agoda", logo: "Ag", color: "#6c3fd1" },
+                          { id: "website", name: "Website", logo: "🌐", color: "#0d9488" },
+                        ].map((row, rIdx) => (
+                          <div key={row.id} className="grid grid-cols-8 gap-1.5 items-center py-1.5 border-b border-gray-800/40">
+                            <div className="flex items-center gap-1.5 pl-1 font-semibold text-gray-200 text-[11px]">
+                              <span className="w-5 h-5 rounded flex items-center justify-center font-bold text-[10px] shrink-0" style={{ backgroundColor: row.color, color: "#fff" }}>
+                                {row.logo}
+                              </span>
+                              <span className="truncate">{row.name}</span>
+                            </div>
+
+                            <div className="text-center py-1 rounded bg-gray-900/60 text-gray-400 text-[11px]">180</div>
+                            <div className="text-center py-1 rounded bg-gray-900/60 text-gray-400 text-[11px]">180</div>
+
+                            {/* Wed 14 & Thu 15: Conflict vs 0.8s Lock */}
+                            {!syncedMode ? (
+                              rIdx === 0 ? (
+                                <div className="col-span-2 text-center py-1.5 rounded bg-[#ff5a5f] text-white font-bold text-[11px] shadow-sm animate-pulse">
+                                  Priya · 2 nights
+                                </div>
+                              ) : rIdx === 1 ? (
+                                <div className="col-span-2 text-center py-1.5 rounded bg-[#003b95] text-white font-bold text-[11px] shadow-sm border border-red-500 animate-pulse">
+                                  Tom · 2 nights
+                                </div>
+                              ) : (
+                                <>
+                                  <div className="text-center py-1 rounded bg-gray-900/60 text-gray-400 text-[11px]">220</div>
+                                  <div className="text-center py-1 rounded bg-gray-900/60 text-gray-400 text-[11px]">220</div>
+                                </>
+                              )
+                            ) : (
+                              rIdx === 0 ? (
+                                <div className="col-span-2 text-center py-1.5 rounded bg-[#ff5a5f] text-white font-bold text-[11px] shadow-md">
+                                  Priya · 2 nights
+                                </div>
+                              ) : (
+                                <div className="col-span-2 text-center py-1.5 rounded bg-gray-800/90 text-gray-300 font-semibold text-[10px] border border-gray-700 flex items-center justify-center gap-1">
+                                  <Lock className="w-2.5 h-2.5 text-gray-400" /> Closed in 0.8s
+                                </div>
+                              )
+                            )}
+
+                            <div className="text-center py-1 rounded bg-gray-900/60 text-gray-400 text-[11px]">260</div>
+                            <div className="text-center py-1 rounded bg-gray-900/60 text-gray-400 text-[11px]">280</div>
+                            <div className="text-center py-1 rounded bg-gray-900/60 text-gray-400 text-[11px]">240</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Bottom Status Note */}
+                    <div className="pt-2 border-t border-gray-800 flex items-center justify-between text-xs">
+                      {!syncedMode ? (
+                        <div className="flex items-center gap-1.5 text-red-400 font-semibold text-[11px]">
+                          <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
+                          <span>Double booking! Same villa booked on 2 OTAs simultaneously.</span>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-1.5 text-emerald-400 font-semibold text-[11px]">
+                          <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+                          <span>Zero double bookings. All other 4 OTAs locked automatically in 0.8s.</span>
+                        </div>
+                      )}
+                      <span className="text-[10px] text-gray-500 font-mono">
+                        {syncedMode ? "0.8s REAL-TIME SYNC" : "COLLISION DETECTED"}
+                      </span>
+                    </div>
                   </div>
                 )}
-                <span className="text-[11px] text-gray-400 font-mono">
-                  {syncedMode ? "0.8s LIVE SYNC" : "CONFLICT STATE"}
-                </span>
+
+                {/* 2. OFFLINE BOOKING SCREEN (activeFeature === 1 - Screenshot 5) */}
+                {activeFeature === 1 && (
+                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-stretch animate-in fade-in duration-200">
+                    {/* Left: WhatsApp Chat Mockup */}
+                    <div className="sm:col-span-5 rounded-xl bg-[#0f241d] border border-emerald-900/40 p-3 flex flex-col justify-between">
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-2 border-b border-emerald-900/60 pb-2">
+                          <div className="w-7 h-7 rounded-full bg-emerald-700 text-white flex items-center justify-center font-bold text-xs">
+                            P
+                          </div>
+                          <div>
+                            <div className="font-bold text-xs text-emerald-100">Priya</div>
+                            <div className="text-[9px] text-emerald-400 flex items-center gap-1">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> WhatsApp · online
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Chat Messages */}
+                        <div className="space-y-2 text-[11px]">
+                          <div className="bg-[#1b382d] p-2.5 rounded-xl rounded-tl-none text-emerald-100 max-w-[90%] shadow-xs">
+                            Hi! Is The Unique Gomti Nagar villa free 20–22 Oct? We are 4.
+                          </div>
+                          <div className="bg-[#24523f] p-2.5 rounded-xl rounded-tr-none text-white ml-auto max-w-[90%] shadow-xs">
+                            Yes! Creating your booking right now.
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="text-[10px] text-emerald-400/80 pt-2 flex items-center gap-1 border-t border-emerald-900/40">
+                        <Check className="w-3 h-3" /> Auto-sync with PMS
+                      </div>
+                    </div>
+
+                    {/* Right: New Offline Booking Form Card (Exact match with Homeyhuts Screenshot 5) */}
+                    <div className="sm:col-span-7 bg-white text-gray-900 rounded-xl p-3.5 space-y-2.5 shadow-lg">
+                      <div className="flex items-center justify-between">
+                        <h4 className="font-bold text-xs text-gray-900">New offline booking</h4>
+                        <span className="text-[10px] text-gray-500 font-medium bg-gray-100 px-2 py-0.5 rounded">
+                          The Unique Gomti Nagar
+                        </span>
+                      </div>
+
+                      {/* Source Pills */}
+                      <div className="flex items-center gap-1 text-[10px]">
+                        {["Walk-in", "Phone", "WhatsApp", "Instagram"].map((src) => (
+                          <button
+                            key={src}
+                            onClick={() => setOfflineSource(src)}
+                            className={`px-2 py-1 rounded font-semibold transition-all ${
+                              offlineSource === src
+                                ? "bg-black text-white"
+                                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                            }`}
+                          >
+                            {src}
+                          </button>
+                        ))}
+                      </div>
+
+                      {/* Form Details */}
+                      <div className="space-y-1.5 text-[11px] pt-1">
+                        <div className="flex justify-between py-1 border-b border-gray-100">
+                          <span className="text-gray-500">Guest</span>
+                          <span className="font-bold text-gray-900">Priya Sharma</span>
+                        </div>
+                        <div className="flex justify-between py-1 border-b border-gray-100">
+                          <span className="text-gray-500">Dates</span>
+                          <span className="font-bold text-gray-900">20–22 Oct · 2 nights</span>
+                        </div>
+                        <div className="flex justify-between py-1 border-b border-gray-100">
+                          <span className="text-gray-500">Guests</span>
+                          <span className="font-bold text-gray-900">4 adults</span>
+                        </div>
+                        <div className="flex justify-between py-1">
+                          <span className="text-gray-500">Advance</span>
+                          <span className="font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded">
+                            50% · rest on arrival
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Red Button */}
+                      <Link
+                        href="/offline-bookings"
+                        className="w-full py-2 rounded-lg bg-[#ff3823] hover:bg-[#e5220d] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-sm"
+                      >
+                        Create booking & send payment link
+                      </Link>
+                    </div>
+                  </div>
+                )}
+
+                {/* 3. DIRECT WEBSITE SCREEN (activeFeature === 2 - Screenshot 4) */}
+                {activeFeature === 2 && (
+                  <div className="bg-white rounded-xl overflow-hidden shadow-2xl text-gray-900 animate-in fade-in duration-200">
+                    {/* Browser Address Bar */}
+                    <div className="bg-gray-100 px-3 py-1.5 border-b border-gray-200 flex items-center gap-2 text-xs">
+                      <div className="flex items-center gap-1">
+                        <span className="w-2.5 h-2.5 rounded-full bg-red-400 inline-block" />
+                        <span className="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block" />
+                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block" />
+                      </div>
+                      <div className="flex-1 bg-white rounded px-2.5 py-0.5 text-[11px] text-gray-600 font-mono border border-gray-200 flex items-center justify-between">
+                        <span className="flex items-center gap-1">
+                          <Lock className="w-2.5 h-2.5 text-emerald-600" />
+                          www.theuniquehavenhomes.com
+                        </span>
+                        <span className="text-[9px] text-[#ff3823] font-bold">0% Commission</span>
+                      </div>
+                    </div>
+
+                    {/* Mini Website Hero */}
+                    <div className="relative bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white p-5 min-h-[190px] flex flex-col justify-between">
+                      {/* Nav */}
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="font-bold tracking-tight text-white">The Unique Haven Homes</span>
+                        <div className="flex items-center gap-3 text-gray-300 text-[11px]">
+                          <span>Stays</span>
+                          <span>Experiences</span>
+                          <span>About</span>
+                          <span className="text-[#ff3823] font-bold">Book</span>
+                        </div>
+                      </div>
+
+                      {/* Hero content */}
+                      <div className="my-2 space-y-1">
+                        <h3 className="text-lg font-bold font-display text-white">
+                          Luxury Stays in Lucknow.
+                        </h3>
+                        <p className="text-[11px] text-gray-300">
+                          Villas, penthouses and designer suites booked direct.
+                        </p>
+                      </div>
+
+                      {/* Interactive Search Bar Widget (Screenshot 4) */}
+                      <div className="bg-white text-gray-900 rounded-lg p-1.5 flex items-center justify-between gap-2 shadow-lg">
+                        <div className="pl-2 border-r border-gray-200 pr-2 flex-1">
+                          <div className="text-[9px] text-gray-400 font-bold uppercase">Where</div>
+                          <div className="text-[11px] font-bold text-[#ff3823] flex items-center gap-1">
+                            Lucknow, UP <span className="text-[9px] bg-red-50 text-[#ff3823] px-1 rounded">6 stays</span>
+                          </div>
+                        </div>
+                        <div className="border-r border-gray-200 pr-2 flex-1 hidden sm:block">
+                          <div className="text-[9px] text-gray-400 font-bold uppercase">When</div>
+                          <div className="text-[11px] text-gray-700 font-medium">Any dates</div>
+                        </div>
+                        <div className="pr-2 flex-1 hidden sm:block">
+                          <div className="text-[9px] text-gray-400 font-bold uppercase">Guests</div>
+                          <div className="text-[11px] text-gray-700 font-medium">2 guests</div>
+                        </div>
+                        <Link
+                          href="/stays"
+                          className="w-8 h-8 rounded-md bg-[#ff3823] hover:bg-[#e5220d] text-white flex items-center justify-center shrink-0 transition-transform hover:scale-105"
+                          title="View Lucknow Stays"
+                        >
+                          <Search className="w-3.5 h-3.5" />
+                        </Link>
+                      </div>
+                    </div>
+
+                    {/* Bottom guest link banner */}
+                    <div className="p-2.5 bg-gray-50 border-t border-gray-100 flex items-center justify-between text-xs px-4">
+                      <span className="text-gray-600 font-medium text-[11px]">
+                        Integrated direct payments (UPI, Cards) + instant WhatsApp vouchers
+                      </span>
+                      <Link
+                        href="/stays"
+                        className="text-[#ff3823] font-bold hover:underline flex items-center gap-1 text-xs"
+                      >
+                        Explore Stays <ExternalLink className="w-3 h-3" />
+                      </Link>
+                    </div>
+                  </div>
+                )}
+
+                {/* 4. EXPENSES & PROFITS SCREEN (activeFeature === 3) */}
+                {activeFeature === 3 && (
+                  <div className="space-y-3.5 animate-in fade-in duration-200">
+                    <div className="flex items-center justify-between border-b border-gray-800 pb-2">
+                      <div className="flex items-center gap-2">
+                        <Wallet className="w-4 h-4 text-emerald-400" />
+                        <h4 className="font-bold text-xs text-white">October Financial Statement</h4>
+                      </div>
+                      <span className="text-[10px] text-emerald-400 font-semibold bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-800">
+                        +24% vs Last Month
+                      </span>
+                    </div>
+
+                    {/* Metrics 3-Col */}
+                    <div className="grid grid-cols-3 gap-2 text-center">
+                      <div className="bg-gray-900/80 p-2.5 rounded-xl border border-gray-800">
+                        <span className="text-[10px] text-gray-400 block">Gross Revenue</span>
+                        <span className="text-sm font-bold text-white">₹2,28,000</span>
+                      </div>
+                      <div className="bg-gray-900/80 p-2.5 rounded-xl border border-gray-800">
+                        <span className="text-[10px] text-gray-400 block">Operating Costs</span>
+                        <span className="text-sm font-bold text-red-400">-₹43,500</span>
+                      </div>
+                      <div className="bg-emerald-950/50 p-2.5 rounded-xl border border-emerald-800/80">
+                        <span className="text-[10px] text-emerald-400 block font-bold">Net In-Hand Profit</span>
+                        <span className="text-sm font-bold text-emerald-300">₹1,84,500</span>
+                      </div>
+                    </div>
+
+                    {/* Property Level Contribution */}
+                    <div className="space-y-1.5 text-xs pt-1">
+                      <div className="flex justify-between text-[11px] text-gray-400">
+                        <span>Property Contribution</span>
+                        <span>Net Profit</span>
+                      </div>
+                      {[
+                        { name: "The Unique (GOM-302, Gomti Nagar)", profit: "₹68,500", pct: "92%" },
+                        { name: "Gomti Grand Villa (4BHK with Pool)", profit: "₹82,000", pct: "88%" },
+                        { name: "The Dark Blue (GOM-201, Lucknow)", profit: "₹34,000", pct: "85%" },
+                      ].map((item) => (
+                        <div key={item.name} className="flex items-center justify-between p-2 rounded-lg bg-gray-900/40 text-[11px] border border-gray-800/50">
+                          <span className="text-gray-200 font-medium truncate max-w-[240px]">{item.name}</span>
+                          <div className="flex items-center gap-2">
+                            <span className="text-[10px] text-gray-500 font-mono">{item.pct} Occ.</span>
+                            <span className="font-bold text-emerald-400">{item.profit}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="text-[11px] text-gray-400 pt-1 flex items-center justify-between border-t border-gray-800">
+                      <span>Saved <strong>₹34,200</strong> in OTA commissions this month via direct bookings.</span>
+                    </div>
+                  </div>
+                )}
+
+                {/* 5. UNIFIED INBOX SCREEN (activeFeature === 4 - Screenshot 3) */}
+                {activeFeature === 4 && (
+                  <div className="grid grid-cols-12 gap-2 text-gray-900 animate-in fade-in duration-200 h-[260px]">
+                    {/* Left Rail Channels */}
+                    <div className="col-span-1 bg-[#1a1c22] rounded-xl flex flex-col items-center py-3 gap-2.5 border border-gray-800">
+                      <button
+                        onClick={() => setInboxTab("airbnb")}
+                        className={`w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs text-white ${
+                          inboxTab === "airbnb" ? "bg-[#ff5a5f] shadow-md" : "bg-gray-800 opacity-60"
+                        }`}
+                      >
+                        A
+                      </button>
+                      <button
+                        onClick={() => setInboxTab("booking")}
+                        className={`w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs text-white ${
+                          inboxTab === "booking" ? "bg-[#003b95] shadow-md" : "bg-gray-800 opacity-60"
+                        }`}
+                      >
+                        B.
+                      </button>
+                      <button
+                        onClick={() => setInboxTab("direct")}
+                        className={`w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs text-white ${
+                          inboxTab === "direct" ? "bg-[#0d9488] shadow-md" : "bg-gray-800 opacity-60"
+                        }`}
+                      >
+                        🌐
+                      </button>
+                    </div>
+
+                    {/* Middle Message List */}
+                    <div className="col-span-5 bg-white rounded-xl p-2.5 flex flex-col justify-between border border-gray-200 shadow-md">
+                      <div>
+                        <div className="flex items-center justify-between pb-2 border-b border-gray-100">
+                          <span className="font-bold text-xs text-gray-900">Inbox</span>
+                          <span className="text-[9px] bg-red-100 text-[#ff3823] font-bold px-1.5 py-0.2 rounded-full">
+                            2 new
+                          </span>
+                        </div>
+
+                        <div className="space-y-1.5 mt-2">
+                          <div className="p-2 rounded-lg bg-[#fff1ef] border border-[#ff3823]/30 cursor-pointer">
+                            <div className="flex items-center justify-between">
+                              <span className="font-bold text-[11px] text-gray-900">Priya</span>
+                              <span className="text-[9px] text-[#ff3823] font-semibold">now</span>
+                            </div>
+                            <p className="text-[10px] text-gray-600 truncate mt-0.5">What time is check-in?</p>
+                          </div>
+
+                          <div className="p-2 rounded-lg hover:bg-gray-50 border border-gray-100 cursor-pointer">
+                            <div className="flex items-center justify-between">
+                              <span className="font-semibold text-[11px] text-gray-800">Tom</span>
+                              <span className="text-[9px] text-gray-400">1h</span>
+                            </div>
+                            <p className="text-[10px] text-gray-500 truncate mt-0.5">Is parking available?</p>
+                          </div>
+
+                          <div className="p-2 rounded-lg hover:bg-gray-50 border border-gray-100 cursor-pointer">
+                            <div className="flex items-center justify-between">
+                              <span className="font-semibold text-[11px] text-gray-800">Ana</span>
+                              <span className="text-[9px] text-gray-400">yesterday</span>
+                            </div>
+                            <p className="text-[10px] text-gray-500 truncate mt-0.5">Loved the stay, thank you!</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <span className="text-[9px] text-gray-400 text-center">Auto-sync across Airbnb & Booking</span>
+                    </div>
+
+                    {/* Right Open Chat Window (Screenshot 3) */}
+                    <div className="col-span-6 bg-white rounded-xl p-3 flex flex-col justify-between border border-gray-200 shadow-md">
+                      <div>
+                        {/* Chat Header */}
+                        <div className="flex items-center justify-between pb-2 border-b border-gray-100">
+                          <div>
+                            <div className="font-bold text-xs text-gray-900">Priya</div>
+                            <div className="text-[9px] text-gray-500">The Unique Lucknow · 25–27 Oct · 2 guests</div>
+                          </div>
+                          <span className="text-[9px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
+                            Coming soon
+                          </span>
+                        </div>
+
+                        {/* Chat Bubbles */}
+                        <div className="space-y-2 mt-3 text-[11px]">
+                          <div className="bg-gray-100 p-2.5 rounded-xl rounded-tl-none max-w-[85%] text-gray-800 shadow-xs">
+                            Hi! What time is check-in?
+                          </div>
+                          <div className="bg-[#ff3823] text-white p-2.5 rounded-xl rounded-tr-none ml-auto max-w-[85%] shadow-xs">
+                            Check-in is from 2 PM. I have sent the door code too!
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Reply Input */}
+                      <div className="pt-2 flex items-center gap-1.5 border-t border-gray-100">
+                        <input
+                          type="text"
+                          placeholder="Type a reply..."
+                          className="flex-1 bg-gray-50 rounded-lg px-2.5 py-1.5 text-[10px] border border-gray-200 outline-none"
+                        />
+                        <button className="w-7 h-7 rounded-lg bg-[#ff3823] text-white flex items-center justify-center shrink-0">
+                          <Send className="w-3 h-3" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* 6. CO-HOSTS & TEAM SCREEN (activeFeature === 5 - Screenshot 2) */}
+                {activeFeature === 5 && (
+                  <div className="space-y-3 animate-in fade-in duration-200 text-gray-900">
+                    {/* Org Root Card */}
+                    <div className="text-center">
+                      <div className="inline-flex items-center gap-2 bg-white px-3 py-1.5 rounded-full shadow-md border border-gray-200 text-xs">
+                        <span className="w-5 h-5 rounded-full bg-gray-900 text-white font-bold text-[10px] flex items-center justify-center">
+                          Y
+                        </span>
+                        <span className="font-bold text-gray-900">You · Owner (Praveen Singh)</span>
+                        <span className="text-[9px] bg-red-500 text-white font-bold px-1.5 rounded-full">3</span>
+                      </div>
+                    </div>
+
+                    {/* Team Members 3-Col Cards (Screenshot 2) */}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                      {[
+                        { initial: "A", name: "Anita", role: "Account manager", scope: "All properties", cal: true, price: true, payout: false },
+                        { initial: "S", name: "Sneha", role: "Co-host", scope: "Gomti Grand Villa", cal: true, price: true, payout: false },
+                        { initial: "R", name: "Rohan", role: "Ground Ops", scope: "The Unique", cal: true, price: false, payout: false },
+                      ].map((m) => (
+                        <div key={m.name} className="bg-white rounded-xl p-2.5 border border-gray-200 shadow-md text-xs space-y-2">
+                          <div className="flex items-center gap-2">
+                            <span className="w-6 h-6 rounded-full bg-gray-100 text-gray-700 font-bold text-[10px] flex items-center justify-center">
+                              {m.initial}
+                            </span>
+                            <div>
+                              <div className="font-bold text-gray-900 text-[11px]">{m.name}</div>
+                              <div className="text-[9px] text-gray-400">{m.role}</div>
+                            </div>
+                          </div>
+                          <span className="text-[9px] bg-purple-50 text-purple-700 font-bold px-1.5 py-0.2 rounded block text-center">
+                            {m.scope}
+                          </span>
+
+                          <div className="space-y-1 text-[10px] pt-1">
+                            <div className="flex justify-between items-center text-gray-600">
+                              <span>Calendar</span>
+                              <span className={`w-6 h-3.5 rounded-full flex items-center p-0.5 ${m.cal ? "bg-emerald-500 justify-end" : "bg-gray-200 justify-start"}`}>
+                                <span className="w-2.5 h-2.5 rounded-full bg-white" />
+                              </span>
+                            </div>
+                            <div className="flex justify-between items-center text-gray-600">
+                              <span>Pricing</span>
+                              <span className={`w-6 h-3.5 rounded-full flex items-center p-0.5 ${m.price ? "bg-emerald-500 justify-end" : "bg-gray-200 justify-start"}`}>
+                                <span className="w-2.5 h-2.5 rounded-full bg-white" />
+                              </span>
+                            </div>
+                            <div className="flex justify-between items-center text-gray-600">
+                              <span>Payouts</span>
+                              <span className={`w-6 h-3.5 rounded-full flex items-center p-0.5 ${m.payout ? "bg-emerald-500 justify-end" : "bg-gray-200 justify-start"}`}>
+                                <span className="w-2.5 h-2.5 rounded-full bg-white" />
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Live Activity Feed */}
+                    <div className="bg-white rounded-xl p-2.5 border border-gray-200 shadow-sm text-[10px] flex items-center justify-between text-gray-600">
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                        <span><strong>Sneha</strong> raised weekend prices by 10% on Gomti Grand Villa</span>
+                      </div>
+                      <span className="text-gray-400 font-mono">just now</span>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* 6 Feature Tiles (2x3 Grid matching Homeyhuts) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {/* 6 Feature Tabs (2x3 Grid matching Homeyhuts) - CLICKABLE TO CHANGE VIEW! */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
               {features.map((item, idx) => (
-                <Link
+                <button
                   key={item.title}
-                  href={item.href}
-                  onMouseEnter={() => setActiveFeature(idx)}
-                  className={`p-3.5 rounded-2xl border transition-all text-left flex items-start gap-3 group ${
+                  onClick={() => setActiveFeature(idx)}
+                  className={`p-3 rounded-2xl border transition-all text-left flex items-start gap-3 group cursor-pointer ${
                     activeFeature === idx
-                      ? "bg-[#fff1ef] border-[#ff3823]/50 shadow-sm"
-                      : "bg-gray-50/70 border-gray-200/80 hover:bg-gray-100/70"
+                      ? "bg-white border-[#0c1838] shadow-md ring-2 ring-[#0c1838]/10"
+                      : "bg-white/80 border-gray-200 hover:bg-white hover:border-gray-300"
                   }`}
                 >
-                  <div className="w-9 h-9 rounded-xl bg-white border border-gray-200 flex items-center justify-center text-gray-700 group-hover:text-[#ff3823] group-hover:border-[#ff3823]/40 transition-colors shrink-0 shadow-sm">
+                  <div className={`w-8 h-8 rounded-xl flex items-center justify-center transition-colors shrink-0 ${
+                    activeFeature === idx
+                      ? "bg-[#0c1838] text-white"
+                      : "bg-gray-100 text-gray-600 group-hover:text-[#ff3823]"
+                  }`}>
                     <item.icon className="w-4 h-4" />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-xs font-bold text-gray-900 group-hover:text-[#ff3823] flex items-center gap-1">
+                    <div className={`text-xs font-bold flex items-center gap-1 ${
+                      activeFeature === idx ? "text-[#0c1838]" : "text-gray-900 group-hover:text-[#ff3823]"
+                    }`}>
                       <span className="truncate">{item.title}</span>
                       {item.badge && (
                         <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-purple-100 text-purple-700">
@@ -308,9 +755,10 @@ export default function Hero() {
                       {item.desc}
                     </p>
                   </div>
-                </Link>
+                </button>
               ))}
             </div>
+
           </div>
         </div>
       </div>
