@@ -37,6 +37,7 @@ export default function PropertyCard({ prop }: { prop: Property }) {
             alt={`${prop.name} Photo ${currentIdx + 1}`}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             loading="lazy"
+            onError={(e) => { (e.currentTarget as HTMLImageElement).src = "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=720&q=80"; }}
           />
         </Link>
 

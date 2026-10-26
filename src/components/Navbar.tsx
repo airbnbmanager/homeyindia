@@ -293,112 +293,22 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
             </div>
 
             {/* Links List */}
-            <div className="flex-1 px-5 py-4 space-y-3 text-sm font-medium text-gray-800 overflow-y-auto">
-              {!currentUser ? (
-                <div>
+            <div className="flex-1 px-5 py-4 space-y-4 text-sm font-medium text-gray-800 overflow-y-auto">
+              {/* Auth Row */}
+              <div className="flex items-center justify-between pb-2 border-b border-gray-100">
+                {!currentUser ? (
                   <button
                     onClick={() => { setRightDrawerOpen(false); setAuthModalOpen(true); }}
-                    className="w-full text-left py-1 font-bold text-[#ff3823] hover:text-[#e0220d] transition-colors"
+                    className="py-1 font-bold text-[#ff3823] hover:text-[#e0220d] transition-colors text-xs uppercase tracking-wider flex items-center gap-1.5"
                   >
-                    Sign Up / Sign In (OTP)
+                    <span>Sign In / OTP Login</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
                   </button>
-                </div>
-              ) : (
-                <>
-                  <div>
-                    <Link
-                      href="/dashboard"
-                      onClick={() => setRightDrawerOpen(false)}
-                      className="block py-1 font-bold text-[#ff3823] hover:text-[#e0220d] transition-colors flex items-center justify-between"
-                    >
-                      <span>Host Control Dashboard</span>
-                      <span className="text-[10px] bg-[#fff1ef] text-[#ff3823] px-2 py-0.5 rounded-full font-bold border border-[#ffe2de]">Live</span>
-                    </Link>
-                  </div>
-                  <div>
-                    <Link
-                      href="/unified-calendar"
-                      onClick={() => setRightDrawerOpen(false)}
-                      className="block py-1 font-semibold text-gray-700 hover:text-[#ff3823] transition-colors"
-                    >
-                      Unified Timeline Calendar
-                    </Link>
-                  </div>
-                  <div>
-                    <Link
-                      href="/calendar"
-                      onClick={() => setRightDrawerOpen(false)}
-                      className="block py-1 font-semibold text-gray-700 hover:text-[#ff3823] transition-colors"
-                    >
-                      Calendar &amp; Pricing Settings
-                    </Link>
-                  </div>
-                  <div>
-                    <Link
-                      href="/properties"
-                      onClick={() => setRightDrawerOpen(false)}
-                      className="block py-1 font-semibold text-gray-700 hover:text-[#ff3823] transition-colors flex items-center justify-between"
-                    >
-                      <span>Properties &amp; Magic Cluster</span>
-                      <span className="text-[10px] bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full font-bold">18 Stays</span>
-                    </Link>
-                  </div>
-                  <div>
-                    <Link
-                      href="/reservations"
-                      onClick={() => setRightDrawerOpen(false)}
-                      className="block py-1 font-semibold text-gray-700 hover:text-[#ff3823] transition-colors"
-                    >
-                      Manage Reservations &amp; Offline Bookings
-                    </Link>
-                  </div>
-                  <div>
-                    <Link
-                      href="/channel-manager"
-                      onClick={() => setRightDrawerOpen(false)}
-                      className="block py-1 font-semibold text-gray-700 hover:text-[#ff3823] transition-colors"
-                    >
-                      Channel Manager (50+ OTAs)
-                    </Link>
-                  </div>
-                  <div>
-                    <Link
-                      href="/flexi-pricing"
-                      onClick={() => setRightDrawerOpen(false)}
-                      className="block py-1 font-semibold text-gray-700 hover:text-[#ff3823] transition-colors"
-                    >
-                      Flexi Pricing&trade; Yield Management
-                    </Link>
-                  </div>
-                  <div>
-                    <Link
-                      href="/expenses-and-profits"
-                      onClick={() => setRightDrawerOpen(false)}
-                      className="block py-1 font-semibold text-gray-700 hover:text-[#ff3823] transition-colors"
-                    >
-                      Property Expenses &amp; True P&amp;L
-                    </Link>
-                  </div>
-                  <div>
-                    <Link
-                      href="/properties/clone-airbnb"
-                      onClick={() => setRightDrawerOpen(false)}
-                      className="block py-1 font-semibold text-amber-700 hover:text-[#ff3823] transition-colors"
-                    >
-                      Clone Airbnb Listing
-                    </Link>
-                  </div>
-                  <div>
-                    <Link
-                      href="/account"
-                      onClick={() => setRightDrawerOpen(false)}
-                      className="block py-1 font-bold text-gray-900 hover:text-[#ff3823] transition-colors flex items-center justify-between"
-                    >
-                      <span>Account Settings &amp; Identity</span>
-                      <span className="text-[10px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-bold">KYC Verified</span>
-                    </Link>
-                  </div>
-                  <div>
+                ) : (
+                  <div className="flex items-center justify-between w-full">
+                    <span className="text-xs font-bold text-emerald-600 flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> Verified Host
+                    </span>
                     <button
                       onClick={() => {
                         localStorage.removeItem("homey_user_profile");
@@ -410,8 +320,108 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
                       Sign Out
                     </button>
                   </div>
-                </>
-              )}
+                )}
+              </div>
+
+              {/* Host Portal Suite */}
+              <div className="space-y-2">
+                <div className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                  Host Management Portal
+                </div>
+                <div>
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setRightDrawerOpen(false)}
+                    className="block py-1 font-bold text-gray-900 hover:text-[#ff3823] transition-colors flex items-center justify-between"
+                  >
+                    <span>Host Control Dashboard</span>
+                    <span className="text-[10px] bg-[#fff1ef] text-[#ff3823] px-2 py-0.5 rounded-full font-bold border border-[#ffe2de]">Live</span>
+                  </Link>
+                </div>
+                <div>
+                  <Link
+                    href="/unified-calendar"
+                    onClick={() => setRightDrawerOpen(false)}
+                    className="block py-1 font-semibold text-gray-700 hover:text-[#ff3823] transition-colors"
+                  >
+                    Unified Timeline Calendar
+                  </Link>
+                </div>
+                <div>
+                  <Link
+                    href="/calendar"
+                    onClick={() => setRightDrawerOpen(false)}
+                    className="block py-1 font-semibold text-gray-700 hover:text-[#ff3823] transition-colors"
+                  >
+                    Calendar &amp; Dynamic Pricing
+                  </Link>
+                </div>
+                <div>
+                  <Link
+                    href="/properties"
+                    onClick={() => setRightDrawerOpen(false)}
+                    className="block py-1 font-semibold text-gray-700 hover:text-[#ff3823] transition-colors flex items-center justify-between"
+                  >
+                    <span>Properties &amp; Magic Cluster</span>
+                    <span className="text-[10px] bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full font-bold">18 Stays</span>
+                  </Link>
+                </div>
+                <div>
+                  <Link
+                    href="/reservations"
+                    onClick={() => setRightDrawerOpen(false)}
+                    className="block py-1 font-semibold text-gray-700 hover:text-[#ff3823] transition-colors"
+                  >
+                    Manage Reservations &amp; Offline
+                  </Link>
+                </div>
+                <div>
+                  <Link
+                    href="/channel-manager"
+                    onClick={() => setRightDrawerOpen(false)}
+                    className="block py-1 font-semibold text-gray-700 hover:text-[#ff3823] transition-colors"
+                  >
+                    Channel Manager (50+ OTAs)
+                  </Link>
+                </div>
+                <div>
+                  <Link
+                    href="/flexi-pricing"
+                    onClick={() => setRightDrawerOpen(false)}
+                    className="block py-1 font-semibold text-gray-700 hover:text-[#ff3823] transition-colors"
+                  >
+                    Flexi Pricing&trade; Yield Management
+                  </Link>
+                </div>
+                <div>
+                  <Link
+                    href="/expenses-and-profits"
+                    onClick={() => setRightDrawerOpen(false)}
+                    className="block py-1 font-semibold text-gray-700 hover:text-[#ff3823] transition-colors"
+                  >
+                    Property Expenses &amp; True P&amp;L
+                  </Link>
+                </div>
+                <div>
+                  <Link
+                    href="/properties/clone-airbnb"
+                    onClick={() => setRightDrawerOpen(false)}
+                    className="block py-1 font-semibold text-amber-700 hover:text-[#ff3823] transition-colors"
+                  >
+                    Clone Airbnb Listing
+                  </Link>
+                </div>
+                <div>
+                  <Link
+                    href="/account"
+                    onClick={() => setRightDrawerOpen(false)}
+                    className="block py-1 font-bold text-gray-900 hover:text-[#ff3823] transition-colors flex items-center justify-between"
+                  >
+                    <span>Host Identity &amp; KYC</span>
+                    <span className="text-[10px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-bold">Aadhaar/Pass</span>
+                  </Link>
+                </div>
+              </div>
               <div>
                 <button
                   onClick={() => setFeaturesAccordionOpen(!featuresAccordionOpen)}

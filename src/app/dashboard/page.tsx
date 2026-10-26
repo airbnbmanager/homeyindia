@@ -1,5 +1,7 @@
 "use client";
 
+import HostNavTabs from "@/components/HostNavTabs";
+
 import React, { useState } from "react";
 import Link from "next/link";
 import { 
@@ -219,7 +221,8 @@ export default function HostDashboardPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           
           {/* Top Host Navigation Header  */}
-          <div className="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm space-y-6">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#fff1ef] text-[#ff3823] text-xs font-bold border border-[#ffe2de] mb-2">
                 <span className="w-2 h-2 rounded-full bg-[#ff3823] animate-pulse" />
@@ -257,6 +260,9 @@ export default function HostDashboardPage() {
                 <span>Aadhaar Verified</span>
               </Link>
             </div>
+            </div>
+
+            <HostNavTabs variant="light" />
           </div>
 
           {/* Activity Filter Tabs  */}

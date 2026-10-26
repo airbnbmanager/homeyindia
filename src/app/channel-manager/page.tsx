@@ -1,5 +1,7 @@
 "use client";
 
+import HostNavTabs from "@/components/HostNavTabs";
+
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -194,30 +196,8 @@ export default function ChannelManagerPage() {
           </div>
         </div>
 
-        {/* Sub Nav */}
-        <div className="max-w-7xl mx-auto mt-6 flex items-center gap-2 border-t border-slate-800/80 pt-4 overflow-x-auto text-sm font-medium">
-          <Link href="/dashboard" className="px-4 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition">
-            Dashboard
-          </Link>
-          <Link href="/calendar" className="px-4 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition">
-            Calendar &amp; Pricing
-          </Link>
-          <Link href="/unified-calendar" className="px-4 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition">
-            Unified Multi-Property
-          </Link>
-          <Link href="/properties" className="px-4 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition">
-            Properties ({PROPERTIES.length})
-          </Link>
-          <Link href="/reservations" className="px-4 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition">
-            Reservations
-          </Link>
-          <Link href="/channel-manager" className="px-4 py-2 rounded-xl bg-[#ff3823] text-white font-bold shadow-lg shadow-[#ff3823]/20">
-            Channel Manager
-          </Link>
-          <Link href="/account" className="px-4 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition">
-            Account &amp; KYC
-          </Link>
-        </div>
+        {/* Sub Navigation */}
+        <HostNavTabs />
       </div>
 
       {/* Main Content */}

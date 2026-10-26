@@ -144,6 +144,7 @@ export default function PropertyDetailClient({ prop }: { prop: Property }) {
                   src={prop.gallery?.[0] || prop.image}
                   alt={`${prop.name} Main View`}
                   className="w-full h-full object-cover group-hover/lead:scale-102 transition-transform duration-500"
+                  onError={(e) => { (e.currentTarget as HTMLImageElement).src = "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80"; }}
                 />
                 <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-[11px] font-semibold">
                   Lead Photo · Tap to Enlarge
@@ -167,6 +168,7 @@ export default function PropertyDetailClient({ prop }: { prop: Property }) {
                       src={prop.gallery?.[item.idx] || prop.image}
                       alt={`${prop.name} ${item.label}`}
                       className="w-full h-full object-cover group-hover/item:scale-105 transition-transform duration-500"
+                      onError={(e) => { (e.currentTarget as HTMLImageElement).src = "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80"; }}
                     />
                     <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/60 backdrop-blur-sm text-white text-[10px] opacity-0 group-hover/item:opacity-100 transition-opacity">
                       {item.label}
@@ -185,6 +187,7 @@ export default function PropertyDetailClient({ prop }: { prop: Property }) {
                 src={prop.gallery?.[0] || prop.image}
                 alt={prop.name}
                 className="w-full h-full object-cover"
+                onError={(e) => { (e.currentTarget as HTMLImageElement).src = "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80"; }}
               />
               <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-[10px] font-bold">
                 Tap to view all {prop.gallery?.length || 1} photos
@@ -510,6 +513,7 @@ export default function PropertyDetailClient({ prop }: { prop: Property }) {
                 src={currentPhotoList[activePhotoIdx]}
                 alt={`${prop.name} Photo ${activePhotoIdx + 1}`}
                 className="max-h-[72vh] max-w-full w-auto object-contain rounded-2xl shadow-2xl select-none"
+                onError={(e) => { (e.currentTarget as HTMLImageElement).src = "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80"; }}
               />
             </div>
 
