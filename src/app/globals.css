@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --lyp-font: "DM Sans", system-ui, -apple-system, sans-serif;
+    --lyp-font-accent: "DM Serif Display", Georgia, serif;
+    
+    /* Neutrals */
+    --lyp-neutral-0: #ffffff;
+    --lyp-neutral-50: #f8f9fa;
+    --lyp-neutral-100: #eef0f4;
+    --lyp-neutral-200: #e2e5ec;
+    --lyp-neutral-300: #cbd1dc;
+    --lyp-neutral-400: #9aa2b1;
+    --lyp-neutral-500: #6b7280;
+    --lyp-neutral-600: #4b5563;
+    --lyp-neutral-700: #374151;
+    --lyp-neutral-800: #1f2937;
+    --lyp-neutral-900: #0f172a;
+    --lyp-neutral-950: #030712;
+
+    /* Brand Accent - Signature Vibrant Coral-Red */
+    --lyp-brand: #ff3823;
+    --lyp-brand-50: #fff1ef;
+    --lyp-brand-100: #ffe2de;
+    --lyp-brand-200: #ffc8c1;
+    --lyp-brand-600: #e5220d;
+    --lyp-brand-700: #c91805;
+
+    /* Deep Navy */
+    --lyp-navy-50: #f4f6fb;
+    --lyp-navy-100: #e8ecf7;
+    --lyp-navy-700: #1a2b56;
+    --lyp-navy-900: #0c1838;
+    --lyp-navy-950: #060e24;
+
+    /* Semantic Channels */
+    --lyp-ch-airbnb: #ff5a5f;
+    --lyp-ch-airbnb-bg: #fde8ea;
+    --lyp-ch-airbnb-text: #b42a30;
+
+    --lyp-ch-booking: #003b95;
+    --lyp-ch-booking-bg: #e6eef8;
+    --lyp-ch-booking-text: #002257;
+
+    --lyp-ch-mmt: #e5195e;
+    --lyp-ch-mmt-bg: #fde7ef;
+    --lyp-ch-mmt-text: #a30f45;
+
+    --lyp-ch-agoda: #6c3fd1;
+    --lyp-ch-agoda-bg: #eee8fb;
+    --lyp-ch-agoda-text: #4b2396;
+
+    --lyp-ch-vrbo: #3563e9;
+    --lyp-ch-vrbo-bg: #ebf1ff;
+
+    --lyp-ch-goibibo: #f58220;
+    --lyp-ch-goibibo-bg: #fff2e6;
+
+    --lyp-ch-direct: #0d9488;
+    --lyp-ch-direct-bg: #e6fffa;
+    --lyp-ch-direct-text: #0f766e;
+
+    /* Status */
+    --lyp-success: #10b981;
+    --lyp-success-bg: #d1fae5;
+    --lyp-success-text: #065f46;
+
+    --lyp-warning: #f59e0b;
+    --lyp-warning-bg: #fef3c7;
+    --lyp-warning-text: #92400e;
+
+    --lyp-error: #ef4444;
+    --lyp-error-bg: #fee2e2;
+    --lyp-error-text: #991b1b;
+  }
+}
+
+body {
+  font-family: var(--lyp-font);
+  color: var(--lyp-neutral-900);
+  background-color: #ffffff;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, .font-display {
+  letter-spacing: -0.025em;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Keyframes for Smooth Badge Sync Animations */
+@keyframes pulseGlow {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.08); opacity: 1; box-shadow: 0 0 16px rgba(255, 56, 35, 0.4); }
+}
+
+@keyframes floatGentle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 3s infinite ease-in-out;
+}
+
+.animate-float {
+  animation: floatGentle 4s infinite ease-in-out;
+}
