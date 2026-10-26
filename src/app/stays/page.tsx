@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import PropertyCard from "@/components/PropertyCard";
 import { PROPERTIES } from "@/data/properties";
 import { 
   Star, MapPin, Users, Bed, Bath, ArrowRight, 
@@ -110,89 +111,9 @@ export default function StaysPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filtered.map((prop) => {
-              const savings = prop.airbnbPrice - prop.price;
-              return (
-                <div
-                  key={prop.id}
-                  className="bg-white rounded-3xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-xl transition-all group flex flex-col justify-between"
-                >
-                  {/* Photo & Badges */}
-                  <div className="relative aspect-[16/10] overflow-hidden bg-gray-100">
-                    <img
-                      src={prop.image}
-                      alt={prop.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      loading="lazy"
-                    />
-                    <div className="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-md text-[11px] font-bold text-gray-900 shadow-sm">
-                      <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-                      <span>{prop.rating}</span>
-                      <span className="text-gray-400 font-normal">({prop.reviewsCount})</span>
-                    </div>
-
-                    <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-emerald-600 text-white text-[11px] font-bold shadow-sm">
-                      Save ₹{savings.toLocaleString("en-IN")}
-                    </div>
-
-                    <div className="absolute bottom-3 left-3 px-2 py-0.5 rounded bg-black/60 backdrop-blur-sm text-white text-[10px] font-mono">
-                      {prop.id}
-                    </div>
-                  </div>
-
-                  {/* Body Content */}
-                  <div className="p-6 space-y-4 flex-grow flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-center gap-1.5 text-xs text-gray-500 mb-1">
-                        <MapPin className="w-3.5 h-3.5 text-[#ff3823]" />
-                        <span>{prop.location}</span>
-                      </div>
-                      <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#ff3823] transition-colors leading-snug">
-                        {prop.name}
-                      </h3>
-                      <p className="text-xs text-gray-600 line-clamp-2 mt-2 leading-relaxed">
-                        {prop.description}
-                      </p>
-                    </div>
-
-                    {/* Room Meta Specs */}
-                    <div className="flex items-center gap-4 text-xs text-gray-600 py-3 border-y border-gray-100">
-                      <span className="flex items-center gap-1">
-                        <Users className="w-3.5 h-3.5 text-gray-400" /> {prop.maxGuests} Guests
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Bed className="w-3.5 h-3.5 text-gray-400" /> {prop.bedrooms} BHK
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Bath className="w-3.5 h-3.5 text-gray-400" /> {prop.bathrooms} Baths
-                      </span>
-                    </div>
-
-                    {/* Pricing & CTA */}
-                    <div className="flex items-end justify-between pt-1">
-                      <div>
-                        <div className="flex items-baseline gap-1.5">
-                          <span className="text-2xl font-extrabold text-[#ff3823] font-display">
-                            ₹{prop.price.toLocaleString("en-IN")}
-                          </span>
-                          <span className="text-xs text-gray-500">/ night</span>
-                        </div>
-                        <div className="text-[11px] text-gray-400 line-through">
-                          Airbnb Rate: ₹{prop.airbnbPrice.toLocaleString("en-IN")}
-                        </div>
-                      </div>
-
-                      <Link
-                        href={`/stays/${prop.slug}`}
-                        className="px-4 py-2.5 rounded-full bg-[#ff3823] hover:bg-[#e5220d] text-white font-bold text-xs shadow-md transition-all flex items-center gap-1"
-                      >
-                        Book Stay <ArrowRight className="w-3.5 h-3.5" />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+            {filtered.map((prop) => (
+              <PropertyCard key={prop.id} prop={prop} />
+            ))}
           </div>
         </div>
       </main>

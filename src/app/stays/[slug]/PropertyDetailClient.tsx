@@ -1,61 +1,117 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
+import { 
+  Star, MapPin, Users, Bed, Bath, Wifi, ShieldCheck, 
+  Check, ArrowLeft, MessageCircle, Calendar, Share2, 
+  ChevronRight, Sparkles, Building, UtensilsCrossed, Flame,
+  X, ChevronLeft, Grid, Image as ImageIcon
+} from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import Link from "next/link";
 import { Property } from "@/data/properties";
-import { 
-  Star, MapPin, Users, Bed, Bath, ShieldCheck, Check, 
-  ArrowLeft, MessageCircle, Calendar as CalendarIcon, 
-  Sparkles, Coffee, Wifi, Car, UtensilsCrossed, Flame 
-} from "lucide-react";
 
 export default function PropertyDetailClient({ prop }: { prop: Property }) {
-  const [bookingMode, setBookingMode] = useState<"entire" | "room">("entire");
   const [nights, setNights] = useState(2);
-  const [guests, setGuests] = useState(4);
+  const [guests, setGuests] = useState(2);
+  const [bookingMode, setBookingMode] = useState<"entire" | "room">("entire");
   const [chefAddon, setChefAddon] = useState(false);
   const [bonfireAddon, setBonfireAddon] = useState(false);
 
+  // Fullscreen Photo Lightbox States
+  const [galleryOpen, setGalleryOpen] = useState(false);
+  const [activePhotoIdx, setActivePhotoIdx] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+
+  // Categories list
+  const categoryKeys = prop.categories ? Object.keys(prop.categories) : [];
+  
+  // Current active photos based on category filter
+  const currentPhotoList: string[] = React.useMemo(() => {
+    if (selectedCategory === "all" || !prop.categories || !prop.categories[selectedCategory]) {
+      return prop.gallery && prop.gallery.length > 0 ? prop.gallery : [prop.image];
+    }
+    return prop.categories[selectedCategory];
+  }, [selectedCategory, prop]);
+
+  const openGalleryAt = (idx: number, category: string = "all") => {
+    setSelectedCategory(category);
+    setActivePhotoIdx(Math.max(0, Math.min(idx, currentPhotoList.length - 1)));
+    setGalleryOpen(true);
+  };
+
+  const nextPhoto = useCallback(() => {
+    setActivePhotoIdx((prev) => (prev + 1) % currentPhotoList.length);
+  }, [currentPhotoList.length]);
+
+  const prevPhoto = useCallback(() => {
+    setActivePhotoIdx((prev) => (prev - 1 + currentPhotoList.length) % currentPhotoList.length);
+  }, [currentPhotoList.length]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    if (!galleryOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setGalleryOpen(false);
+      if (e.key === "ArrowRight") nextPhoto();
+      if (e.key === "ArrowLeft") prevPhoto();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [galleryOpen, nextPhoto, prevPhoto]);
+
+  // Touch swipe handlers
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchStartX - touchEndX;
+    if (diff > 50) nextPhoto();
+    if (diff < -50) prevPhoto();
+    setTouchStartX(null);
+  };
+
+  // Pricing calculations
   const effectiveBasePrice = bookingMode === "entire" ? prop.price : Math.round(prop.price * 0.45);
   const baseTotal = effectiveBasePrice * nights;
   const addonsTotal = (chefAddon ? 3500 : 0) + (bonfireAddon ? 2000 : 0);
   const totalAmount = baseTotal + addonsTotal;
-  const otaComparison = (bookingMode === "entire" ? prop.airbnbPrice : Math.round(prop.airbnbPrice * 0.45)) * nights;
-  const savings = Math.max(0, otaComparison - baseTotal);
+  const savings = (prop.airbnbPrice - prop.price) * nights;
 
   const handleWhatsAppBooking = () => {
-    const msg = encodeURIComponent(
-      `Hi Praveen Singh & The Unique Haven Homes team!\n\nI want to book *${prop.name}* via Homey India Direct Booking Engine:\n• Option: ${bookingMode === "entire" ? "Entire Villa/Residence" : "Single Suite Room"}\n• Duration: ${nights} Nights\n• Guests: ${guests} Guests\n• Total Amount: ₹${totalAmount.toLocaleString("en-IN")}\n\nPlease confirm availability and share UPI payment QR.`
+    const text = encodeURIComponent(
+      `Hello Praveen Singh,\n\nI want to book *${prop.name}* (${prop.id}) in Lucknow directly via Homey India:\n- Stay Duration: ${nights} Nights\n- Guests: ${guests}\n- Mode: ${bookingMode === "entire" ? "Entire Villa/Flat" : "Single Suite / Room-by-Room"}\n- Private Chef: ${chefAddon ? "Yes (+₹3,500)" : "No"}\n- Bonfire Setup: ${bonfireAddon ? "Yes (+₹2,000)" : "No"}\n- Total Direct Rate: ₹${totalAmount.toLocaleString("en-IN")}\n\nPlease share the booking confirmation & UPI payment QR.`
     );
-    window.open(`https://wa.me/919454470872?text=${msg}`, "_blank");
+    window.open(`https://wa.me/919454470872?text=${text}`, "_blank");
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen bg-white">
       <Navbar />
-      <main className="flex-grow pt-28 pb-24">
-        {/* Navigation Breadcrumb */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
+
+      <main className="pt-24 sm:pt-28 pb-20">
+        {/* Header Breadcrumbs & Title */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4 mb-6">
           <Link
             href="/stays"
-            className="inline-flex items-center gap-2 text-xs font-semibold text-gray-500 hover:text-[#ff3823] transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-[#ff3823] transition-colors"
           >
-            <ArrowLeft className="w-4 h-4" /> Back to All Residences
+            <ArrowLeft className="w-3.5 h-3.5" /> Back to all 18 Lucknow Stays
           </Link>
-        </div>
 
-        {/* Property Hero Gallery */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-4">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div>
-              <div className="flex items-center gap-2 text-xs text-gray-500 mb-1.5">
-                <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-bold border border-emerald-200">
-                  The Unique Haven Homes · Flagship
-                </span>
+              <div className="flex items-center gap-2 text-xs font-bold text-[#ff3823] mb-1">
+                <span>{prop.zone}</span>
                 <span>•</span>
-                <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5 text-[#ff3823]" /> {prop.location}</span>
+                <span>{prop.type}</span>
+                <span>•</span>
+                <span className="text-gray-400 font-mono">{prop.id}</span>
               </div>
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 font-display tracking-tight">
                 {prop.name}
@@ -69,58 +125,84 @@ export default function PropertyDetailClient({ prop }: { prop: Property }) {
                 <span className="text-gray-400 font-normal">({prop.reviewsCount} reviews)</span>
               </div>
               <div className="px-3 py-1.5 rounded-xl bg-[#fff1ef] border border-[#ffe2de] text-xs font-bold text-[#ff3823]">
-                Direct Host Superhost
+                Direct Superhost Listing
               </div>
             </div>
           </div>
 
-          {/* Airbnb-Style 5-Photo Bento Gallery Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-2 rounded-3xl overflow-hidden shadow-xl aspect-[16/10] md:aspect-[21/9] relative group bg-gray-100">
-            {/* Main Lead Photo (2 Cols) */}
-            <div className="md:col-span-2 relative overflow-hidden h-full">
+          {/* Airbnb-Style 5-Photo Bento Gallery Grid (Desktop & Tablet) */}
+          <div className="relative rounded-3xl overflow-hidden shadow-xl bg-gray-100 group">
+            
+            {/* Desktop 5-Photo Bento Grid */}
+            <div className="hidden sm:grid grid-cols-4 gap-2 aspect-[16/10] md:aspect-[21/9]">
+              {/* Main Lead Photo (2 Cols) */}
+              <div 
+                onClick={() => openGalleryAt(0)}
+                className="col-span-2 relative overflow-hidden h-full cursor-pointer group/lead"
+              >
+                <img
+                  src={prop.gallery?.[0] || prop.image}
+                  alt={`${prop.name} Main View`}
+                  className="w-full h-full object-cover group-hover/lead:scale-102 transition-transform duration-500"
+                />
+                <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-[11px] font-semibold">
+                  Lead Photo · Tap to Enlarge
+                </div>
+              </div>
+
+              {/* Right 2x2 Photo Grid */}
+              <div className="col-span-2 grid grid-cols-2 gap-2 h-full">
+                {[
+                  { idx: 1, label: "Living & Dining" },
+                  { idx: 2, label: "Master Bedroom" },
+                  { idx: 3, label: "Luxury Bathroom" },
+                  { idx: 4, label: "Balcony & Views" },
+                ].map((item) => (
+                  <div 
+                    key={item.idx} 
+                    onClick={() => openGalleryAt(item.idx)}
+                    className="relative overflow-hidden h-full bg-gray-100 cursor-pointer group/item"
+                  >
+                    <img
+                      src={prop.gallery?.[item.idx] || prop.image}
+                      alt={`${prop.name} ${item.label}`}
+                      className="w-full h-full object-cover group-hover/item:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/60 backdrop-blur-sm text-white text-[10px] opacity-0 group-hover/item:opacity-100 transition-opacity">
+                      {item.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Mobile Single Hero Photo with Tap-to-Open and Swipe Preview */}
+            <div 
+              onClick={() => openGalleryAt(0)}
+              className="sm:hidden relative aspect-[16/11] cursor-pointer"
+            >
               <img
                 src={prop.gallery?.[0] || prop.image}
                 alt={prop.name}
-                className="w-full h-full object-cover hover:scale-102 transition-transform duration-500 cursor-pointer"
+                className="w-full h-full object-cover"
               />
-              <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-[11px] font-semibold">
-                Main Living & Facade
+              <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-[10px] font-bold">
+                Tap to view all {prop.gallery?.length || 1} photos
+              </div>
+              <div className="absolute bottom-3 right-3 px-2.5 py-1 rounded-full bg-black/75 backdrop-blur-md text-white text-xs font-bold flex items-center gap-1.5">
+                <Grid className="w-3.5 h-3.5" />
+                <span>1 / {prop.gallery?.length || 1}</span>
               </div>
             </div>
 
-            {/* Right 2x2 Photo Grid */}
-            <div className="hidden md:grid col-span-2 grid-cols-2 gap-2 h-full">
-              {[
-                { idx: 1, label: "Living & Lounge" },
-                { idx: 2, label: "Master Suite" },
-                { idx: 3, label: "Luxury Bath" },
-                { idx: 4, label: "Balcony & Views" },
-              ].map((item) => (
-                <div key={item.idx} className="relative overflow-hidden h-full bg-gray-100 group/item">
-                  <img
-                    src={prop.gallery?.[item.idx] || prop.image}
-                    alt={prop.name}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500 cursor-pointer"
-                  />
-                  <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/60 backdrop-blur-sm text-white text-[10px] opacity-0 group-hover/item:opacity-100 transition-opacity">
-                    {item.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Bottom Right Floating Badge & Button */}
-            <div className="absolute bottom-4 right-4 flex items-center gap-2">
-              <div className="px-3 py-1.5 rounded-lg bg-black/70 backdrop-blur-md text-white text-xs font-medium hidden sm:block">
-                Verified Airbnb Superhost Photos
-              </div>
-              <button 
-                onClick={() => alert('Full gallery view with all high-resolution photos open!')}
-                className="px-3.5 py-1.5 rounded-lg bg-white/95 hover:bg-white text-gray-900 font-bold text-xs shadow-md border border-gray-300 flex items-center gap-1.5 backdrop-blur-sm transition-all hover:scale-105"
-              >
-                <span>☷</span> Show all photos
-              </button>
-            </div>
+            {/* Floating "Show all photos" Button */}
+            <button 
+              onClick={() => openGalleryAt(0)}
+              className="absolute bottom-4 right-4 px-4 py-2 rounded-xl bg-white/95 hover:bg-white text-gray-900 font-bold text-xs shadow-xl border border-gray-300 flex items-center gap-2 backdrop-blur-md transition-all hover:scale-105"
+            >
+              <Grid className="w-3.5 h-3.5" />
+              <span>Show all {prop.gallery?.length || 0} photos</span>
+            </button>
           </div>
         </div>
 
@@ -144,55 +226,61 @@ export default function PropertyDetailClient({ prop }: { prop: Property }) {
               </div>
             </div>
 
-            {/* Description */}
-            <div className="space-y-3">
-              <h3 className="text-lg font-bold text-gray-900 font-display">About this Residence</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">{prop.description}</p>
+            {/* Magic Cluster Mode Selector */}
+            <div className="p-6 rounded-3xl bg-gradient-to-r from-gray-900 to-[#0c1838] text-white space-y-4 shadow-xl">
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-400">
+                <Sparkles className="w-4 h-4" /> Powered by Magic Cluster™ Engine
+              </div>
+              <h2 className="text-xl font-bold font-display">How would you like to stay?</h2>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                <button
+                  onClick={() => setBookingMode("entire")}
+                  className={`p-4 rounded-2xl border text-left transition-all ${
+                    bookingMode === "entire"
+                      ? "bg-white/15 border-white shadow-md ring-2 ring-white/30"
+                      : "bg-white/5 border-white/10 hover:bg-white/10"
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-sm">Entire Villa / Residence</span>
+                    <Building className="w-4 h-4 text-emerald-400" />
+                  </div>
+                  <div className="text-xs text-gray-300 mt-1">All {prop.bedrooms} bedrooms with full kitchen & terrace.</div>
+                  <div className="text-sm font-extrabold text-white mt-3">₹{prop.price.toLocaleString("en-IN")}<span className="text-xs font-normal text-gray-300">/night</span></div>
+                </button>
+
+                <button
+                  onClick={() => setBookingMode("room")}
+                  className={`p-4 rounded-2xl border text-left transition-all ${
+                    bookingMode === "room"
+                      ? "bg-white/15 border-white shadow-md ring-2 ring-white/30"
+                      : "bg-white/5 border-white/10 hover:bg-white/10"
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-sm">Single Master Suite</span>
+                    <Bed className="w-4 h-4 text-amber-400" />
+                  </div>
+                  <div className="text-xs text-gray-300 mt-1">1 Private room with attached luxury bath.</div>
+                  <div className="text-sm font-extrabold text-white mt-3">₹{Math.round(prop.price * 0.45).toLocaleString("en-IN")}<span className="text-xs font-normal text-gray-300">/night</span></div>
+                </button>
+              </div>
             </div>
 
-            {/* Magic Cluster™ Live Demonstration */}
-            <div className="p-6 rounded-3xl bg-gradient-to-br from-[#0c1838] to-[#1a2b56] text-white shadow-xl space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="text-xs font-bold uppercase tracking-wider text-emerald-400">Magic Cluster™ Enabled</span>
-                </div>
-                <span className="text-[10px] text-gray-400">0.8s Conflict Auto-Lock</span>
-              </div>
-              <h4 className="text-base font-bold text-white">Choose Your Booking Configuration:</h4>
-              <div className="grid grid-cols-2 gap-3 text-xs">
-                <div
-                  onClick={() => setBookingMode("entire")}
-                  className={`p-3.5 rounded-2xl border cursor-pointer transition-all ${
-                    bookingMode === "entire"
-                      ? "bg-[#ff3823] border-[#ff3823] text-white font-bold shadow-md"
-                      : "bg-white/10 border-white/20 text-gray-300 hover:bg-white/15"
-                  }`}
-                >
-                  <div className="text-sm font-bold">Entire Residence</div>
-                  <div className="text-[11px] opacity-80 mt-0.5">All {prop.bedrooms} Bedrooms · ₹{prop.price}/night</div>
-                </div>
-                <div
-                  onClick={() => setBookingMode("room")}
-                  className={`p-3.5 rounded-2xl border cursor-pointer transition-all ${
-                    bookingMode === "room"
-                      ? "bg-[#ff3823] border-[#ff3823] text-white font-bold shadow-md"
-                      : "bg-white/10 border-white/20 text-gray-300 hover:bg-white/15"
-                  }`}
-                >
-                  <div className="text-sm font-bold">Single King Suite</div>
-                  <div className="text-[11px] opacity-80 mt-0.5">1 Private Bedroom · ₹{Math.round(prop.price * 0.45)}/night</div>
-                </div>
-              </div>
-              <p className="text-[11px] text-gray-300">
-                Magic Cluster automatically blocks the remaining configuration across Airbnb, Booking.com, and MMT the instant you book!
+            {/* Description */}
+            <div className="space-y-3">
+              <h3 className="text-lg font-bold text-gray-900 font-display">About the Residence</h3>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                {prop.description}
               </p>
             </div>
 
-            {/* Curated Lucknowi Addon Experiences */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-bold text-gray-900 font-display">Curated Concierge Experiences</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            {/* Addon Experiences */}
+            <div className="space-y-4 pt-4 border-t border-gray-100">
+              <h3 className="text-lg font-bold text-gray-900 font-display">Optional Bespoke Experiences</h3>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div
                   onClick={() => setChefAddon(!chefAddon)}
                   className={`p-4 rounded-2xl border cursor-pointer flex items-start gap-3 transition-colors ${
@@ -349,6 +437,122 @@ export default function PropertyDetailClient({ prop }: { prop: Property }) {
           </div>
         </div>
       </main>
+
+      {/* FULLSCREEN AIRBNB-STYLE PHOTO GALLERY LIGHTBOX */}
+      {galleryOpen && (
+        <div 
+          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-xl flex flex-col justify-between text-white animate-in fade-in duration-200"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          {/* Top Bar */}
+          <div className="p-4 sm:p-5 flex items-center justify-between border-b border-gray-800/80 bg-black/40">
+            {/* Category Tabs */}
+            <div className="flex items-center gap-2 overflow-x-auto max-w-[70vw] no-scrollbar py-1">
+              <button
+                onClick={() => { setSelectedCategory("all"); setActivePhotoIdx(0); }}
+                className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap ${
+                  selectedCategory === "all"
+                    ? "bg-[#ff3823] text-white shadow-md shadow-[#ff3823]/30"
+                    : "bg-gray-800 text-gray-300 hover:bg-gray-700"
+                }`}
+              >
+                All Photos ({prop.gallery?.length || 1})
+              </button>
+
+              {categoryKeys.map((cat) => {
+                const count = prop.categories?.[cat]?.length || 0;
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => { setSelectedCategory(cat); setActivePhotoIdx(0); }}
+                    className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all whitespace-nowrap ${
+                      selectedCategory === cat
+                        ? "bg-[#ff3823] text-white shadow-md shadow-[#ff3823]/30"
+                        : "bg-gray-800 text-gray-300 hover:bg-gray-700"
+                    }`}
+                  >
+                    {cat} ({count})
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Counter & Close */}
+            <div className="flex items-center gap-3 shrink-0">
+              <span className="text-xs font-mono font-medium text-gray-400 hidden sm:inline">
+                {activePhotoIdx + 1} / {currentPhotoList.length}
+              </span>
+              <button
+                onClick={() => setGalleryOpen(false)}
+                className="p-2 rounded-full bg-gray-800/80 hover:bg-gray-700 text-gray-300 hover:text-white transition-colors"
+                aria-label="Close photo gallery"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+
+          {/* Center Main Stage Viewport */}
+          <div className="relative flex-1 flex items-center justify-center p-2 sm:p-6 overflow-hidden">
+            {/* Left Nav Arrow */}
+            <button
+              onClick={prevPhoto}
+              className="absolute left-2 sm:left-6 z-20 w-11 h-11 rounded-full bg-black/60 hover:bg-black/90 text-white flex items-center justify-center border border-gray-700/80 shadow-2xl transition-all hover:scale-110"
+              aria-label="Previous photo"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+
+            {/* Main Current Photo */}
+            <div className="relative max-w-5xl max-h-[72vh] flex items-center justify-center">
+              <img
+                src={currentPhotoList[activePhotoIdx]}
+                alt={`${prop.name} Photo ${activePhotoIdx + 1}`}
+                className="max-h-[72vh] max-w-full w-auto object-contain rounded-2xl shadow-2xl select-none"
+              />
+            </div>
+
+            {/* Right Nav Arrow */}
+            <button
+              onClick={nextPhoto}
+              className="absolute right-2 sm:right-6 z-20 w-11 h-11 rounded-full bg-black/60 hover:bg-black/90 text-white flex items-center justify-center border border-gray-700/80 shadow-2xl transition-all hover:scale-110"
+              aria-label="Next photo"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+          </div>
+
+          {/* Bottom Filmstrip Ribbon */}
+          <div className="p-3 sm:p-4 border-t border-gray-800/80 bg-black/60 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+              {currentPhotoList.map((photoUrl, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setActivePhotoIdx(idx)}
+                  className={`relative w-14 h-10 sm:w-16 sm:h-12 rounded-lg overflow-hidden shrink-0 border-2 transition-all ${
+                    activePhotoIdx === idx
+                      ? "border-[#ff3823] scale-105 shadow-md shadow-[#ff3823]/40"
+                      : "border-transparent opacity-50 hover:opacity-100"
+                  }`}
+                >
+                  <img src={photoUrl} alt="Thumbnail" className="w-full h-full object-cover" />
+                </button>
+              ))}
+            </div>
+
+            {/* In-Modal Direct WhatsApp Reserve */}
+            <button
+              onClick={handleWhatsAppBooking}
+              className="px-4 py-2 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shrink-0 flex items-center gap-1.5 shadow-lg transition-transform hover:scale-105"
+            >
+              <MessageCircle className="w-3.5 h-3.5 fill-current" />
+              <span className="hidden sm:inline">Book this stay</span>
+            </button>
+          </div>
+        </div>
+      )}
+
       <Footer />
     </div>
   );
