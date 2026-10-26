@@ -122,3 +122,26 @@ h1, h2, h3, .font-display {
 .animate-float {
   animation: floatGentle 4s infinite ease-in-out;
 }
+
+/* Safe Area Insets for iOS PWA Standalone Mode */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .pt-safe {
+    padding-top: env(safe-area-inset-top);
+  }
+}
+
+/* Prevent unwanted pull-to-refresh rubber-banding inside PWA standalone */
+@media all and (display-mode: standalone) {
+  body {
+    overscroll-behavior-y: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  input, textarea {
+    -webkit-user-select: auto;
+    user-select: auto;
+  }
+}

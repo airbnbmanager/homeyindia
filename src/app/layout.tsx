@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { DM_Sans, DM_Serif_Display } from "next/font/google";
 import "./globals.css";
+import PwaRegistrar from "@/components/PwaRegistrar";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -16,11 +17,26 @@ const dmSerif = DM_Serif_Display({
   weight: ["400"],
 });
 
+export const viewport: Viewport = {
+  themeColor: "#ff3823",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://homeyindia.vercel.app"),
   title: "Homey India | All-in-One PMS & Channel Manager for Vacation Rentals & Homestays",
   description:
     "Manage your vacation rentals, villas, and homestays with zero double bookings. Real-time two-way sync across Airbnb, Booking.com, MakeMyTrip, Agoda, and your own direct booking website. Flagship: 18 luxury residences by The Unique Haven Homes in Lucknow.",
+  applicationName: "Homey India",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Homey India",
+  },
   keywords: [
     "Channel Manager",
     "Property Management Software",
@@ -37,6 +53,15 @@ export const metadata: Metadata = {
   authors: [{ name: "Praveen Singh", url: "https://homeyindia.vercel.app" }],
   creator: "Praveen Singh",
   publisher: "Homey India Technologies",
+  icons: {
+    icon: [
+      { url: "/favicon.png", sizes: "64x64", type: "image/png" },
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+    ],
+    apple: [
+      { url: "/icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
   openGraph: {
     title: "Homey India | PMS & Channel Manager for Indian Vacation Rentals",
     description: "Two-way instant sync across 50+ channels. Explore 18 luxury stays by The Unique Haven Homes in Lucknow with 0% booking fees.",
@@ -80,8 +105,13 @@ export default function RootLayout({
         <meta property="og:image:height" content="630" />
         <meta property="og:image:type" content="image/jpeg" />
         <meta name="twitter:image" content="https://homeyindia.vercel.app/og-image.jpg" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Homey India" />
       </head>
       <body className="antialiased selection:bg-[#ff3823]/10 selection:text-[#ff3823]">
+        <PwaRegistrar />
         {children}
       </body>
     </html>

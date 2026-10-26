@@ -61,7 +61,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative pt-36 sm:pt-40 pb-20 overflow-hidden bg-gradient-to-b from-[#faf9f5] via-white to-gray-50/50">
+    <section className="relative pt-20 sm:pt-28 lg:pt-36 pb-16 sm:pb-20 overflow-hidden bg-gradient-to-b from-[#faf9f5] via-white to-gray-50/50">
       {/* Background ambient radial glow */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[500px] bg-gradient-to-tr from-[#ffe8e4]/50 via-[#fff3eb]/40 to-transparent blur-3xl pointer-events-none -z-10" />
 
@@ -154,7 +154,7 @@ export default function Hero() {
             </div>
 
             {/* Special Promo Card */}
-            <div className="p-4 rounded-2xl bg-[#fff8eb] border border-amber-200/70 text-xs flex items-center justify-between gap-3 text-gray-800 shadow-sm">
+            <div className="p-3.5 sm:p-4 rounded-2xl bg-[#fff8eb] border border-amber-200/70 text-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 sm:gap-3 text-gray-800 shadow-sm">
               <div className="flex items-center gap-2.5">
                 <span className="text-xl">🪔</span>
                 <div>
@@ -875,12 +875,12 @@ export default function Hero() {
             </div>
 
             {/* 6 Feature Tabs (2x3 Grid matching Homeyhuts) - CLICKABLE TO CHANGE VIEW! */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-2.5">
               {features.map((item, idx) => (
                 <button
                   key={item.title}
                   onClick={() => setActiveFeature(idx)}
-                  className={`p-3 rounded-2xl border transition-all text-left flex items-start gap-3 group cursor-pointer ${
+                  className={`p-2.5 sm:p-3 rounded-2xl border transition-all text-left flex flex-col sm:flex-row items-start gap-2 sm:gap-3 group cursor-pointer ${
                     activeFeature === idx
                       ? "bg-white border-[#0c1838] shadow-md ring-2 ring-[#0c1838]/10 scale-[1.01]"
                       : "bg-white/80 border-gray-200 hover:bg-white hover:border-gray-300"
