@@ -38,7 +38,7 @@ export const UNIQUE_HAVEN_PROPERTIES: Property[] = [
     description: "The flagship residence of The Unique Haven Homes. Ultra-spacious 3BHK with plush Italian leather seating, dedicated dining lounge, 3 king ensuite bedrooms, and private sunset balconies.",
     amenities: ["High-Speed WiFi", "100% Power Backup", "Smart 4K TVs in all rooms", "Modular Kitchen", "Daily Housekeeping", "Private Chef on demand", "Free Gated Parking"],
     hostName: "Firoz & Praveen (Superhosts)",
-    phone: "+91 94500 55554",
+    phone: "+91 94544 70872",
   },
   {
     id: "GOM-201",
@@ -58,7 +58,7 @@ export const UNIQUE_HAVEN_PROPERTIES: Property[] = [
     description: "Draped in deep royal sapphire tones, The Dark Blue offers ambient velvet interiors, bespoke chandelier lighting, and hotel-grade 400-thread Egyptian cotton linen.",
     amenities: ["High-Speed WiFi", "Split AC in all rooms", "RO Water Purifier", "Refrigerator", "Gated Security 24/7", "Lift Access"],
     hostName: "Firoz & Praveen",
-    phone: "+91 94500 55554",
+    phone: "+91 94544 70872",
   },
   {
     id: "GOM-102",
@@ -78,7 +78,7 @@ export const UNIQUE_HAVEN_PROPERTIES: Property[] = [
     description: "A masterpiece of contemporary monochrome aesthetics with charcoal matte finishes, gold trims, and state-of-the-art work-from-anywhere high-speed fiber internet.",
     amenities: ["High-Speed WiFi", "Work Desk", "Modern Kitchenette", "Full Air Conditioning", "Self Check-in Smart Lock"],
     hostName: "Firoz & Praveen",
-    phone: "+91 94500 55554",
+    phone: "+91 94544 70872",
   },
   {
     id: "VIL-101",
@@ -98,7 +98,7 @@ export const UNIQUE_HAVEN_PROPERTIES: Property[] = [
     description: "Expansive 5-bedroom private villa featuring lush landscaped private lawn, open-air terrace dining, barbecue setup, and sprawling hall for family gatherings and celebrations.",
     amenities: ["Private Lawn Garden", "Bonfire & BBQ setup", "Chef on call", "In-house Caretaker", "EV Charger", "Sound System"],
     hostName: "The Unique Haven Team",
-    phone: "+91 94500 55554",
+    phone: "+91 94544 70872",
   },
   {
     id: "GOM-501",
@@ -118,7 +118,7 @@ export const UNIQUE_HAVEN_PROPERTIES: Property[] = [
     description: "Perched on the top floor with 270-degree skyline views of Gomti Nagar. Floor-to-ceiling glass windows, stargazing rooftop deck, and designer ambient lighting.",
     amenities: ["Panoramic Skyline Views", "Private Rooftop Terrace", "Fully Equipped Kitchen", "Power Backup", "Smart Home Automation"],
     hostName: "The Unique Haven Team",
-    phone: "+91 94500 55554",
+    phone: "+91 94544 70872",
   },
   {
     id: "LUL-101",
@@ -138,6 +138,6 @@ export const UNIQUE_HAVEN_PROPERTIES: Property[] = [
     description: "Cozy, intimate, and impeccably furnished 1BHK right next to Lulu Mall and Ekana Stadium. Perfect for couples, solo business travelers, and medical visits.",
     amenities: ["High-Speed WiFi", "King Bed", "Kitchenette with Microwave & Induction", "Smart LED TV", "Elevator Access"],
     hostName: "Firoz & Praveen",
-    phone: "+91 94500 55554",
+    phone: "+91 94544 70872",
   }
 ];

@@ -27,9 +27,9 @@ export default function PropertyDetailClient({ prop }: { prop: Property }) {
 
   const handleWhatsAppBooking = () => {
     const msg = encodeURIComponent(
-      `Hi The Unique Haven Homes team!\n\nI want to book *${prop.name}* via Homey India Direct Booking Engine:\n• Option: ${bookingMode === "entire" ? "Entire Villa/Residence" : "Single Suite Room"}\n• Duration: ${nights} Nights\n• Guests: ${guests} Guests\n• Total Amount: ₹${totalAmount.toLocaleString("en-IN")}\n\nPlease confirm availability and share UPI payment QR.`
+      `Hi Praveen Singh & The Unique Haven Homes team!\n\nI want to book *${prop.name}* via Homey India Direct Booking Engine:\n• Option: ${bookingMode === "entire" ? "Entire Villa/Residence" : "Single Suite Room"}\n• Duration: ${nights} Nights\n• Guests: ${guests} Guests\n• Total Amount: ₹${totalAmount.toLocaleString("en-IN")}\n\nPlease confirm availability and share UPI payment QR.`
     );
-    window.open(`https://wa.me/919450055554?text=${msg}`, "_blank");
+    window.open(`https://wa.me/919454470872?text=${msg}`, "_blank");
   };
 
   return (

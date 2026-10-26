@@ -25,7 +25,7 @@ export default function Footer() {
             <div className="space-y-2 pt-2 text-sm text-gray-300">
               <div className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-[#ff3823]" />
-                <span>+91 98765 43210 (Toll-Free 24/7 Host Desk)</span>
+                <span>+91 94544 70872 (Praveen Singh, Lucknow)</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-[#ff3823]" />
@@ -33,7 +33,7 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-2.5">
                 <MapPin className="w-4 h-4 text-[#ff3823]" />
-                <span>Bangalore • Goa • Mumbai • New Delhi</span>
+                <span>Lucknow, Uttar Pradesh (Headquarters) • Pan-India</span>
               </div>
             </div>
           </div>

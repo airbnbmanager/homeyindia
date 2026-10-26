@@ -16,7 +16,7 @@ export default function FloatingWidget() {
       </Link>
 
       <a
-        href="https://wa.me/919876543210?text=Hi%20Homey India%20Team,%20I%20want%20to%20learn%20more%20about%20the%20PMS"
+        href="https://wa.me/919454470872?text=Hi%20Praveen,%20I%20want%20to%20learn%20more%20about%20Homey%20India%20PMS%20and%20Stays"
         target="_blank"
         rel="noopener noreferrer"
         className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold shadow-xl hover:scale-105 transition-all"
