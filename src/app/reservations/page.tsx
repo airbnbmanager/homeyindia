@@ -8,6 +8,7 @@ import { PROPERTIES } from "@/data/properties";
 import {
   Calendar,
   Search,
+  Plus,
   Filter,
   Download,
   FileText,
@@ -194,6 +195,23 @@ export default function ReservationsPage() {
   const [sourceFilter, setSourceFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [activeReservation, setActiveReservation] = useState<Reservation | null>(null);
+  const [showManualModal, setShowManualModal] = useState(false);
+  const [reservationsList, setReservationsList] = useState<Reservation[]>(MOCK_RESERVATIONS);
+
+  // Manual booking form fields
+  const [mPropId, setMPropId] = useState(PROPERTIES[0].id);
+  const [mGuestName, setMGuestName] = useState("");
+  const [mGuestPhone, setMGuestPhone] = useState("");
+  const [mGuestEmail, setMGuestEmail] = useState("");
+  const [mCheckIn, setMCheckIn] = useState("2026-11-05");
+  const [mCheckOut, setMCheckOut] = useState("2026-11-08");
+  const [mAdults, setMAdults] = useState(2);
+  const [mTotalAmount, setMTotalAmount] = useState(8500);
+  const [mAdvanceAmount, setMAdvanceAmount] = useState(3000);
+  const [mHasGST, setMHasGST] = useState(false);
+  const [mGstNumber, setMGstNumber] = useState("");
+  const [mCompanyName, setMCompanyName] = useState("");
+  const [mNotes, setMNotes] = useState("");
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const showToast = (msg: string) => {
@@ -202,7 +220,7 @@ export default function ReservationsPage() {
   };
 
   const filteredReservations = useMemo(() => {
-    return MOCK_RESERVATIONS.filter((r) => {
+    return reservationsList.filter((r) => {
       // Source filter
       if (sourceFilter !== "All" && r.source !== sourceFilter) return false;
 
@@ -226,6 +244,41 @@ export default function ReservationsPage() {
       return true;
     });
   }, [selectedCategory, sourceFilter, searchQuery]);
+
+    const handleCreateManualBooking = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!mGuestName.trim() || !mGuestPhone.trim()) return;
+
+    const prop = PROPERTIES.find((p) => p.id === mPropId) || PROPERTIES[0];
+    const newRes: Reservation = {
+      id: `HH-${Math.floor(2100 + Math.random() * 800)}`,
+      source: "Direct Website",
+      propertyId: prop.id,
+      propertyName: `${prop.name} (${prop.type})`,
+      guestName: mGuestName,
+      guestPhone: mGuestPhone,
+      guestEmail: mGuestEmail || `${mGuestName.toLowerCase().replace(/\s+/g, ".")}@gmail.com`,
+      adults: mAdults,
+      children: 0,
+      checkIn: mCheckIn,
+      checkOut: mCheckOut,
+      nights: 3,
+      grossAmount: mTotalAmount,
+      guestTax: Math.round(mTotalAmount * 0.12),
+      channelFee: 0,
+      tds: Math.round(mTotalAmount * 0.01),
+      netPayout: mTotalAmount - Math.round(mTotalAmount * 0.01),
+      status: "Upcoming",
+      bookedOn: "Today (Manual)",
+      payoutStatus: "Processing"
+    };
+
+    setReservationsList([newRes, ...reservationsList]);
+    setShowManualModal(false);
+    showToast(`Created booking #${newRes.id} for ${mGuestName}. Dates locked on Airbnb & Booking.com in 0.8s!`);
+    setMGuestName("");
+    setMGuestPhone("");
+  };
 
   const handleExportCSV = () => {
     const headers = "Booking ID,Source,Property,Guest Name,Phone,Check-In,Check-Out,Nights,Gross Amount,Net Payout,Status\n";
@@ -263,10 +316,16 @@ export default function ReservationsPage() {
 
           <div className="flex items-center gap-3">
             <button
+              onClick={() => setShowManualModal(true)}
+              className="px-4 py-2 rounded-xl bg-[#ff3823] text-white font-bold text-xs hover:bg-[#e5220d] transition shadow-lg shadow-[#ff3823]/20 flex items-center gap-1.5"
+            >
+              <Plus className="w-4 h-4" /> Create Manual Booking
+            </button>
+            <button
               onClick={handleExportCSV}
               className="px-4 py-2 rounded-xl bg-slate-800 text-white font-bold text-xs hover:bg-slate-700 transition border border-slate-700 flex items-center gap-1.5 shadow"
             >
-              <Download className="w-4 h-4 text-emerald-400" /> Export CSV Report
+              <Download className="w-4 h-4 text-emerald-400" /> Export CSV
             </button>
           </div>
         </div>
@@ -283,7 +342,7 @@ export default function ReservationsPage() {
             Properties ({PROPERTIES.length})
           </Link>
           <Link href="/reservations" className="px-4 py-2 rounded-xl bg-[#ff3823] text-white font-bold shadow-lg shadow-[#ff3823]/20">
-            Reservations ({MOCK_RESERVATIONS.length})
+            Reservations ({reservationsList.length})
           </Link>
           <Link href="/channel-manager" className="px-4 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition">
             Channel Manager
@@ -317,7 +376,7 @@ export default function ReservationsPage() {
                   }`}
                 >
                   <span>All Reservations</span>
-                  <span className="text-[11px] opacity-75">{MOCK_RESERVATIONS.length}</span>
+                  <span className="text-[11px] opacity-75">{reservationsList.length}</span>
                 </button>
                 <button
                   onClick={() => setSelectedCategory("upcoming")}
@@ -632,6 +691,216 @@ export default function ReservationsPage() {
               </button>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* CREATE MANUAL BOOKING MODAL (Video 11 & 07) */}
+      {showManualModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <form
+            onSubmit={handleCreateManualBooking}
+            className="bg-white rounded-3xl p-6 sm:p-8 max-w-xl w-full shadow-2xl border border-slate-200 animate-in zoom-in-95 max-h-[90vh] overflow-y-auto"
+          >
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+              <div>
+                <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold border border-emerald-200 uppercase tracking-wider">
+                  Direct / Offline Booking
+                </span>
+                <h3 className="text-xl font-bold text-slate-900 font-display mt-1">Create Manual Booking</h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowManualModal(false)}
+                className="p-1.5 rounded-xl text-slate-400 hover:text-slate-900 hover:bg-slate-100"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-4 text-xs">
+              <div>
+                <label className="block font-bold text-slate-700 uppercase tracking-wider mb-1">
+                  Select Property *
+                </label>
+                <select
+                  value={mPropId}
+                  onChange={(e) => setMPropId(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-900 bg-white"
+                >
+                  {PROPERTIES.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      #{p.id} - {p.name} ({p.type})
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Guest Details */}
+              <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 space-y-3">
+                <div className="font-bold text-slate-800 text-xs">Guest Details</div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[11px] text-slate-500 mb-1">Full Name *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Siddharth Mehra"
+                      value={mGuestName}
+                      onChange={(e) => setMGuestName(e.target.value)}
+                      className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-semibold"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] text-slate-500 mb-1">Phone Number (WhatsApp) *</label>
+                    <input
+                      type="tel"
+                      required
+                      placeholder="+91 98200 12345"
+                      value={mGuestPhone}
+                      onChange={(e) => setMGuestPhone(e.target.value)}
+                      className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-semibold"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] text-slate-500 mb-1">Email ID</label>
+                  <input
+                    type="email"
+                    placeholder="guest@example.com"
+                    value={mGuestEmail}
+                    onChange={(e) => setMGuestEmail(e.target.value)}
+                    className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-semibold"
+                  />
+                </div>
+
+                <label className="flex items-center gap-2 cursor-pointer pt-1">
+                  <input
+                    type="checkbox"
+                    checked={mHasGST}
+                    onChange={(e) => setMHasGST(e.target.checked)}
+                    className="rounded text-[#ff3823]"
+                  />
+                  <span className="text-[11px] font-bold text-slate-700">Guest requires GST Invoice?</span>
+                </label>
+
+                {mHasGST && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                    <input
+                      type="text"
+                      placeholder="Company Name"
+                      value={mCompanyName}
+                      onChange={(e) => setMCompanyName(e.target.value)}
+                      className="w-full px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold"
+                    />
+                    <input
+                      type="text"
+                      placeholder="GSTIN (15 Digits)"
+                      value={mGstNumber}
+                      onChange={(e) => setMGstNumber(e.target.value)}
+                      className="w-full px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-mono font-semibold"
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Stay Dates */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-[11px] text-slate-500 mb-1">Check-In *</label>
+                  <input
+                    type="date"
+                    required
+                    value={mCheckIn}
+                    onChange={(e) => setMCheckIn(e.target.value)}
+                    className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-semibold"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[11px] text-slate-500 mb-1">Check-Out *</label>
+                  <input
+                    type="date"
+                    required
+                    value={mCheckOut}
+                    onChange={(e) => setMCheckOut(e.target.value)}
+                    className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-semibold"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[11px] text-slate-500 mb-1">Adult Guests</label>
+                  <input
+                    type="number"
+                    value={mAdults}
+                    onChange={(e) => setMAdults(parseInt(e.target.value) || 1)}
+                    className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-semibold"
+                  />
+                </div>
+              </div>
+
+              {/* Financials */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-3.5 rounded-2xl bg-slate-50 border border-slate-100">
+                <div>
+                  <label className="block text-[11px] text-slate-500 mb-1">Total Amount (₹) *</label>
+                  <input
+                    type="number"
+                    required
+                    value={mTotalAmount}
+                    onChange={(e) => setMTotalAmount(parseInt(e.target.value) || 0)}
+                    className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-extrabold text-slate-900"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[11px] text-slate-500 mb-1">Advance Received (₹)</label>
+                  <input
+                    type="number"
+                    value={mAdvanceAmount}
+                    onChange={(e) => setMAdvanceAmount(parseInt(e.target.value) || 0)}
+                    className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-bold text-emerald-700"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[11px] text-slate-500 mb-1">Balance Due (₹)</label>
+                  <div className="px-3 py-2 rounded-lg bg-white border border-slate-200 text-xs font-extrabold text-amber-700">
+                    ₹{Math.max(0, mTotalAmount - mAdvanceAmount).toLocaleString()}
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[11px] text-slate-500 mb-1">Internal Host Notes</label>
+                <input
+                  type="text"
+                  placeholder="e.g. VIP guest, early check-in requested at 11 AM"
+                  value={mNotes}
+                  onChange={(e) => setMNotes(e.target.value)}
+                  className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-semibold"
+                />
+              </div>
+
+              <div className="p-2.5 rounded-xl bg-amber-50 text-[11px] text-amber-800 flex items-center gap-2 border border-amber-200">
+                <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
+                <span>
+                  Creating this manual booking will automatically block these dates across Airbnb, Booking.com, and Vrbo to prevent double bookings.
+                </span>
+              </div>
+            </div>
+
+            <div className="mt-6 flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => setShowManualModal(false)}
+                className="flex-1 py-3 rounded-xl border border-slate-200 font-bold text-xs text-slate-600 hover:bg-slate-50"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="flex-1 py-3 rounded-xl bg-[#ff3823] text-white font-bold text-xs hover:bg-[#e5220d] transition shadow-lg shadow-[#ff3823]/20"
+              >
+                Create Booking &amp; Lock OTAs
+              </button>
+            </div>
+          </form>
         </div>
       )}
 
