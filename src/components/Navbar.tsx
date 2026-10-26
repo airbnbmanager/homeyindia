@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import AuthModal from "@/components/AuthModal";
 import { 
   Menu, X, ChevronDown, Calendar, Layers, ShieldCheck, 
   TrendingUp, DollarSign, MessageSquare, Users, 
@@ -13,6 +14,17 @@ export default function Navbar() {
   const [rightDrawerOpen, setRightDrawerOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [featuresAccordionOpen, setFeaturesAccordionOpen] = useState(false);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState<any>(null);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("homey_user_profile");
+    if (saved) {
+      try {
+        setCurrentUser(JSON.parse(saved));
+      } catch (e) {}
+    }
+  }, []);
 
   const features = [
     { title: "Unified Calendar", desc: "Real-time multi-calendar for all properties", href: "/unified-calendar", icon: Calendar },
@@ -202,6 +214,7 @@ export default function Navbar() {
           </div>
         </div>
       </header>
+      <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} onSuccess={(user) => setCurrentUser(user)} />
 
       {/* Slide-Over Mobile & Desktop Drawer */}
       {rightDrawerOpen && (
@@ -217,12 +230,16 @@ export default function Navbar() {
             {/* Header */}
             <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600">
-                  <User className="w-4 h-4" />
+                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#ff3823] to-[#e0220d] text-white flex items-center justify-center font-bold text-xs shadow-sm">
+                  {currentUser ? (currentUser.firstName?.[0] || "U") : <User className="w-4 h-4" />}
                 </div>
                 <div>
-                  <span className="font-bold text-gray-900 text-sm block">Homey India Desk</span>
-                  <span className="text-[10px] text-gray-400">Praveen Singh · Lucknow</span>
+                  <span className="font-bold text-gray-900 text-sm block">
+                    {currentUser ? `Hey, ${currentUser.firstName}!` : "Homey India Desk"}
+                  </span>
+                  <span className="text-[10px] text-gray-400">
+                    {currentUser ? "Verified Host Profile" : "Praveen Singh · Lucknow"}
+                  </span>
                 </div>
               </div>
               <button
@@ -274,6 +291,41 @@ export default function Navbar() {
 
             {/* Links List */}
             <div className="flex-1 px-5 py-4 space-y-3 text-sm font-medium text-gray-800 overflow-y-auto">
+              {!currentUser ? (
+                <div>
+                  <button
+                    onClick={() => { setRightDrawerOpen(false); setAuthModalOpen(true); }}
+                    className="w-full text-left py-1 font-bold text-[#ff3823] hover:text-[#e0220d] transition-colors"
+                  >
+                    Sign Up / Sign In (OTP)
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <div>
+                    <Link
+                      href="/account"
+                      onClick={() => setRightDrawerOpen(false)}
+                      className="block py-1 font-bold text-gray-900 hover:text-[#ff3823] transition-colors flex items-center justify-between"
+                    >
+                      <span>Account Settings & Identity</span>
+                      <span className="text-[10px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-bold">Verified</span>
+                    </Link>
+                  </div>
+                  <div>
+                    <button
+                      onClick={() => {
+                        localStorage.removeItem("homey_user_profile");
+                        setCurrentUser(null);
+                        setRightDrawerOpen(false);
+                      }}
+                      className="text-xs text-gray-400 hover:text-red-600 transition-colors"
+                    >
+                      Sign Out
+                    </button>
+                  </div>
+                </>
+              )}
               <div>
                 <button
                   onClick={() => setFeaturesAccordionOpen(!featuresAccordionOpen)}
