@@ -3,18 +3,25 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { 
-  Star, ArrowRight, PhoneCall, CheckCircle2, Lock, 
+  Star, ArrowRight, CheckCircle2, Lock, 
   RotateCw, Phone, Globe, Wallet, Mail, Users, AlertTriangle, 
   Calendar as CalendarIcon, Play, Pause, ChevronRight, MessageSquare, 
-  Send, Search, Check, ShieldCheck, BedDouble, Building, ExternalLink
+  Send, Search, Check, ShieldCheck, BedDouble, Building, ExternalLink,
+  Sparkles, TrendingUp
 } from "lucide-react";
 
 export default function Hero() {
   const [activeFeature, setActiveFeature] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
-  const [syncedMode, setSyncedMode] = useState(false); // for Channel Manager tab
+  const [syncedMode, setSyncedMode] = useState(false);
   const [offlineSource, setOfflineSource] = useState("WhatsApp");
   const [inboxTab, setInboxTab] = useState("airbnb");
+
+  // Motion graphics animated states
+  const [animProgress, setAnimProgress] = useState(0);
+  const [typewriterIndex, setTypewriterIndex] = useState(0);
+
+  const destinations = ["Lucknow, Gomti Nagar", "Shaheed Path (Lulu Mall)", "Vikalp Khand Villas", "Vishesh Khand Duplex"];
 
   const channels = [
     { name: "Airbnb", color: "#ff5a5f", dot: true, bg: "bg-[#ff5a5f]/10", border: "border-[#ff5a5f]/30" },
@@ -35,20 +42,28 @@ export default function Hero() {
     { title: "Co-Hosts & Team", desc: "Let your team manage your business", icon: Users, href: "/co-hosts-and-team" },
   ];
 
-  // Auto rotation if playing
+  // Auto timeline & animation loop
   useEffect(() => {
     if (!isPlaying) return;
     const interval = setInterval(() => {
-      // Toggle sync mode when on channel manager tab
       setSyncedMode((prev) => !prev);
+      setAnimProgress((prev) => (prev >= 100 ? 0 : prev + 25));
     }, 4500);
     return () => clearInterval(interval);
   }, [isPlaying]);
 
+  // Typewriter effect for Direct Website demo
+  useEffect(() => {
+    const typeInterval = setInterval(() => {
+      setTypewriterIndex((prev) => (prev + 1) % destinations.length);
+    }, 3200);
+    return () => clearInterval(typeInterval);
+  }, []);
+
   return (
     <section className="relative pt-36 sm:pt-40 pb-20 overflow-hidden bg-gradient-to-b from-[#faf9f5] via-white to-gray-50/50">
-      {/* Background radial glow */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[450px] bg-gradient-to-tr from-[#ffe8e4]/50 via-[#fff3eb]/40 to-transparent blur-3xl pointer-events-none -z-10" />
+      {/* Background ambient radial glow */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[500px] bg-gradient-to-tr from-[#ffe8e4]/50 via-[#fff3eb]/40 to-transparent blur-3xl pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start">
@@ -127,7 +142,7 @@ export default function Hero() {
                 className="px-6 py-3.5 rounded-full bg-white hover:bg-gray-50 text-gray-900 font-bold text-sm border border-gray-300 shadow-sm transition-all flex items-center gap-2 hover:border-[#ff3823] text-left"
               >
                 <BedDouble className="w-4 h-4 text-[#ff3823]" />
-                <span>Explore Lucknow Stays</span>
+                <span>Explore All 18 Stays</span>
               </Link>
               <Link
                 href="/book-a-demo"
@@ -155,7 +170,7 @@ export default function Hero() {
                   <span className="text-gray-300">:</span>
                   <span>02</span>
                   <span className="text-gray-300">:</span>
-                  <span>55</span>
+                  <span>50</span>
                 </div>
                 <Link href="/pricing" className="text-[11px] font-bold text-[#ff3823] underline hover:text-[#d9220e]">
                   See pricing
@@ -164,18 +179,18 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Right Column: Interactive iPad Device Simulator + 6 Feature Switchers */}
+          {/* Right Column: Motion Graphics iPad Device Simulator + 6 Feature Tabs */}
           <div className="lg:col-span-7 space-y-4">
             
-            {/* iPad Device Shell */}
+            {/* iPad Device Shell with Soft Glass Gradient */}
             <div className="relative rounded-[32px] bg-[#1a1b1e] p-3 sm:p-4 shadow-2xl border-4 border-[#2d2e32] transition-all">
               
               {/* Inner Screen Surface */}
-              <div className="rounded-[22px] bg-[#111216] p-4 sm:p-5 text-white min-h-[360px] flex flex-col justify-between overflow-hidden relative">
+              <div className="rounded-[22px] bg-[#111216] p-4 sm:p-5 text-white min-h-[380px] flex flex-col justify-between overflow-hidden relative shadow-inner">
                 
                 {/* 1. CHANNEL MANAGER SCREEN (activeFeature === 0) */}
                 {activeFeature === 0 && (
-                  <div className="space-y-4 animate-in fade-in duration-200">
+                  <div className="space-y-4 animate-in fade-in duration-300">
                     {/* Top Mode Bar */}
                     <div className="flex items-center justify-between border-b border-gray-800 pb-3">
                       <div className="inline-flex rounded-full bg-gray-900 p-1 border border-gray-800">
@@ -187,7 +202,7 @@ export default function Hero() {
                               : "text-gray-400 hover:text-white"
                           }`}
                         >
-                          Without channel manager
+                          Without a channel manager
                         </button>
                         <button
                           onClick={() => setSyncedMode(true)}
@@ -218,8 +233,11 @@ export default function Hero() {
                       </button>
                     </div>
 
-                    {/* Channel Calendar Grid */}
-                    <div className="overflow-x-auto text-xs">
+                    {/* Timeline Laser Scanner Motion Graphic */}
+                    <div className="relative overflow-x-auto text-xs">
+                      {/* Scanning Line Animation */}
+                      <div className="absolute top-0 bottom-0 w-[2px] bg-gradient-to-b from-transparent via-[#ff3823] to-transparent shadow-[0_0_8px_#ff3823] pointer-events-none z-10 animate-[scan_4s_ease-in-out_infinite]" />
+
                       <div className="min-w-[500px]">
                         <div className="grid grid-cols-8 gap-1.5 text-center text-gray-400 font-medium mb-2.5">
                           <div className="text-left pl-1">Channel</div>
@@ -250,7 +268,7 @@ export default function Hero() {
                             <div className="text-center py-1 rounded bg-gray-900/60 text-gray-400 text-[11px]">180</div>
                             <div className="text-center py-1 rounded bg-gray-900/60 text-gray-400 text-[11px]">180</div>
 
-                            {/* Wed 14 & Thu 15: Conflict vs 0.8s Lock */}
+                            {/* Wed 14 & Thu 15: Conflict vs 0.8s Lock with smooth CSS transitions */}
                             {!syncedMode ? (
                               rIdx === 0 ? (
                                 <div className="col-span-2 text-center py-1.5 rounded bg-[#ff5a5f] text-white font-bold text-[11px] shadow-sm animate-pulse">
@@ -268,11 +286,11 @@ export default function Hero() {
                               )
                             ) : (
                               rIdx === 0 ? (
-                                <div className="col-span-2 text-center py-1.5 rounded bg-[#ff5a5f] text-white font-bold text-[11px] shadow-md">
+                                <div className="col-span-2 text-center py-1.5 rounded bg-[#ff5a5f] text-white font-bold text-[11px] shadow-md transition-all">
                                   Priya · 2 nights
                                 </div>
                               ) : (
-                                <div className="col-span-2 text-center py-1.5 rounded bg-gray-800/90 text-gray-300 font-semibold text-[10px] border border-gray-700 flex items-center justify-center gap-1">
+                                <div className="col-span-2 text-center py-1.5 rounded bg-gray-800/90 text-gray-300 font-semibold text-[10px] border border-gray-700 flex items-center justify-center gap-1 transition-all">
                                   <Lock className="w-2.5 h-2.5 text-gray-400" /> Closed in 0.8s
                                 </div>
                               )
@@ -289,14 +307,14 @@ export default function Hero() {
                     {/* Bottom Status Note */}
                     <div className="pt-2 border-t border-gray-800 flex items-center justify-between text-xs">
                       {!syncedMode ? (
-                        <div className="flex items-center gap-1.5 text-red-400 font-semibold text-[11px]">
+                        <div className="flex items-center gap-1.5 text-red-400 font-semibold text-[11px] animate-pulse">
                           <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
-                          <span>Double booking! Same villa booked on 2 OTAs simultaneously.</span>
+                          <span>Double booking conflict! Two guests booked the same dates.</span>
                         </div>
                       ) : (
                         <div className="flex items-center gap-1.5 text-emerald-400 font-semibold text-[11px]">
                           <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
-                          <span>Zero double bookings. All other 4 OTAs locked automatically in 0.8s.</span>
+                          <span>Zero double bookings. All 4 OTAs locked automatically in 0.8s.</span>
                         </div>
                       )}
                       <span className="text-[10px] text-gray-500 font-mono">
@@ -306,10 +324,10 @@ export default function Hero() {
                   </div>
                 )}
 
-                {/* 2. OFFLINE BOOKING SCREEN (activeFeature === 1 - Screenshot 5) */}
+                {/* 2. OFFLINE BOOKING SCREEN (activeFeature === 1 - Animated Chat & Form) */}
                 {activeFeature === 1 && (
-                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-stretch animate-in fade-in duration-200">
-                    {/* Left: WhatsApp Chat Mockup */}
+                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-stretch animate-in fade-in duration-300">
+                    {/* Left: Animated WhatsApp Chat Mockup */}
                     <div className="sm:col-span-5 rounded-xl bg-[#0f241d] border border-emerald-900/40 p-3 flex flex-col justify-between">
                       <div className="space-y-3">
                         <div className="flex items-center gap-2 border-b border-emerald-900/60 pb-2">
@@ -324,12 +342,21 @@ export default function Hero() {
                           </div>
                         </div>
 
-                        {/* Chat Messages */}
-                        <div className="space-y-2 text-[11px]">
-                          <div className="bg-[#1b382d] p-2.5 rounded-xl rounded-tl-none text-emerald-100 max-w-[90%] shadow-xs">
+                        {/* Animated Chat Bubbles */}
+                        <div className="space-y-2.5 text-[11px]">
+                          <div className="bg-[#1b382d] p-2.5 rounded-xl rounded-tl-none text-emerald-100 max-w-[90%] shadow-xs animate-in slide-in-from-left duration-300">
                             Hi! Is The Unique Gomti Nagar villa free 20–22 Oct? We are 4.
                           </div>
-                          <div className="bg-[#24523f] p-2.5 rounded-xl rounded-tr-none text-white ml-auto max-w-[90%] shadow-xs">
+
+                          {/* Pulsing Host Typing indicator */}
+                          <div className="flex items-center gap-1 text-[10px] text-emerald-400 pl-1">
+                            <span className="w-1 h-1 rounded-full bg-emerald-400 animate-bounce" />
+                            <span className="w-1 h-1 rounded-full bg-emerald-400 animate-bounce delay-100" />
+                            <span className="w-1 h-1 rounded-full bg-emerald-400 animate-bounce delay-200" />
+                            <span>Praveen Singh typing...</span>
+                          </div>
+
+                          <div className="bg-[#24523f] p-2.5 rounded-xl rounded-tr-none text-white ml-auto max-w-[90%] shadow-xs animate-in slide-in-from-right duration-500">
                             Yes! Creating your booking right now.
                           </div>
                         </div>
@@ -340,7 +367,7 @@ export default function Hero() {
                       </div>
                     </div>
 
-                    {/* Right: New Offline Booking Form Card (Exact match with Homeyhuts Screenshot 5) */}
+                    {/* Right: New Offline Booking Form Card */}
                     <div className="sm:col-span-7 bg-white text-gray-900 rounded-xl p-3.5 space-y-2.5 shadow-lg">
                       <div className="flex items-center justify-between">
                         <h4 className="font-bold text-xs text-gray-900">New offline booking</h4>
@@ -382,7 +409,7 @@ export default function Hero() {
                         </div>
                         <div className="flex justify-between py-1">
                           <span className="text-gray-500">Advance</span>
-                          <span className="font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded">
+                          <span className="font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded animate-pulse">
                             50% · rest on arrival
                           </span>
                         </div>
@@ -391,7 +418,7 @@ export default function Hero() {
                       {/* Red Button */}
                       <Link
                         href="/offline-bookings"
-                        className="w-full py-2 rounded-lg bg-[#ff3823] hover:bg-[#e5220d] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-sm"
+                        className="w-full py-2 rounded-lg bg-[#ff3823] hover:bg-[#e5220d] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-sm hover:scale-[1.01]"
                       >
                         Create booking & send payment link
                       </Link>
@@ -399,9 +426,9 @@ export default function Hero() {
                   </div>
                 )}
 
-                {/* 3. DIRECT WEBSITE SCREEN (activeFeature === 2 - Screenshot 4) */}
+                {/* 3. DIRECT WEBSITE SCREEN (activeFeature === 2 - Typewriter & Browser) */}
                 {activeFeature === 2 && (
-                  <div className="bg-white rounded-xl overflow-hidden shadow-2xl text-gray-900 animate-in fade-in duration-200">
+                  <div className="bg-white rounded-xl overflow-hidden shadow-2xl text-gray-900 animate-in fade-in duration-300">
                     {/* Browser Address Bar */}
                     <div className="bg-gray-100 px-3 py-1.5 border-b border-gray-200 flex items-center gap-2 text-xs">
                       <div className="flex items-center gap-1">
@@ -414,12 +441,12 @@ export default function Hero() {
                           <Lock className="w-2.5 h-2.5 text-emerald-600" />
                           www.theuniquehavenhomes.com
                         </span>
-                        <span className="text-[9px] text-[#ff3823] font-bold">0% Commission</span>
+                        <span className="text-[9px] text-[#ff3823] font-bold">0% Commission Engine</span>
                       </div>
                     </div>
 
                     {/* Mini Website Hero */}
-                    <div className="relative bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white p-5 min-h-[190px] flex flex-col justify-between">
+                    <div className="relative bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white p-5 min-h-[200px] flex flex-col justify-between">
                       {/* Nav */}
                       <div className="flex items-center justify-between text-xs">
                         <span className="font-bold tracking-tight text-white">The Unique Haven Homes</span>
@@ -437,16 +464,17 @@ export default function Hero() {
                           Luxury Stays in Lucknow.
                         </h3>
                         <p className="text-[11px] text-gray-300">
-                          Villas, penthouses and designer suites booked direct.
+                          18 Handcrafted Villas & Penthouses booked direct with 0% OTA fee.
                         </p>
                       </div>
 
-                      {/* Interactive Search Bar Widget (Screenshot 4) */}
+                      {/* Dynamic Animated Typewriter Search Bar */}
                       <div className="bg-white text-gray-900 rounded-lg p-1.5 flex items-center justify-between gap-2 shadow-lg">
                         <div className="pl-2 border-r border-gray-200 pr-2 flex-1">
                           <div className="text-[9px] text-gray-400 font-bold uppercase">Where</div>
                           <div className="text-[11px] font-bold text-[#ff3823] flex items-center gap-1">
-                            Lucknow, UP <span className="text-[9px] bg-red-50 text-[#ff3823] px-1 rounded">6 stays</span>
+                            <span>{destinations[typewriterIndex]}</span>
+                            <span className="w-1.5 h-3 bg-[#ff3823] animate-pulse inline-block" />
                           </div>
                         </div>
                         <div className="border-r border-gray-200 pr-2 flex-1 hidden sm:block">
@@ -455,7 +483,7 @@ export default function Hero() {
                         </div>
                         <div className="pr-2 flex-1 hidden sm:block">
                           <div className="text-[9px] text-gray-400 font-bold uppercase">Guests</div>
-                          <div className="text-[11px] text-gray-700 font-medium">2 guests</div>
+                          <div className="text-[11px] text-gray-700 font-medium">2-10 guests</div>
                         </div>
                         <Link
                           href="/stays"
@@ -470,99 +498,224 @@ export default function Hero() {
                     {/* Bottom guest link banner */}
                     <div className="p-2.5 bg-gray-50 border-t border-gray-100 flex items-center justify-between text-xs px-4">
                       <span className="text-gray-600 font-medium text-[11px]">
-                        Integrated direct payments (UPI, Cards) + instant WhatsApp vouchers
+                        Save ₹1,000–₹2,500 per night by booking direct on our engine
                       </span>
                       <Link
                         href="/stays"
                         className="text-[#ff3823] font-bold hover:underline flex items-center gap-1 text-xs"
                       >
-                        Explore Stays <ExternalLink className="w-3 h-3" />
+                        Explore 18 Stays <ExternalLink className="w-3 h-3" />
                       </Link>
                     </div>
                   </div>
                 )}
 
-                {/* 4. EXPENSES & PROFITS SCREEN (activeFeature === 3) */}
+                {/* 4. EXPENSES & PROFITS SCREEN (activeFeature === 3 - EXACT MATCH WITH USER SCREENSHOT!) */}
                 {activeFeature === 3 && (
-                  <div className="space-y-3.5 animate-in fade-in duration-200">
-                    <div className="flex items-center justify-between border-b border-gray-800 pb-2">
-                      <div className="flex items-center gap-2">
-                        <Wallet className="w-4 h-4 text-emerald-400" />
-                        <h4 className="font-bold text-xs text-white">October Financial Statement</h4>
-                      </div>
-                      <span className="text-[10px] text-emerald-400 font-semibold bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-800">
-                        +24% vs Last Month
-                      </span>
-                    </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-stretch text-gray-900 animate-in fade-in duration-300">
+                    
+                    {/* Left Card: October / Sea View Villa (Revenue vs Expenses Progress Bars) */}
+                    <div className="sm:col-span-6 bg-white rounded-2xl p-4 shadow-xl border border-gray-200/90 flex flex-col justify-between">
+                      <div>
+                        {/* Header */}
+                        <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+                          <h4 className="text-base font-extrabold text-gray-900 font-display">October</h4>
+                          <span className="text-[10px] text-gray-500 font-medium">
+                            The Unique Haven Homes
+                          </span>
+                        </div>
 
-                    {/* Metrics 3-Col */}
-                    <div className="grid grid-cols-3 gap-2 text-center">
-                      <div className="bg-gray-900/80 p-2.5 rounded-xl border border-gray-800">
-                        <span className="text-[10px] text-gray-400 block">Gross Revenue</span>
-                        <span className="text-sm font-bold text-white">₹2,28,000</span>
-                      </div>
-                      <div className="bg-gray-900/80 p-2.5 rounded-xl border border-gray-800">
-                        <span className="text-[10px] text-gray-400 block">Operating Costs</span>
-                        <span className="text-sm font-bold text-red-400">-₹43,500</span>
-                      </div>
-                      <div className="bg-emerald-950/50 p-2.5 rounded-xl border border-emerald-800/80">
-                        <span className="text-[10px] text-emerald-400 block font-bold">Net In-Hand Profit</span>
-                        <span className="text-sm font-bold text-emerald-300">₹1,84,500</span>
-                      </div>
-                    </div>
+                        {/* Net Revenue Section */}
+                        <div className="pt-3 space-y-2">
+                          <span className="text-[9px] font-bold text-gray-400 uppercase tracking-wider block">
+                            Net Revenue - After OTA Fees
+                          </span>
 
-                    {/* Property Level Contribution */}
-                    <div className="space-y-1.5 text-xs pt-1">
-                      <div className="flex justify-between text-[11px] text-gray-400">
-                        <span>Property Contribution</span>
-                        <span>Net Profit</span>
-                      </div>
-                      {[
-                        { name: "The Unique (GOM-302, Gomti Nagar)", profit: "₹68,500", pct: "92%" },
-                        { name: "Gomti Grand Villa (4BHK with Pool)", profit: "₹82,000", pct: "88%" },
-                        { name: "The Dark Blue (GOM-201, Lucknow)", profit: "₹34,000", pct: "85%" },
-                      ].map((item) => (
-                        <div key={item.name} className="flex items-center justify-between p-2 rounded-lg bg-gray-900/40 text-[11px] border border-gray-800/50">
-                          <span className="text-gray-200 font-medium truncate max-w-[240px]">{item.name}</span>
-                          <div className="flex items-center gap-2">
-                            <span className="text-[10px] text-gray-500 font-mono">{item.pct} Occ.</span>
-                            <span className="font-bold text-emerald-400">{item.profit}</span>
+                          {/* Airbnb bar */}
+                          <div className="space-y-1">
+                            <div className="flex items-center justify-between text-[11px]">
+                              <span className="flex items-center gap-1.5 font-medium text-gray-800">
+                                <span className="w-4 h-4 rounded-full bg-[#ff5a5f] text-white flex items-center justify-center font-bold text-[9px]">A</span>
+                                Airbnb
+                              </span>
+                              <span className="font-bold text-gray-900 font-mono">1,240</span>
+                            </div>
+                            <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                              <div className="h-full bg-emerald-500 rounded-full transition-all duration-1000 ease-out" style={{ width: "85%" }} />
+                            </div>
+                          </div>
+
+                          {/* Website bar */}
+                          <div className="space-y-1">
+                            <div className="flex items-center justify-between text-[11px]">
+                              <span className="flex items-center gap-1.5 font-medium text-gray-800">
+                                <span className="w-4 h-4 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[9px]">🌐</span>
+                                Website
+                              </span>
+                              <span className="font-bold text-gray-900 font-mono">1,140</span>
+                            </div>
+                            <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                              <div className="h-full bg-emerald-500 rounded-full transition-all duration-1000 ease-out delay-150" style={{ width: "78%" }} />
+                            </div>
+                          </div>
+
+                          {/* WhatsApp bar */}
+                          <div className="space-y-1">
+                            <div className="flex items-center justify-between text-[11px]">
+                              <span className="flex items-center gap-1.5 font-medium text-gray-800">
+                                <span className="w-4 h-4 rounded-full bg-[#25d366] text-white flex items-center justify-center text-[9px]">💬</span>
+                                WhatsApp
+                              </span>
+                              <span className="font-bold text-gray-900 font-mono">860</span>
+                            </div>
+                            <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                              <div className="h-full bg-emerald-500 rounded-full transition-all duration-1000 ease-out delay-300" style={{ width: "60%" }} />
+                            </div>
                           </div>
                         </div>
-                      ))}
+
+                        {/* Expenses Section */}
+                        <div className="pt-3 space-y-1.5 border-t border-gray-100 mt-3 text-[11px]">
+                          <span className="text-[9px] font-bold text-gray-400 uppercase tracking-wider block">
+                            Expenses
+                          </span>
+                          <div className="flex justify-between items-center text-gray-600">
+                            <span>Cleaning</span>
+                            <span className="font-bold text-red-500 font-mono">-320</span>
+                          </div>
+                          <div className="flex justify-between items-center text-gray-600">
+                            <span>Staff</span>
+                            <span className="font-bold text-red-500 font-mono">-450</span>
+                          </div>
+                          <div className="flex justify-between items-center text-gray-600">
+                            <span>Utilities</span>
+                            <span className="font-bold text-red-500 font-mono">-210</span>
+                          </div>
+                          <div className="flex justify-between items-center text-gray-600">
+                            <span>Supplies</span>
+                            <span className="font-bold text-red-500 font-mono">-200</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
 
-                    <div className="text-[11px] text-gray-400 pt-1 flex items-center justify-between border-t border-gray-800">
-                      <span>Saved <strong>₹34,200</strong> in OTA commissions this month via direct bookings.</span>
+                    {/* Right Card: Profit & Loss Waterfall Animated Chart (Exact match with Homeyhuts Screenshot!) */}
+                    <div className="sm:col-span-6 bg-white rounded-2xl p-4 shadow-xl border border-gray-200/90 flex flex-col justify-between">
+                      <div>
+                        {/* Header */}
+                        <div className="flex items-center justify-between pb-2 border-b border-gray-100">
+                          <h4 className="text-base font-extrabold text-gray-900 font-display">Profit & loss</h4>
+                          <span className="text-[10px] bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full flex items-center gap-1 font-mono">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> Live P&L
+                          </span>
+                        </div>
+
+                        {/* Dynamic Waterfall Chart Graphic */}
+                        <div className="pt-4 pb-2">
+                          <div className="h-32 flex items-end justify-between gap-2 px-2 border-b border-gray-200 pb-1 relative">
+                            {/* Bar 1: Green Gross Revenue (Full height 120px) */}
+                            <div className="flex-1 flex flex-col items-center">
+                              <div className="w-full bg-emerald-500 rounded-t-md transition-all duration-1000 ease-out shadow-sm" style={{ height: "115px" }} />
+                              <span className="text-[9px] text-gray-500 mt-1 font-medium truncate">Revenue</span>
+                            </div>
+
+                            {/* Bar 2: Red OTA Commission step */}
+                            <div className="flex-1 flex flex-col items-center">
+                              <div className="w-full bg-[#ff3823] rounded-md transition-all duration-1000 ease-out shadow-xs" style={{ height: "24px", marginBottom: "91px" }} />
+                              <span className="text-[9px] text-gray-400 mt-1 truncate">OTA</span>
+                            </div>
+
+                            {/* Bar 3: Red Staff Expense step */}
+                            <div className="flex-1 flex flex-col items-center">
+                              <div className="w-full bg-[#ff3823] rounded-md transition-all duration-1000 ease-out shadow-xs" style={{ height: "30px", marginBottom: "61px" }} />
+                              <span className="text-[9px] text-gray-400 mt-1 truncate">Staff</span>
+                            </div>
+
+                            {/* Bar 4: Red Cleaning step */}
+                            <div className="flex-1 flex flex-col items-center">
+                              <div className="w-full bg-[#ff3823] rounded-md transition-all duration-1000 ease-out shadow-xs" style={{ height: "16px", marginBottom: "45px" }} />
+                              <span className="text-[9px] text-gray-400 mt-1 truncate">Clean</span>
+                            </div>
+
+                            {/* Bar 5: Red Supplies step */}
+                            <div className="flex-1 flex flex-col items-center">
+                              <div className="w-full bg-[#ff3823] rounded-md transition-all duration-1000 ease-out shadow-xs" style={{ height: "14px", marginBottom: "31px" }} />
+                              <span className="text-[9px] text-gray-400 mt-1 truncate">Bills</span>
+                            </div>
+
+                            {/* Bar 6: Final Emerald Net Profit Bar */}
+                            <div className="flex-1 flex flex-col items-center">
+                              <div className="w-full bg-emerald-500 rounded-t-md transition-all duration-1000 ease-out shadow-sm" style={{ height: "74px" }} />
+                              <span className="text-[9px] text-emerald-700 font-bold mt-1 truncate">Profit</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Bottom Net Operating Income & Gauge Ring (Screenshot match) */}
+                        <div className="pt-3 flex items-center justify-between text-xs">
+                          <div>
+                            <span className="text-[10px] text-gray-400 block font-medium">Net operating income</span>
+                            <div className="text-xl font-extrabold text-gray-900 font-mono">
+                              ₹1,84,500
+                            </div>
+                            <span className="text-[9px] text-gray-400 block">*Net revenue - Expenses</span>
+                          </div>
+
+                          {/* Circular Gauge Ring */}
+                          <div className="relative w-12 h-12 flex items-center justify-center">
+                            <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
+                              <path
+                                className="text-gray-100"
+                                strokeWidth="3.5"
+                                stroke="currentColor"
+                                fill="none"
+                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                              />
+                              <path
+                                className="text-emerald-500 transition-all duration-1000"
+                                strokeDasharray="64, 100"
+                                strokeWidth="3.5"
+                                strokeLinecap="round"
+                                stroke="currentColor"
+                                fill="none"
+                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                              />
+                            </svg>
+                            <span className="absolute text-[11px] font-black text-gray-900 font-mono">
+                              64%
+                            </span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 )}
 
                 {/* 5. UNIFIED INBOX SCREEN (activeFeature === 4 - Screenshot 3) */}
                 {activeFeature === 4 && (
-                  <div className="grid grid-cols-12 gap-2 text-gray-900 animate-in fade-in duration-200 h-[260px]">
+                  <div className="grid grid-cols-12 gap-2 text-gray-900 animate-in fade-in duration-300 h-[280px]">
                     {/* Left Rail Channels */}
                     <div className="col-span-1 bg-[#1a1c22] rounded-xl flex flex-col items-center py-3 gap-2.5 border border-gray-800">
                       <button
                         onClick={() => setInboxTab("airbnb")}
-                        className={`w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs text-white ${
-                          inboxTab === "airbnb" ? "bg-[#ff5a5f] shadow-md" : "bg-gray-800 opacity-60"
+                        className={`w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs text-white transition-transform ${
+                          inboxTab === "airbnb" ? "bg-[#ff5a5f] shadow-md scale-105" : "bg-gray-800 opacity-60"
                         }`}
                       >
                         A
                       </button>
                       <button
                         onClick={() => setInboxTab("booking")}
-                        className={`w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs text-white ${
-                          inboxTab === "booking" ? "bg-[#003b95] shadow-md" : "bg-gray-800 opacity-60"
+                        className={`w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs text-white transition-transform ${
+                          inboxTab === "booking" ? "bg-[#003b95] shadow-md scale-105" : "bg-gray-800 opacity-60"
                         }`}
                       >
                         B.
                       </button>
                       <button
                         onClick={() => setInboxTab("direct")}
-                        className={`w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs text-white ${
-                          inboxTab === "direct" ? "bg-[#0d9488] shadow-md" : "bg-gray-800 opacity-60"
+                        className={`w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs text-white transition-transform ${
+                          inboxTab === "direct" ? "bg-[#0d9488] shadow-md scale-105" : "bg-gray-800 opacity-60"
                         }`}
                       >
                         🌐
@@ -574,7 +727,7 @@ export default function Hero() {
                       <div>
                         <div className="flex items-center justify-between pb-2 border-b border-gray-100">
                           <span className="font-bold text-xs text-gray-900">Inbox</span>
-                          <span className="text-[9px] bg-red-100 text-[#ff3823] font-bold px-1.5 py-0.2 rounded-full">
+                          <span className="text-[9px] bg-red-100 text-[#ff3823] font-bold px-1.5 py-0.2 rounded-full animate-pulse">
                             2 new
                           </span>
                         </div>
@@ -625,10 +778,10 @@ export default function Hero() {
 
                         {/* Chat Bubbles */}
                         <div className="space-y-2 mt-3 text-[11px]">
-                          <div className="bg-gray-100 p-2.5 rounded-xl rounded-tl-none max-w-[85%] text-gray-800 shadow-xs">
+                          <div className="bg-gray-100 p-2.5 rounded-xl rounded-tl-none max-w-[85%] text-gray-800 shadow-xs animate-in slide-in-from-left duration-200">
                             Hi! What time is check-in?
                           </div>
-                          <div className="bg-[#ff3823] text-white p-2.5 rounded-xl rounded-tr-none ml-auto max-w-[85%] shadow-xs">
+                          <div className="bg-[#ff3823] text-white p-2.5 rounded-xl rounded-tr-none ml-auto max-w-[85%] shadow-xs animate-in slide-in-from-right duration-300">
                             Check-in is from 2 PM. I have sent the door code too!
                           </div>
                         </div>
@@ -641,7 +794,7 @@ export default function Hero() {
                           placeholder="Type a reply..."
                           className="flex-1 bg-gray-50 rounded-lg px-2.5 py-1.5 text-[10px] border border-gray-200 outline-none"
                         />
-                        <button className="w-7 h-7 rounded-lg bg-[#ff3823] text-white flex items-center justify-center shrink-0">
+                        <button className="w-7 h-7 rounded-lg bg-[#ff3823] text-white flex items-center justify-center shrink-0 hover:scale-105 transition-transform">
                           <Send className="w-3 h-3" />
                         </button>
                       </div>
@@ -649,28 +802,28 @@ export default function Hero() {
                   </div>
                 )}
 
-                {/* 6. CO-HOSTS & TEAM SCREEN (activeFeature === 5 - Screenshot 2) */}
+                {/* 6. CO-HOSTS & TEAM SCREEN (activeFeature === 5 - Screenshot 2 with Animated Org Tree) */}
                 {activeFeature === 5 && (
-                  <div className="space-y-3 animate-in fade-in duration-200 text-gray-900">
+                  <div className="space-y-3 animate-in fade-in duration-300 text-gray-900">
                     {/* Org Root Card */}
-                    <div className="text-center">
-                      <div className="inline-flex items-center gap-2 bg-white px-3 py-1.5 rounded-full shadow-md border border-gray-200 text-xs">
+                    <div className="text-center relative">
+                      <div className="inline-flex items-center gap-2 bg-white px-3.5 py-1.5 rounded-full shadow-md border border-gray-200 text-xs">
                         <span className="w-5 h-5 rounded-full bg-gray-900 text-white font-bold text-[10px] flex items-center justify-center">
                           Y
                         </span>
                         <span className="font-bold text-gray-900">You · Owner (Praveen Singh)</span>
-                        <span className="text-[9px] bg-red-500 text-white font-bold px-1.5 rounded-full">3</span>
+                        <span className="text-[9px] bg-red-500 text-white font-bold px-1.5 rounded-full animate-pulse">3 invites sent</span>
                       </div>
                     </div>
 
                     {/* Team Members 3-Col Cards (Screenshot 2) */}
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                       {[
-                        { initial: "A", name: "Anita", role: "Account manager", scope: "All properties", cal: true, price: true, payout: false },
+                        { initial: "A", name: "Anita", role: "Account manager", scope: "All 18 properties", cal: true, price: true, payout: false },
                         { initial: "S", name: "Sneha", role: "Co-host", scope: "Gomti Grand Villa", cal: true, price: true, payout: false },
-                        { initial: "R", name: "Rohan", role: "Ground Ops", scope: "The Unique", cal: true, price: false, payout: false },
+                        { initial: "R", name: "Rohan", role: "Ground Ops", scope: "The Unique Suites", cal: true, price: false, payout: false },
                       ].map((m) => (
-                        <div key={m.name} className="bg-white rounded-xl p-2.5 border border-gray-200 shadow-md text-xs space-y-2">
+                        <div key={m.name} className="bg-white rounded-xl p-2.5 border border-gray-200 shadow-md text-xs space-y-2 hover:shadow-lg transition-all">
                           <div className="flex items-center gap-2">
                             <span className="w-6 h-6 rounded-full bg-gray-100 text-gray-700 font-bold text-[10px] flex items-center justify-center">
                               {m.initial}
@@ -687,20 +840,20 @@ export default function Hero() {
                           <div className="space-y-1 text-[10px] pt-1">
                             <div className="flex justify-between items-center text-gray-600">
                               <span>Calendar</span>
-                              <span className={`w-6 h-3.5 rounded-full flex items-center p-0.5 ${m.cal ? "bg-emerald-500 justify-end" : "bg-gray-200 justify-start"}`}>
-                                <span className="w-2.5 h-2.5 rounded-full bg-white" />
+                              <span className={`w-6 h-3.5 rounded-full flex items-center p-0.5 transition-colors ${m.cal ? "bg-emerald-500 justify-end" : "bg-gray-200 justify-start"}`}>
+                                <span className="w-2.5 h-2.5 rounded-full bg-white shadow-xs" />
                               </span>
                             </div>
                             <div className="flex justify-between items-center text-gray-600">
                               <span>Pricing</span>
-                              <span className={`w-6 h-3.5 rounded-full flex items-center p-0.5 ${m.price ? "bg-emerald-500 justify-end" : "bg-gray-200 justify-start"}`}>
-                                <span className="w-2.5 h-2.5 rounded-full bg-white" />
+                              <span className={`w-6 h-3.5 rounded-full flex items-center p-0.5 transition-colors ${m.price ? "bg-emerald-500 justify-end" : "bg-gray-200 justify-start"}`}>
+                                <span className="w-2.5 h-2.5 rounded-full bg-white shadow-xs" />
                               </span>
                             </div>
                             <div className="flex justify-between items-center text-gray-600">
                               <span>Payouts</span>
-                              <span className={`w-6 h-3.5 rounded-full flex items-center p-0.5 ${m.payout ? "bg-emerald-500 justify-end" : "bg-gray-200 justify-start"}`}>
-                                <span className="w-2.5 h-2.5 rounded-full bg-white" />
+                              <span className={`w-6 h-3.5 rounded-full flex items-center p-0.5 transition-colors ${m.payout ? "bg-emerald-500 justify-end" : "bg-gray-200 justify-start"}`}>
+                                <span className="w-2.5 h-2.5 rounded-full bg-white shadow-xs" />
                               </span>
                             </div>
                           </div>
@@ -708,7 +861,7 @@ export default function Hero() {
                       ))}
                     </div>
 
-                    {/* Live Activity Feed */}
+                    {/* Live Activity Feed ticker */}
                     <div className="bg-white rounded-xl p-2.5 border border-gray-200 shadow-sm text-[10px] flex items-center justify-between text-gray-600">
                       <div className="flex items-center gap-2">
                         <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -729,13 +882,13 @@ export default function Hero() {
                   onClick={() => setActiveFeature(idx)}
                   className={`p-3 rounded-2xl border transition-all text-left flex items-start gap-3 group cursor-pointer ${
                     activeFeature === idx
-                      ? "bg-white border-[#0c1838] shadow-md ring-2 ring-[#0c1838]/10"
+                      ? "bg-white border-[#0c1838] shadow-md ring-2 ring-[#0c1838]/10 scale-[1.01]"
                       : "bg-white/80 border-gray-200 hover:bg-white hover:border-gray-300"
                   }`}
                 >
                   <div className={`w-8 h-8 rounded-xl flex items-center justify-center transition-colors shrink-0 ${
                     activeFeature === idx
-                      ? "bg-[#0c1838] text-white"
+                      ? "bg-[#0c1838] text-white shadow-sm"
                       : "bg-gray-100 text-gray-600 group-hover:text-[#ff3823]"
                   }`}>
                     <item.icon className="w-4 h-4" />

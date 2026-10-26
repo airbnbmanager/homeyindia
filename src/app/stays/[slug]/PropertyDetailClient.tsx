@@ -77,7 +77,7 @@ export default function PropertyDetailClient({ prop }: { prop: Property }) {
           {/* Photo Container */}
           <div className="aspect-[21/9] rounded-3xl overflow-hidden shadow-xl bg-gray-100 relative group">
             <img
-              src={prop.coverImage}
+              src={prop.image}
               alt={prop.name}
               className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-700"
             />
@@ -95,7 +95,7 @@ export default function PropertyDetailClient({ prop }: { prop: Property }) {
             <div className="grid grid-cols-3 gap-4 p-5 rounded-2xl bg-gray-50 border border-gray-200/80 text-center text-xs">
               <div>
                 <span className="text-gray-400 font-medium block">Capacity</span>
-                <span className="text-sm font-bold text-gray-900">Up to {prop.guests} Guests</span>
+                <span className="text-sm font-bold text-gray-900">Up to {prop.maxGuests} Guests</span>
               </div>
               <div className="border-x border-gray-200">
                 <span className="text-gray-400 font-medium block">Layout</span>
@@ -254,7 +254,7 @@ export default function PropertyDetailClient({ prop }: { prop: Property }) {
                     onChange={(e) => setGuests(parseInt(e.target.value))}
                     className="w-full p-2.5 rounded-xl border border-gray-200 bg-white font-medium text-gray-900 focus:outline-none"
                   >
-                    {[...Array(prop.guests)].map((_, i) => (
+                    {[...Array(prop.maxGuests)].map((_, i) => (
                       <option key={i + 1} value={i + 1}>
                         {i + 1} {i === 0 ? "Guest" : "Guests"}
                       </option>

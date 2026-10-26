@@ -14,11 +14,15 @@ export default function InteractiveCalendar() {
   const [selectedDates, setSelectedDates] = useState({ start: "29 Jul", end: "31 Jul", prop: "Ocean View Villa" });
 
   const properties = [
-    { id: 1, name: "The Unique — Luxury 3BHK", location: "Vikalp Khand, Gomti Nagar", rate: "₹5,500", weekend: "₹6,500", type: "3BHK Residence" },
-    { id: 2, name: "The Dark Blue — Royal 3BHK", location: "Vikalp Khand, Gomti Nagar", rate: "₹4,500", weekend: "₹5,500", type: "3BHK Royal Flat" },
-    { id: 3, name: "Black Beauty — Executive 3BHK", location: "Vikalp Khand, Gomti Nagar", rate: "₹4,500", weekend: "₹5,500", type: "3BHK Suite" },
-    { id: 4, name: "Gomti Grand Villa — Private Estate", location: "Gomti Nagar Extension", rate: "₹8,000", weekend: "₹10,000", type: "Private Villa" },
-    { id: 5, name: "Starlight Blue — Penthouse", location: "Gomti Nagar, Lucknow", rate: "₹6,000", weekend: "₹7,500", type: "Panoramic Penthouse" },
+    { id: 1, name: "The Unique — Luxury 3BHK (GOM-302)", location: "Vikalp Khand, Gomti Nagar", rate: "₹5,500", weekend: "₹6,500", type: "3BHK Residence" },
+    { id: 2, name: "The Dark Blue — Royal 3BHK (GOM-201)", location: "Vikalp Khand, Gomti Nagar", rate: "₹4,500", weekend: "₹5,500", type: "3BHK Royal Flat" },
+    { id: 3, name: "Black Beauty — Executive 3BHK (GOM-102)", location: "Vikalp Khand, Gomti Nagar", rate: "₹4,500", weekend: "₹5,500", type: "3BHK Suite" },
+    { id: 4, name: "Gomti Grand Villa — Private Estate (VIL-101)", location: "Shaheed Path & Gomti Ext", rate: "₹8,000", weekend: "₹10,000", type: "Private Pool Villa" },
+    { id: 5, name: "Starlight Blue — Penthouse (GOM-501)", location: "Top Floor Terrace, Gomti Nagar", rate: "₹6,000", weekend: "₹7,500", type: "Panoramic Penthouse" },
+    { id: 6, name: "Royal White House — Grand Palace (VIL-102)", location: "Shaheed Path, Lucknow", rate: "₹12,000", weekend: "₹14,500", type: "Palace Villa" },
+    { id: 7, name: "Celebrity Garden — Lawn Homestay (LUL-402)", location: "Shaheed Path / Lulu Mall", rate: "₹10,000", weekend: "₹12,000", type: "Grand Estate" },
+    { id: 8, name: "The Luxe Haven — Couple Suite (LUL-101)", location: "Near Lulu Mall & Medanta", rate: "₹2,650", weekend: "₹3,200", type: "1BHK Designer Flat" },
+    { id: 9, name: "RedRose Palace — 3BHK Luxury (GOM-101)", location: "Vikalp Khand, Gomti Nagar", rate: "₹4,500", weekend: "₹5,500", type: "3BHK Floral Flat" },
   ];
 
   const bookings = [
