@@ -212,7 +212,7 @@ export default function ChannelManagerPage() {
             Reservations
           </Link>
           <Link href="/channel-manager" className="px-4 py-2 rounded-xl bg-[#ff3823] text-white font-bold shadow-lg shadow-[#ff3823]/20">
-            Channel Manager (Active)
+            Channel Manager
           </Link>
           <Link href="/account" className="px-4 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition">
             Account &amp; KYC
@@ -229,13 +229,13 @@ export default function ChannelManagerPage() {
           </div>
         )}
 
-        {/* Video 10 Collision Prevention Simulation Dock */}
+        
         {simulationLog.length > 0 && (
           <div className="p-5 rounded-3xl bg-slate-900 text-white border border-slate-700 shadow-xl space-y-3 animate-in fade-in">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-5 h-5 text-emerald-400" />
-                <span className="font-bold text-sm">2-Way Double Booking Lock Simulation (Video 10)</span>
+                <span className="font-bold text-sm">2-Way Double Booking Lock Simulation</span>
               </div>
               <button
                 onClick={() => setSimulationLog([])}
@@ -310,12 +310,12 @@ export default function ChannelManagerPage() {
           </div>
         </div>
 
-        {/* Video 09: Master Rate Multiplier Studio */}
+        
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
             <div>
               <span className="px-3 py-1 rounded-full bg-[#ff3823]/10 text-[#ff3823] font-bold text-xs uppercase tracking-wider">
-                Video 09 Feature
+                Dynamic OTA Markup Engine
               </span>
               <h3 className="text-2xl font-bold text-slate-900 font-display mt-2">
                 OTA Markup Multiplier Calculator

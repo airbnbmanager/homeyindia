@@ -190,7 +190,7 @@ export default function ExpensesPage() {
           <div>
             <div className="flex items-center gap-2 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              Host Control Centre &bull; Homey India (Video 01)
+              Host Control Centre &bull; Homey India
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight font-display flex items-center gap-3">
               Property Expenses &amp; True P&amp;L Ledger
@@ -231,7 +231,7 @@ export default function ExpensesPage() {
             Channel Manager
           </Link>
           <Link href="/expenses-and-profits" className="px-4 py-2 rounded-xl bg-[#ff3823] text-white font-bold shadow-lg shadow-[#ff3823]/20">
-            Expenses &amp; P&amp;L (Active)
+            Expenses &amp; True P&amp;L
           </Link>
         </div>
       </div>
@@ -245,7 +245,7 @@ export default function ExpensesPage() {
           </div>
         )}
 
-        {/* Video 01 P&L KPI Cards */}
+        
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-1">
             <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">Gross Booking Revenue</div>
@@ -391,7 +391,7 @@ export default function ExpensesPage() {
         </div>
       </main>
 
-      {/* ADD EXPENSE MODAL (Video 01) */}
+      {/* ADD EXPENSE MODAL  */}
       {showAddModal && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
           <form

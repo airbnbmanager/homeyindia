@@ -119,7 +119,7 @@ export default function UnifiedCalendarPage() {
               Host Control Centre &bull; Homey India
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight font-display flex items-center gap-3">
-              Unified Multi-Property Timeline (Video 08)
+              Unified Multi-Property Timeline
             </h1>
           </div>
 
@@ -152,7 +152,7 @@ export default function UnifiedCalendarPage() {
             Calendar &amp; Pricing
           </Link>
           <Link href="/unified-calendar" className="px-4 py-2 rounded-xl bg-[#ff3823] text-white font-bold shadow-lg shadow-[#ff3823]/20">
-            Unified Multi-Property (Active)
+            Unified Multi-Property
           </Link>
           <Link href="/properties" className="px-4 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition">
             Properties ({PROPERTIES.length})
@@ -230,7 +230,15 @@ export default function UnifiedCalendarPage() {
                     <td className="py-4 px-6 sticky left-0 bg-white z-10 shadow-[2px_0_5px_rgba(0,0,0,0.03)]">
                       <div className="flex items-center gap-3">
                         <div className="relative w-10 h-10 rounded-xl overflow-hidden bg-slate-100 shrink-0 border border-slate-200">
-                          <Image src={prop.image} alt={prop.name} fill sizes="40px" className="object-cover" />
+                          <img
+                            src={prop.image}
+                            alt={prop.name}
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                            onError={(e) => {
+                              e.currentTarget.src = "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=120&q=80";
+                            }}
+                          />
                         </div>
                         <div className="truncate">
                           <div className="font-bold text-slate-900 truncate text-xs">{prop.name}</div>

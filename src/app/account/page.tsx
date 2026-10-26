@@ -38,7 +38,7 @@ export default function AccountSettingsPage() {
 
   const [isSaved, setIsSaved] = useState(false);
 
-  // Verification States (Video 19)
+  // Verification States 
   const [aadhaarNumber, setAadhaarNumber] = useState("");
   const [aadhaarOtp, setAadhaarOtp] = useState("");
   const [aadhaarStep, setAadhaarStep] = useState<"input" | "otp" | "verified">("input");
@@ -210,7 +210,7 @@ export default function AccountSettingsPage() {
             {/* Right Tab Content */}
             <div className="md:col-span-8">
               
-              {/* TAB 1: PERSONAL INFO (Exact Match with Video 19 Frame 6 & 7) */}
+              {/* TAB 1: PERSONAL INFO  */}
               {activeTab === "personal" && (
                 <div className="bg-white rounded-3xl border border-gray-200 p-6 sm:p-8 shadow-sm space-y-6 animate-in fade-in duration-200">
                   <div className="flex items-center justify-between pb-4 border-b border-gray-100">

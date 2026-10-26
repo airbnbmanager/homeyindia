@@ -218,7 +218,7 @@ export default function HostDashboardPage() {
       <main className="pt-24 sm:pt-28 pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           
-          {/* Top Host Navigation Header (Video 18 Frame 4) */}
+          {/* Top Host Navigation Header  */}
           <div className="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#fff1ef] text-[#ff3823] text-xs font-bold border border-[#ffe2de] mb-2">
@@ -259,7 +259,7 @@ export default function HostDashboardPage() {
             </div>
           </div>
 
-          {/* Activity Filter Tabs (Video 18 Frames 4-10) */}
+          {/* Activity Filter Tabs  */}
           <div className="space-y-4">
             <div className="flex items-center justify-between flex-wrap gap-4">
               <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
@@ -302,7 +302,7 @@ export default function HostDashboardPage() {
               </div>
             </div>
 
-            {/* Bookings Table (Video 18 Frame 4 & 8) */}
+            {/* Bookings Table  */}
             <div className="bg-white rounded-3xl border border-gray-200 overflow-hidden shadow-sm">
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
@@ -371,7 +371,7 @@ export default function HostDashboardPage() {
             </div>
           </div>
 
-          {/* Homey India Earnings & Payouts Cards (Video 18 Frames 11-13) */}
+          {/* Homey India Earnings & Payouts Cards  */}
           <div className="bg-white rounded-3xl border border-gray-200 p-6 sm:p-8 shadow-sm space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-gray-100">
               <div>
@@ -461,7 +461,7 @@ export default function HostDashboardPage() {
         </div>
       </main>
 
-      {/* SLIDE-OVER BOOKING DETAILS DRAWER (Exact Match with Video 18 Frames 5, 6, 7) */}
+      {/* SLIDE-OVER BOOKING DETAILS DRAWER  */}
       {selectedBooking && (
         <div className="fixed inset-0 z-50 flex justify-end animate-in fade-in duration-200">
           {/* Backdrop */}
@@ -502,7 +502,7 @@ export default function HostDashboardPage() {
               </button>
             </div>
 
-            {/* Quick Action Invoices Bar (Video 18 Frame 5) */}
+            {/* Quick Action Invoices Bar  */}
             <div className="px-6 py-3 bg-gray-50 border-b border-gray-200 flex items-center justify-between text-xs font-semibold">
               <span className="text-gray-500">Official Guest Invoices:</span>
               <div className="flex items-center gap-2">
@@ -552,7 +552,7 @@ export default function HostDashboardPage() {
                 <p className="text-xs text-gray-500">{selectedBooking.propertyUnit} · Lucknow, Uttar Pradesh</p>
               </div>
 
-              {/* DUAL COLUMN FINANCIALS: Price Details vs Owner Payout (Video 18 Frame 5 & 6) */}
+              {/* DUAL COLUMN FINANCIALS: Price Details vs Owner Payout  */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* Guest Price Details */}
                 <div className="p-4 rounded-2xl bg-gray-50 border border-gray-200 space-y-2 text-xs">

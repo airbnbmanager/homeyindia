@@ -269,12 +269,14 @@ export default function PropertiesPage() {
                       <td className="py-4 px-6">
                         <div className="flex items-center gap-3">
                           <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-slate-100 shrink-0 border border-slate-200">
-                            <Image
+                            <img
                               src={prop.image}
                               alt={prop.name}
-                              fill
-                              sizes="48px"
-                              className="object-cover"
+                              className="w-full h-full object-cover"
+                              loading="lazy"
+                              onError={(e) => {
+                                e.currentTarget.src = "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=120&q=80";
+                              }}
                             />
                           </div>
                           <div>

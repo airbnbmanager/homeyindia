@@ -88,7 +88,7 @@ export default function CloneAirbnbPage() {
             </Link>
             <div className="flex items-center gap-2 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              Video 06 Technology &bull; Homey India
+              Smart 1-Click Importer &bull; Homey India
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight font-display flex items-center gap-3">
               Clone Airbnb Listing in 30 Seconds

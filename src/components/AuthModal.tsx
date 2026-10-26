@@ -92,7 +92,7 @@ export default function AuthModal({
           <X className="w-5 h-5" />
         </button>
 
-        {/* STEP 1: Enter Email / Phone Number (Video 19 Frame 2) */}
+        {/* STEP 1: Enter Email / Phone Number  */}
         {step === "input" && (
           <div className="space-y-6">
             <div className="space-y-2">
@@ -141,7 +141,7 @@ export default function AuthModal({
           </div>
         )}
 
-        {/* STEP 2: Enter OTP (Video 19 Frame 3 & 4) */}
+        {/* STEP 2: Enter OTP  */}
         {step === "otp" && (
           <div className="space-y-6 animate-in fade-in duration-200">
             <div className="space-y-2">
