@@ -45,10 +45,13 @@ export default function AuthModal({
     setIsLoading(true);
 
     try {
+      const redirectUrl = typeof window !== "undefined" ? `${window.location.origin}/auth/callback` : "https://homeyindia.vercel.app/auth/callback";
+
       // Send real Email OTP via Supabase Auth
       const { error } = await supabase.auth.signInWithOtp({
         email: cleanEmail,
         options: {
+          emailRedirectTo: redirectUrl,
           shouldCreateUser: true,
         },
       });
@@ -243,10 +246,10 @@ export default function AuthModal({
           <div className="space-y-6 animate-in fade-in duration-200">
             <div className="space-y-2">
               <h2 className="text-2xl font-extrabold text-gray-900 font-display tracking-tight">
-                Enter 6-Digit Code
+                Check Your Email
               </h2>
               <p className="text-xs text-gray-600 leading-relaxed">
-                We sent a 6-digit verification code to <strong className="text-gray-900">{email}</strong>. Please check your inbox.
+                Verification email sent to <strong className="text-gray-900">{email}</strong>. You can <strong>click the confirmation link</strong> in the email, or enter the 6-digit code below:
               </p>
             </div>
 

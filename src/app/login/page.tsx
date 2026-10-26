@@ -38,9 +38,12 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
+      const redirectUrl = typeof window !== "undefined" ? `${window.location.origin}/auth/callback` : "https://homeyindia.vercel.app/auth/callback";
+
       const { error } = await supabase.auth.signInWithOtp({
         email: cleanEmail,
         options: {
+          emailRedirectTo: redirectUrl,
           shouldCreateUser: true,
         },
       });
@@ -219,10 +222,10 @@ export default function LoginPage() {
                   <ArrowLeft className="w-3.5 h-3.5" /> Back to email
                 </button>
                 <h2 className="text-2xl font-extrabold text-gray-900 font-display tracking-tight">
-                  Enter 6-Digit Code
+                  Check Your Email
                 </h2>
                 <p className="text-xs text-gray-600 mt-1">
-                  We sent a code to <strong className="text-gray-900">{email}</strong>. Check your inbox or spam folder.
+                  We sent a confirmation link to <strong className="text-gray-900">{email}</strong>. Click the link in your email to sign in instantly, or enter the 6-digit code below:
                 </p>
               </div>
 
