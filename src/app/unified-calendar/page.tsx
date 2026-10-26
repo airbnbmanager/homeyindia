@@ -1,98 +1,345 @@
+"use client";
+
+import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, Sparkles, PhoneCall, ShieldCheck, Star } from "lucide-react";
+import Image from "next/image";
+import { PROPERTIES } from "@/data/properties";
+import {
+  Calendar as CalendarIcon,
+  ChevronLeft,
+  ChevronRight,
+  Filter,
+  Plus,
+  Search,
+  CheckCircle2,
+  Lock,
+  DollarSign,
+  User,
+  Building,
+  Sparkles,
+  ShieldCheck,
+  X,
+  Clock
+} from "lucide-react";
 
-export const metadata = {
-  title: "Unified Calendar for Vacation Rentals & Homestays | Homey India",
-  description: "Every booking, price update, and blocked date from Airbnb, Booking.com, Vrbo, MakeMyTrip, and your own website in one live calendar. Available on both desktop and mobile.",
-};
+interface TimelineBlock {
+  propId: string;
+  startDay: number;
+  endDay: number;
+  channel: "Airbnb" | "Booking.com" | "Direct" | "Blocked";
+  guestName: string;
+  nights: number;
+  total: number;
+}
 
-export default function Page() {
-  const stats = [{"value": "0.8s", "label": "Instant Sync Speed"}, {"value": "50+", "label": "Connected OTAs"}, {"value": "100%", "label": "Double Booking Prevention"}, {"value": "24/7", "label": "Live Cloud Availability"}];
-  const features = [{"title": "Multi-Property Overview", "desc": "View and manage all your properties side-by-side on a continuous horizontal timeline."}, {"title": "Click & Drag Booking", "desc": "Click any empty date range to block dates for maintenance or create walk-in reservations in seconds."}, {"title": "Channel-Coded Reservations", "desc": "Instantly identify reservation sources with channel-specific color badges (Airbnb red, Booking navy, MMT pink, Direct green)."}, {"title": "Mobile App Sync", "desc": "Carry your complete operations in your pocket with native iOS & Android calendar sync and push notifications."}];
+export default function UnifiedCalendarPage() {
+  const [currentYear, setCurrentYear] = useState(2026);
+  const [currentMonth, setCurrentMonth] = useState(10); // Nov
+  const [searchFilter, setSearchFilter] = useState("");
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  // Selected cell for Quick Action
+  const [selectedCell, setSelectedCell] = useState<{ propId: string; propName: string; day: number; price: number } | null>(null);
+  const [quickNewPrice, setQuickNewPrice] = useState("");
+
+  const showToast = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(null), 3500);
+  };
+
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
+  // 14 days visible window for horizontal timeline
+  const days = Array.from({ length: 14 }, (_, i) => i + 1);
+
+  // Sample timeline bookings
+  const [bookings, setBookings] = useState<TimelineBlock[]>([
+    { propId: "LUL-101", startDay: 2, endDay: 5, channel: "Airbnb", guestName: "Vikram Malhotra", nights: 3, total: 8940 },
+    { propId: "LUL-101", startDay: 8, endDay: 11, channel: "Direct", guestName: "Pooja Hegde", nights: 3, total: 7950 },
+    { propId: "GOM-201", startDay: 4, endDay: 7, channel: "Booking.com", guestName: "Arjun Rampal", nights: 3, total: 10500 },
+    { propId: "GOM-201", startDay: 10, endDay: 12, channel: "Blocked", guestName: "Maintenance Block", nights: 2, total: 0 },
+    { propId: "LUL-102", startDay: 1, endDay: 4, channel: "Direct", guestName: "Rajeev Shukla", nights: 3, total: 7950 },
+    { propId: "SHA-301", startDay: 5, endDay: 10, channel: "Airbnb", guestName: "Dr. K. Saxena", nights: 5, total: 42500 }
+  ]);
+
+  const filteredProps = PROPERTIES.filter((p) =>
+    p.name.toLowerCase().includes(searchFilter.toLowerCase()) ||
+    p.location.toLowerCase().includes(searchFilter.toLowerCase())
+  );
+
+  const handleApplyPrice = () => {
+    if (!selectedCell || !quickNewPrice) return;
+    showToast(`Updated price to ₹${parseInt(quickNewPrice).toLocaleString()} for ${selectedCell.propName} on Nov ${selectedCell.day}. Synced with OTAs in 0.8s!`);
+    setSelectedCell(null);
+    setQuickNewPrice("");
+  };
+
+  const handleToggleBlock = () => {
+    if (!selectedCell) return;
+    const existing = bookings.find(
+      (b) => b.propId === selectedCell.propId && selectedCell.day >= b.startDay && selectedCell.day <= b.endDay
+    );
+
+    if (existing) {
+      setBookings(bookings.filter((b) => b !== existing));
+      showToast(`Unblocked ${selectedCell.propName} on Nov ${selectedCell.day}.`);
+    } else {
+      setBookings([
+        ...bookings,
+        {
+          propId: selectedCell.propId,
+          startDay: selectedCell.day,
+          endDay: selectedCell.day + 1,
+          channel: "Blocked",
+          guestName: "Host Block",
+          nights: 1,
+          total: 0
+        }
+      ]);
+      showToast(`Blocked ${selectedCell.propName} on Nov ${selectedCell.day} across all channels.`);
+    }
+    setSelectedCell(null);
+  };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-[#f8fafc]">
       <Navbar />
-      <main className="flex-grow pt-32 pb-24">
-        {/* Hero Section */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
-          <div className="max-w-3xl">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#ff3823] bg-[#fff1ef] px-3.5 py-1.5 rounded-full border border-[#ffe2de]">
-              Live Multi-Property Timeline
-            </span>
-            <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight font-display mt-4 leading-tight">
-              One live calendar to sync and manage everything.
+
+      {/* Header */}
+      <div className="bg-[#0f172a] text-white pt-24 pb-6 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              Host Control Centre &bull; Homey India
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight font-display flex items-center gap-3">
+              Unified Multi-Property Timeline (Video 08)
             </h1>
-            <p className="mt-5 text-lg text-gray-600 leading-relaxed">
-              Every booking, price update, and blocked date from Airbnb, Booking.com, Vrbo, MakeMyTrip, and your own website in one live calendar. Available on both desktop and mobile.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-4">
-              <Link
-                href="/start-trial"
-                className="px-8 py-3.5 rounded-full bg-[#ff3823] text-white font-bold text-sm shadow-xl shadow-[#ff3823]/25 hover:bg-[#e5220d] transition-all flex items-center gap-2"
-              >
-                Start 30-Day Free Trial <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link
-                href="/book-a-demo"
-                className="px-7 py-3.5 rounded-full bg-white text-gray-800 font-semibold text-sm border border-gray-200 hover:bg-gray-50 transition-all flex items-center gap-2 shadow-sm"
-              >
-                <PhoneCall className="w-4 h-4 text-[#ff3823]" /> Schedule a Guided Demo
-              </Link>
-            </div>
           </div>
 
-          {/* Stats Grid */}
-          <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 bg-gradient-to-br from-[#0c1838] to-[#1a2b56] text-white p-8 rounded-3xl shadow-xl">
-            {stats.map((s, idx) => (
-              <div key={idx} className="space-y-1">
-                <div className="text-3xl sm:text-4xl font-extrabold text-[#ff3823] font-display">{s.value}</div>
-                <div className="text-xs text-gray-300 font-medium">{s.label}</div>
-              </div>
-            ))}
+          {/* Month Navigator */}
+          <div className="flex items-center gap-2 bg-slate-800 p-1.5 rounded-2xl border border-slate-700">
+            <button
+              onClick={() => setCurrentMonth((prev) => (prev > 0 ? prev - 1 : 11))}
+              className="p-1.5 rounded-xl hover:bg-slate-700 text-slate-300"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <span className="font-bold text-xs text-white px-3">
+              {monthNames[currentMonth]} {currentYear}
+            </span>
+            <button
+              onClick={() => setCurrentMonth((prev) => (prev < 11 ? prev + 1 : 0))}
+              className="p-1.5 rounded-xl hover:bg-slate-700 text-slate-300"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
           </div>
         </div>
 
-        {/* Feature Deep Dive */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-gray-100">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-3xl font-bold font-display text-gray-900">Key Capabilities & Architecture</h2>
-            <p className="mt-2 text-sm text-gray-600">Engineered specifically for boutique homestays and professional villa managers.</p>
+        {/* Sub Nav */}
+        <div className="max-w-7xl mx-auto mt-6 flex items-center gap-2 border-t border-slate-800/80 pt-4 overflow-x-auto text-sm font-medium">
+          <Link href="/dashboard" className="px-4 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition">
+            Dashboard
+          </Link>
+          <Link href="/calendar" className="px-4 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition">
+            Calendar &amp; Pricing
+          </Link>
+          <Link href="/unified-calendar" className="px-4 py-2 rounded-xl bg-[#ff3823] text-white font-bold shadow-lg shadow-[#ff3823]/20">
+            Unified Multi-Property (Active)
+          </Link>
+          <Link href="/properties" className="px-4 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition">
+            Properties ({PROPERTIES.length})
+          </Link>
+          <Link href="/reservations" className="px-4 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition">
+            Reservations
+          </Link>
+          <Link href="/channel-manager" className="px-4 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition">
+            Channel Manager
+          </Link>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-6">
+        {toastMessage && (
+          <div className="fixed top-24 right-6 z-50 bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-slate-700 flex items-center gap-3 animate-in slide-in-from-top-4 duration-200">
+            <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+            <span className="text-sm font-semibold">{toastMessage}</span>
+          </div>
+        )}
+
+        {/* Top Filter and Channel Legend */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+          <div className="relative">
+            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              placeholder="Search properties or locations..."
+              value={searchFilter}
+              onChange={(e) => setSearchFilter(e.target.value)}
+              className="pl-9 pr-4 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-800 w-64"
+            />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {features.map((f, i) => (
-              <div key={i} className="p-8 rounded-3xl bg-gray-50 border border-gray-200/80 shadow-sm space-y-3">
-                <div className="w-10 h-10 rounded-xl bg-[#fff1ef] text-[#ff3823] flex items-center justify-center font-bold text-sm">
-                  {i + 1}
+          <div className="flex flex-wrap items-center gap-3 text-xs font-semibold">
+            <div className="flex items-center gap-1.5">
+              <span className="w-3 h-3 rounded-full bg-[#ff385c]"></span> Airbnb
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-3 h-3 rounded-full bg-[#003580]"></span> Booking.com
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-3 h-3 rounded-full bg-emerald-600"></span> Direct (0% Comm)
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-3 h-3 rounded-full bg-slate-300"></span> Blocked / Maint
+            </div>
+          </div>
+        </div>
+
+        {/* Unified Timeline Matrix Table */}
+        <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr className="bg-slate-50 border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                  <th className="py-4 px-6 w-64 min-w-[240px] sticky left-0 bg-slate-50 z-20 shadow-[2px_0_5px_rgba(0,0,0,0.03)]">
+                    Property ({filteredProps.length})
+                  </th>
+                  {days.map((d) => (
+                    <th key={d} className="py-4 px-3 text-center min-w-[70px] border-l border-slate-100">
+                      <div>Nov {d}</div>
+                      <div className="text-[10px] text-slate-400 font-normal">
+                        {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][(d + 5) % 7]}
+                      </div>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {filteredProps.map((prop) => (
+                  <tr key={prop.id} className="hover:bg-slate-50/50 transition">
+                    {/* Left Sticky Property Column */}
+                    <td className="py-4 px-6 sticky left-0 bg-white z-10 shadow-[2px_0_5px_rgba(0,0,0,0.03)]">
+                      <div className="flex items-center gap-3">
+                        <div className="relative w-10 h-10 rounded-xl overflow-hidden bg-slate-100 shrink-0 border border-slate-200">
+                          <Image src={prop.image} alt={prop.name} fill sizes="40px" className="object-cover" />
+                        </div>
+                        <div className="truncate">
+                          <div className="font-bold text-slate-900 truncate text-xs">{prop.name}</div>
+                          <div className="text-[10px] text-slate-400 font-medium truncate">
+                            #{prop.id} &bull; {prop.zone}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+
+                    {/* Timeline Days */}
+                    {days.map((d) => {
+                      const booking = bookings.find(
+                        (b) => b.propId === prop.id && d >= b.startDay && d <= b.endDay
+                      );
+                      const isStart = booking && booking.startDay === d;
+
+                      let cellBg = "hover:bg-slate-100/70 cursor-pointer";
+                      let badge = null;
+
+                      if (booking) {
+                        if (booking.channel === "Airbnb") cellBg = "bg-rose-50 text-rose-900";
+                        else if (booking.channel === "Booking.com") cellBg = "bg-blue-50 text-blue-900";
+                        else if (booking.channel === "Direct") cellBg = "bg-emerald-50 text-emerald-900";
+                        else if (booking.channel === "Blocked") cellBg = "bg-slate-100 text-slate-400 border-dashed";
+
+                        if (isStart) {
+                          badge = (
+                            <div className="text-[10px] font-bold truncate">
+                              {booking.guestName} ({booking.channel})
+                            </div>
+                          );
+                        }
+                      }
+
+                      return (
+                        <td
+                          key={d}
+                          onClick={() =>
+                            setSelectedCell({
+                              propId: prop.id,
+                              propName: prop.name,
+                              day: d,
+                              price: prop.price
+                            })
+                          }
+                          className={`p-2 text-center border-l border-slate-100 h-16 transition ${cellBg}`}
+                        >
+                          {badge || (
+                            <span className="text-[11px] font-semibold text-slate-500">
+                              ₹{prop.price.toLocaleString()}
+                            </span>
+                          )}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Quick Cell Action Modal */}
+        {selectedCell && (
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl border border-slate-200 animate-in zoom-in-95 space-y-4">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div>
+                  <div className="text-xs text-slate-400 font-bold uppercase">{selectedCell.propName}</div>
+                  <h3 className="text-base font-bold text-slate-900 font-display">Date: Nov {selectedCell.day}, 2026</h3>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900">{f.title}</h3>
-                <p className="text-sm text-gray-600 leading-relaxed">{f.desc}</p>
+                <button onClick={() => setSelectedCell(null)} className="p-1 rounded-lg text-slate-400 hover:text-slate-900">
+                  <X className="w-5 h-5" />
+                </button>
               </div>
-            ))}
-          </div>
-        </div>
 
-        {/* Bottom CTA */}
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 text-center">
-          <div className="p-12 rounded-3xl bg-gradient-to-r from-gray-900 to-[#0c1838] text-white shadow-2xl relative overflow-hidden">
-            <h3 className="text-2xl sm:text-3xl font-extrabold font-display">Ready to test this live on your properties?</h3>
-            <p className="mt-3 text-sm text-gray-300 max-w-xl mx-auto">
-              Start your 30-day free trial. Setup takes under 5 minutes with zero credit card required.
-            </p>
-            <div className="mt-8 flex justify-center gap-4">
-              <Link
-                href="/start-trial"
-                className="px-8 py-3.5 rounded-full bg-[#ff3823] text-white font-bold text-sm shadow-lg hover:bg-[#e5220d] transition-all"
-              >
-                Start 30-Day Free Trial
-              </Link>
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 mb-1">Nightly Rate (₹)</label>
+                  <input
+                    type="number"
+                    placeholder={`Current: ₹${selectedCell.price}`}
+                    value={quickNewPrice}
+                    onChange={(e) => setQuickNewPrice(e.target.value)}
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm font-bold text-slate-900"
+                  />
+                </div>
+
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleApplyPrice}
+                    className="flex-1 py-2.5 rounded-xl bg-[#ff3823] text-white font-bold text-xs hover:bg-[#e5220d] shadow"
+                  >
+                    Update Price
+                  </button>
+                  <button
+                    onClick={handleToggleBlock}
+                    className="flex-1 py-2.5 rounded-xl bg-slate-900 text-white font-bold text-xs hover:bg-slate-800 shadow"
+                  >
+                    Block / Unblock
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </main>
+
       <Footer />
     </div>
   );

@@ -33,6 +33,7 @@ interface Cluster {
   name: string;
   parentId: string;
   childIds: string[];
+  entirePlaceMode?: boolean;
 }
 
 export default function PropertiesPage() {
@@ -47,13 +48,15 @@ export default function PropertiesPage() {
       id: "CLS-101",
       name: "The Grand Haven Villa & Independent Floors",
       parentId: "LUL-101",
-      childIds: ["LUL-102", "LUL-103", "LUL-104"]
+      childIds: ["LUL-102", "LUL-103", "LUL-104"],
+      entirePlaceMode: false
     },
     {
       id: "CLS-102",
       name: "Shaheed Path Executive Suites Cluster",
       parentId: "LUL-105",
-      childIds: ["LUL-106", "LUL-107"]
+      childIds: ["LUL-106", "LUL-107"],
+      entirePlaceMode: false
     }
   ]);
 
@@ -77,6 +80,23 @@ export default function PropertiesPage() {
       return matchesSearch;
     });
   }, [searchQuery]);
+
+    const toggleEntirePlaceMode = (clusterId: string) => {
+    setClusters(
+      clusters.map((c) => {
+        if (c.id === clusterId) {
+          const nextVal = !c.entirePlaceMode;
+          showToast(
+            nextVal
+              ? `Entire Place Mode ACTIVATED for "${c.name}". Paused all child listings on Airbnb & Booking.com to sell the entire property!`
+              : `Entire Place Mode DEACTIVATED. Resumed individual child room bookings.`
+          );
+          return { ...c, entirePlaceMode: nextVal };
+        }
+        return c;
+      })
+    );
+  };
 
   const handleCreateCluster = (e: React.FormEvent) => {
     e.preventDefault();
@@ -120,6 +140,12 @@ export default function PropertiesPage() {
               className="px-4 py-2 rounded-xl bg-slate-800 text-slate-200 hover:text-white hover:bg-slate-700 text-xs font-bold border border-slate-700 transition"
             >
               Back to Dashboard
+            </Link>
+            <Link
+              href="/properties/clone-airbnb"
+              className="px-4 py-2 rounded-xl bg-slate-800 text-white text-xs font-bold hover:bg-slate-700 transition flex items-center gap-1.5 border border-slate-700"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Clone Airbnb Listing
             </Link>
             <Link
               href="/properties/create"
@@ -360,9 +386,23 @@ export default function PropertiesPage() {
                         <span className="font-mono text-xs font-bold text-slate-400">#{cluster.id}</span>
                         <h4 className="font-bold text-slate-900 text-base">{cluster.name}</h4>
                       </div>
-                      <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200">
-                        Active Cluster
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => toggleEntirePlaceMode(cluster.id)}
+                          className={`px-3 py-1 rounded-full text-xs font-bold transition flex items-center gap-1.5 border ${
+                            cluster.entirePlaceMode
+                              ? "bg-amber-100 text-amber-900 border-amber-300 ring-2 ring-amber-400/30"
+                              : "bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200"
+                          }`}
+                        >
+                          <Zap className={`w-3.5 h-3.5 ${cluster.entirePlaceMode ? "text-amber-600" : "text-slate-400"}`} />
+                          Entire Place Mode: {cluster.entirePlaceMode ? "ON (Child Paused)" : "OFF"}
+                        </button>
+                        <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200">
+                          Active
+                        </span>
+                      </div>
                     </div>
 
                     {/* Parent Property */}

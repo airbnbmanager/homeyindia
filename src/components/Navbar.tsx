@@ -314,12 +314,85 @@ export default function Navbar() {
                   </div>
                   <div>
                     <Link
+                      href="/unified-calendar"
+                      onClick={() => setRightDrawerOpen(false)}
+                      className="block py-1 font-semibold text-gray-700 hover:text-[#ff3823] transition-colors"
+                    >
+                      Unified Timeline Calendar
+                    </Link>
+                  </div>
+                  <div>
+                    <Link
+                      href="/calendar"
+                      onClick={() => setRightDrawerOpen(false)}
+                      className="block py-1 font-semibold text-gray-700 hover:text-[#ff3823] transition-colors"
+                    >
+                      Calendar &amp; Pricing Settings
+                    </Link>
+                  </div>
+                  <div>
+                    <Link
+                      href="/properties"
+                      onClick={() => setRightDrawerOpen(false)}
+                      className="block py-1 font-semibold text-gray-700 hover:text-[#ff3823] transition-colors flex items-center justify-between"
+                    >
+                      <span>Properties &amp; Magic Cluster</span>
+                      <span className="text-[10px] bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full font-bold">18 Stays</span>
+                    </Link>
+                  </div>
+                  <div>
+                    <Link
+                      href="/reservations"
+                      onClick={() => setRightDrawerOpen(false)}
+                      className="block py-1 font-semibold text-gray-700 hover:text-[#ff3823] transition-colors"
+                    >
+                      Manage Reservations &amp; Offline Bookings
+                    </Link>
+                  </div>
+                  <div>
+                    <Link
+                      href="/channel-manager"
+                      onClick={() => setRightDrawerOpen(false)}
+                      className="block py-1 font-semibold text-gray-700 hover:text-[#ff3823] transition-colors"
+                    >
+                      Channel Manager (50+ OTAs)
+                    </Link>
+                  </div>
+                  <div>
+                    <Link
+                      href="/flexi-pricing"
+                      onClick={() => setRightDrawerOpen(false)}
+                      className="block py-1 font-semibold text-gray-700 hover:text-[#ff3823] transition-colors"
+                    >
+                      Flexi Pricing&trade; Yield Management
+                    </Link>
+                  </div>
+                  <div>
+                    <Link
+                      href="/expenses-and-profits"
+                      onClick={() => setRightDrawerOpen(false)}
+                      className="block py-1 font-semibold text-gray-700 hover:text-[#ff3823] transition-colors"
+                    >
+                      Property Expenses &amp; True P&amp;L
+                    </Link>
+                  </div>
+                  <div>
+                    <Link
+                      href="/properties/clone-airbnb"
+                      onClick={() => setRightDrawerOpen(false)}
+                      className="block py-1 font-semibold text-amber-700 hover:text-[#ff3823] transition-colors"
+                    >
+                      Clone Airbnb Listing
+                    </Link>
+                  </div>
+                  <div>
+                    <Link
                       href="/account"
                       onClick={() => setRightDrawerOpen(false)}
                       className="block py-1 font-bold text-gray-900 hover:text-[#ff3823] transition-colors flex items-center justify-between"
                     >
-                      <span>Account Settings & Identity</span>
-                      <span className="text-[10px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-bold">Verified</span>
+                      <span>Account Settings &amp; Identity</span>
+                      <span className="text-[10px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-bold">KYC Verified</span>
                     </Link>
                   </div>
                   <div>
