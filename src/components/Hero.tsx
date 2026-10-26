@@ -61,7 +61,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative pt-20 sm:pt-28 lg:pt-36 pb-16 sm:pb-20 overflow-hidden bg-gradient-to-b from-[#faf9f5] via-white to-gray-50/50">
+    <section className="relative pt-28 sm:pt-36 lg:pt-40 pb-16 sm:pb-20 overflow-hidden bg-gradient-to-b from-[#faf9f5] via-white to-gray-50/50">
       {/* Background ambient radial glow */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[500px] bg-gradient-to-tr from-[#ffe8e4]/50 via-[#fff3eb]/40 to-transparent blur-3xl pointer-events-none -z-10" />
 

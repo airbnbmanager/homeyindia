@@ -1,4 +1,3 @@
-import TopBanner from "@/components/TopBanner";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import InteractiveCalendar from "@/components/InteractiveCalendar";
@@ -14,8 +13,7 @@ import Footer from "@/components/Footer";
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col bg-white selection:bg-[#ff3823]/10 selection:text-[#ff3823]">
-      <TopBanner />
-      <Navbar />
+      <Navbar showBanner={true} />
       <main className="flex-grow">
         <Hero />
         <InteractiveCalendar />

@@ -2,11 +2,11 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { X, Sparkles } from "lucide-react";
+import { X } from "lucide-react";
 
-export default function TopBanner() {
+export default function TopBanner({ onDismiss }: { onDismiss?: () => void }) {
   const [dismissed, setDismissed] = useState(false);
-  const [timeLeft, setTimeLeft] = useState({ days: 20, hours: 3, mins: 21, secs: 45 });
+  const [timeLeft, setTimeLeft] = useState({ days: 20, hours: 1, mins: 18, secs: 45 });
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -23,38 +23,53 @@ export default function TopBanner() {
 
   if (dismissed) return null;
 
+  const handleDismiss = () => {
+    setDismissed(true);
+    if (onDismiss) onDismiss();
+  };
+
   return (
-    <div className="bg-gradient-to-r from-[#1e100a] via-[#2d170b] to-[#1e100a] text-white py-2 px-4 border-b border-amber-900/40 relative z-50 text-xs">
-      <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-        <div className="flex-1 flex flex-wrap items-center justify-center gap-3 text-center">
+    <div className="bg-[#1f1008] text-white py-1.5 sm:py-2 px-3 sm:px-4 border-b border-[#3d2012] text-xs font-sans w-full transition-all">
+      <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4">
+        {/* Center content */}
+        <div className="flex-1 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-center text-[11px] sm:text-xs">
           <span className="flex items-center gap-1.5 font-medium text-amber-200">
-            <span className="text-base">🪔</span>
-            <span><strong>Special Launch Offer</strong> — up to <strong>35% off</strong> for new hosts</span>
+            <span className="text-sm">🪔</span>
+            <span>
+              <strong className="text-white font-semibold">Diwali offer</strong> &mdash; up to <strong className="text-amber-400 font-bold">35% off</strong> &mdash; new hosts only
+            </span>
           </span>
 
-          <div className="flex items-center gap-1 text-[11px] font-mono">
-            <span className="bg-white/10 px-1.5 py-0.5 rounded font-bold text-amber-300">{String(timeLeft.days).padStart(2, "0")}</span>
-            <span className="text-[9px] uppercase text-gray-400">DAYS</span>
-            <span className="bg-white/10 px-1.5 py-0.5 rounded font-bold text-amber-300 ml-1">{String(timeLeft.hours).padStart(2, "0")}</span>
-            <span className="text-[9px] uppercase text-gray-400">HRS</span>
-            <span className="bg-white/10 px-1.5 py-0.5 rounded font-bold text-amber-300 ml-1">{String(timeLeft.mins).padStart(2, "0")}</span>
-            <span className="text-[9px] uppercase text-gray-400">MIN</span>
+          <div className="flex items-center gap-1 text-[10px] sm:text-[11px] font-mono">
+            <span className="bg-white/10 px-1.5 py-0.5 rounded font-bold text-amber-300">
+              {String(timeLeft.days).padStart(2, "0")}
+            </span>
+            <span className="text-[8px] sm:text-[9px] uppercase text-gray-400 font-sans">DAYS</span>
+            <span className="bg-white/10 px-1.5 py-0.5 rounded font-bold text-amber-300 ml-0.5">
+              {String(timeLeft.hours).padStart(2, "0")}
+            </span>
+            <span className="text-[8px] sm:text-[9px] uppercase text-gray-400 font-sans">HRS</span>
+            <span className="bg-white/10 px-1.5 py-0.5 rounded font-bold text-amber-300 ml-0.5">
+              {String(timeLeft.mins).padStart(2, "0")}
+            </span>
+            <span className="text-[8px] sm:text-[9px] uppercase text-gray-400 font-sans">MIN</span>
           </div>
 
           <Link
             href="/pricing"
-            className="px-3 py-1 rounded-full bg-white text-gray-900 font-bold text-[11px] hover:bg-amber-100 transition-colors shadow-sm ml-2"
+            className="px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full bg-white text-gray-900 font-bold text-[10px] sm:text-[11px] hover:bg-amber-100 transition shadow-sm ml-1 sm:ml-2 shrink-0"
           >
             Claim offer
           </Link>
         </div>
 
+        {/* Dismiss button */}
         <button
-          onClick={() => setDismissed(true)}
-          className="text-gray-400 hover:text-white p-1 rounded-md transition-colors"
-          aria-label="Dismiss announcement"
+          onClick={handleDismiss}
+          className="text-gray-400 hover:text-white p-1 rounded-md transition-colors shrink-0"
+          aria-label="Dismiss offer banner"
         >
-          <X className="w-4 h-4" />
+          <X className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
         </button>
       </div>
     </div>

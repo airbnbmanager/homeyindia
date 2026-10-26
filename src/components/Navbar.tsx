@@ -1,5 +1,7 @@
 "use client";
 
+import TopBanner from "@/components/TopBanner";
+
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import AuthModal from "@/components/AuthModal";
@@ -10,7 +12,7 @@ import {
   ArrowRight, Phone
 } from "lucide-react";
 
-export default function Navbar() {
+export default function Navbar({ showBanner = false }: { showBanner?: boolean }) {
   const [rightDrawerOpen, setRightDrawerOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [featuresAccordionOpen, setFeaturesAccordionOpen] = useState(false);
@@ -52,6 +54,7 @@ export default function Navbar() {
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-b border-gray-100 transition-all">
+        {showBanner && <TopBanner />}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
           
           {/* Brand Logo */}
