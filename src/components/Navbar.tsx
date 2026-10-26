@@ -304,6 +304,16 @@ export default function Navbar() {
                 <>
                   <div>
                     <Link
+                      href="/dashboard"
+                      onClick={() => setRightDrawerOpen(false)}
+                      className="block py-1 font-bold text-[#ff3823] hover:text-[#e0220d] transition-colors flex items-center justify-between"
+                    >
+                      <span>Host Control Dashboard</span>
+                      <span className="text-[10px] bg-[#fff1ef] text-[#ff3823] px-2 py-0.5 rounded-full font-bold border border-[#ffe2de]">Live</span>
+                    </Link>
+                  </div>
+                  <div>
+                    <Link
                       href="/account"
                       onClick={() => setRightDrawerOpen(false)}
                       className="block py-1 font-bold text-gray-900 hover:text-[#ff3823] transition-colors flex items-center justify-between"
