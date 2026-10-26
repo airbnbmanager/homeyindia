@@ -121,12 +121,12 @@ export default function PropertiesPage() {
             >
               Back to Dashboard
             </Link>
-            <button
-              onClick={() => showToast("Opening listing creation wizard...")}
+            <Link
+              href="/properties/create"
               className="px-4 py-2 rounded-xl bg-[#ff3823] text-white text-xs font-bold hover:bg-[#e5220d] transition flex items-center gap-1.5 shadow-lg shadow-[#ff3823]/20"
             >
               <Plus className="w-4 h-4" /> Create New Listing
-            </button>
+            </Link>
           </div>
         </div>
 
