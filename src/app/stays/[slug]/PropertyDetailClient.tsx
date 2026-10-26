@@ -74,15 +74,52 @@ export default function PropertyDetailClient({ prop }: { prop: Property }) {
             </div>
           </div>
 
-          {/* Photo Container */}
-          <div className="aspect-[21/9] rounded-3xl overflow-hidden shadow-xl bg-gray-100 relative group">
-            <img
-              src={prop.image}
-              alt={prop.name}
-              className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-700"
-            />
-            <div className="absolute bottom-4 right-4 px-3.5 py-1.5 rounded-full bg-black/70 backdrop-blur-md text-white text-xs font-semibold">
-              Verified Luxury Stay by Homey India
+          {/* Airbnb-Style 5-Photo Bento Gallery Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-2 rounded-3xl overflow-hidden shadow-xl aspect-[16/10] md:aspect-[21/9] relative group bg-gray-100">
+            {/* Main Lead Photo (2 Cols) */}
+            <div className="md:col-span-2 relative overflow-hidden h-full">
+              <img
+                src={prop.gallery?.[0] || prop.image}
+                alt={prop.name}
+                className="w-full h-full object-cover hover:scale-102 transition-transform duration-500 cursor-pointer"
+              />
+              <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-[11px] font-semibold">
+                Main Living & Facade
+              </div>
+            </div>
+
+            {/* Right 2x2 Photo Grid */}
+            <div className="hidden md:grid col-span-2 grid-cols-2 gap-2 h-full">
+              {[
+                { idx: 1, label: "Living & Lounge" },
+                { idx: 2, label: "Master Suite" },
+                { idx: 3, label: "Luxury Bath" },
+                { idx: 4, label: "Balcony & Views" },
+              ].map((item) => (
+                <div key={item.idx} className="relative overflow-hidden h-full bg-gray-100 group/item">
+                  <img
+                    src={prop.gallery?.[item.idx] || prop.image}
+                    alt={prop.name}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500 cursor-pointer"
+                  />
+                  <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/60 backdrop-blur-sm text-white text-[10px] opacity-0 group-hover/item:opacity-100 transition-opacity">
+                    {item.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Bottom Right Floating Badge & Button */}
+            <div className="absolute bottom-4 right-4 flex items-center gap-2">
+              <div className="px-3 py-1.5 rounded-lg bg-black/70 backdrop-blur-md text-white text-xs font-medium hidden sm:block">
+                Verified Airbnb Superhost Photos
+              </div>
+              <button 
+                onClick={() => alert('Full gallery view with all high-resolution photos open!')}
+                className="px-3.5 py-1.5 rounded-lg bg-white/95 hover:bg-white text-gray-900 font-bold text-xs shadow-md border border-gray-300 flex items-center gap-1.5 backdrop-blur-sm transition-all hover:scale-105"
+              >
+                <span>☷</span> Show all photos
+              </button>
             </div>
           </div>
         </div>
