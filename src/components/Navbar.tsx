@@ -233,15 +233,19 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
             {/* Header */}
             <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#ff3823] to-[#e0220d] text-white flex items-center justify-center font-bold text-xs shadow-sm">
-                  {currentUser ? (currentUser.firstName?.[0] || "U") : <User className="w-4 h-4" />}
+                <div className="w-8 h-8 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-xs shadow-sm border border-slate-200">
+                  {currentUser ? (
+                    <span className="text-[#ff3823] font-bold">{currentUser.firstName?.[0]?.toUpperCase() || "H"}</span>
+                  ) : (
+                    <User className="w-4 h-4 text-slate-500" />
+                  )}
                 </div>
                 <div>
                   <span className="font-bold text-gray-900 text-sm block">
-                    {currentUser ? `Hey, ${currentUser.firstName}!` : "Homey India Desk"}
+                    {currentUser ? `Hey, ${currentUser.firstName}!` : "Welcome to Homey India"}
                   </span>
-                  <span className="text-[10px] text-gray-400">
-                    {currentUser ? "Verified Host Profile" : "Praveen Singh · Lucknow"}
+                  <span className="text-[10px] text-gray-500">
+                    {currentUser ? (currentUser.email || "Verified Host Profile") : "Sign in to access host portal & bookings"}
                   </span>
                 </div>
               </div>
@@ -503,7 +507,10 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
             <div className="p-4 border-t border-gray-100 bg-gray-50/70 text-xs text-gray-600 space-y-2">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="font-bold text-gray-900">Direct Founder Desk</div>
+                  <div className="font-bold text-gray-900 flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    24/7 Founder Helpline
+                  </div>
                   <p className="text-[11px] text-gray-500">Praveen Singh · Lucknow, UP</p>
                 </div>
                 <a

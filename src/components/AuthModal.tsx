@@ -61,10 +61,10 @@ export default function AuthModal({
 
     const isEmail = identifier.includes("@");
     const userProfile = {
-      firstName: isEmail ? identifier.split("@")[0] : "Praveen",
-      lastName: "Host",
-      email: isEmail ? identifier : "host@theuniquehaven.com",
-      phone: !isEmail ? identifier : "+91 94544 70872",
+      firstName: isEmail ? (identifier.split("@")[0].charAt(0).toUpperCase() + identifier.split("@")[0].slice(1)) : `Host (${identifier.slice(-4)})`,
+      lastName: "Member",
+      email: isEmail ? identifier : "",
+      phone: !isEmail ? identifier : "",
       isLoggedIn: true,
     };
 
