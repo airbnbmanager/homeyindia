@@ -39,18 +39,31 @@ interface TimelineBlock {
 
 export default function UnifiedCalendarPage() {
   const [currentYear, setCurrentYear] = useState(2026);
-  const [currentMonth, setCurrentMonth] = useState(10); // 10 = Nov (0-indexed)
+  const [currentMonth, setCurrentMonth] = useState(9); // 9 = October (0-indexed)
   const [searchFilter, setSearchFilter] = useState("");
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isLoadingSync, setIsLoadingSync] = useState(false);
   const [viewMode, setViewMode] = useState<"timeline" | "agenda">("timeline");
-  const [selectedAgendaDay, setSelectedAgendaDay] = useState<number>(1);
+  const [selectedAgendaDay, setSelectedAgendaDay] = useState<number>(29);
+  const [todayInfo, setTodayInfo] = useState({ year: 2026, month: 9, day: 29 });
   const [liveStats, setLiveStats] = useState<{
     totalProperties: number;
     totalReservations: number;
     totalBlocks: number;
     lastSync: string;
   } | null>(null);
+
+  useEffect(() => {
+    const now = new Date();
+    setTodayInfo({
+      year: now.getFullYear(),
+      month: now.getMonth(),
+      day: now.getDate()
+    });
+    setCurrentYear(now.getFullYear());
+    setCurrentMonth(now.getMonth());
+    setSelectedAgendaDay(now.getDate());
+  }, []);
 
   // Selected cell for Quick Action
   const [selectedCell, setSelectedCell] = useState<{ propId: string; propName: string; day: number; price: number } | null>(null);
@@ -66,8 +79,14 @@ export default function UnifiedCalendarPage() {
     "July", "August", "September", "October", "November", "December"
   ];
 
-  // 14 days visible window for horizontal timeline
-  const days = Array.from({ length: 14 }, (_, i) => i + 1);
+  // Dynamic total days in month (e.g. 31 for October, 30 for November)
+  const totalDaysInMonth = useMemo(() => {
+    return new Date(currentYear, currentMonth + 1, 0).getDate();
+  }, [currentYear, currentMonth]);
+
+  const days = useMemo(() => {
+    return Array.from({ length: totalDaysInMonth }, (_, i) => i + 1);
+  }, [totalDaysInMonth]);
 
   // Live timeline bookings loaded from real Airbnb iCal feeds
   const [bookings, setBookings] = useState<TimelineBlock[]>([]);
@@ -87,6 +106,8 @@ export default function UnifiedCalendarPage() {
         });
 
         const newBlocks: TimelineBlock[] = [];
+        const monthStart = new Date(currentYear, currentMonth, 1);
+        const monthEnd = new Date(currentYear, currentMonth, totalDaysInMonth, 23, 59, 59);
 
         (data.properties || []).forEach((prop: any) => {
           const propId = prop.propertyId;
@@ -99,26 +120,24 @@ export default function UnifiedCalendarPage() {
             const start = new Date(sY, sM - 1, sD);
             const end = new Date(eY, eM - 1, eD);
 
-            // Check if falls within currentMonth & currentYear
-            const monthStart = new Date(currentYear, currentMonth, 1);
-            const monthEnd = new Date(currentYear, currentMonth, 15); // Timeline window
-
             if (start <= monthEnd && end >= monthStart) {
-              const startDay = start.getMonth() === currentMonth ? start.getDate() : 1;
-              const endDay = end.getMonth() === currentMonth ? Math.min(14, end.getDate()) : 14;
+              const startDay = (start.getFullYear() === currentYear && start.getMonth() === currentMonth)
+                ? start.getDate()
+                : 1;
+              const endDay = (end.getFullYear() === currentYear && end.getMonth() === currentMonth)
+                ? Math.min(totalDaysInMonth, end.getDate())
+                : totalDaysInMonth;
 
-              if (startDay <= 14) {
-                newBlocks.push({
-                  propId,
-                  startDay,
-                  endDay,
-                  channel: "Airbnb",
-                  guestName: res.guestName || `Airbnb (${res.confirmationCode || "Reserved"})`,
-                  nights: res.nights || (endDay - startDay || 1),
-                  total: res.amount || (propPrice * (res.nights || 1)),
-                  confirmationCode: res.confirmationCode,
-                });
-              }
+              newBlocks.push({
+                propId,
+                startDay,
+                endDay,
+                channel: "Airbnb",
+                guestName: res.guestName || `Airbnb (${res.confirmationCode || "Reserved"})`,
+                nights: res.nights || (endDay - startDay || 1),
+                total: res.amount || (propPrice * (res.nights || 1)),
+                confirmationCode: res.confirmationCode,
+              });
             }
           });
 
@@ -129,24 +148,23 @@ export default function UnifiedCalendarPage() {
             const start = new Date(sY, sM - 1, sD);
             const end = new Date(eY, eM - 1, eD);
 
-            const monthStart = new Date(currentYear, currentMonth, 1);
-            const monthEnd = new Date(currentYear, currentMonth, 15);
-
             if (start <= monthEnd && end >= monthStart) {
-              const startDay = start.getMonth() === currentMonth ? start.getDate() : 1;
-              const endDay = end.getMonth() === currentMonth ? Math.min(14, end.getDate()) : 14;
+              const startDay = (start.getFullYear() === currentYear && start.getMonth() === currentMonth)
+                ? start.getDate()
+                : 1;
+              const endDay = (end.getFullYear() === currentYear && end.getMonth() === currentMonth)
+                ? Math.min(totalDaysInMonth, end.getDate())
+                : totalDaysInMonth;
 
-              if (startDay <= 14) {
-                newBlocks.push({
-                  propId,
-                  startDay,
-                  endDay,
-                  channel: "Blocked",
-                  guestName: "Airbnb Block",
-                  nights: blk.nights || (endDay - startDay || 1),
-                  total: 0,
-                });
-              }
+              newBlocks.push({
+                propId,
+                startDay,
+                endDay,
+                channel: "Blocked",
+                guestName: "Airbnb Block",
+                nights: blk.nights || (endDay - startDay || 1),
+                total: 0,
+              });
             }
           });
         });
@@ -158,7 +176,7 @@ export default function UnifiedCalendarPage() {
     } finally {
       setIsLoadingSync(false);
     }
-  }, [currentYear, currentMonth]);
+  }, [currentYear, currentMonth, totalDaysInMonth]);
 
   useEffect(() => {
     fetchUnifiedLiveSync();
@@ -174,7 +192,7 @@ export default function UnifiedCalendarPage() {
 
   const handleApplyPrice = () => {
     if (!selectedCell || !quickNewPrice) return;
-    showToast(`Updated price to ₹${parseInt(quickNewPrice).toLocaleString()} for ${selectedCell.propName} on Nov ${selectedCell.day}. Synced with OTAs in 0.8s!`);
+    showToast(`Updated price to ₹${parseInt(quickNewPrice).toLocaleString()} for ${selectedCell.propName} on ${monthNames[currentMonth]} ${selectedCell.day}. Synced with OTAs in 0.8s!`);
     setSelectedCell(null);
     setQuickNewPrice("");
   };
@@ -187,7 +205,7 @@ export default function UnifiedCalendarPage() {
 
     if (existing) {
       setBookings(bookings.filter((b) => b !== existing));
-      showToast(`Unblocked ${selectedCell.propName} on Nov ${selectedCell.day}.`);
+      showToast(`Unblocked ${selectedCell.propName} on ${monthNames[currentMonth]} ${selectedCell.day}.`);
     } else {
       setBookings([
         ...bookings,
@@ -201,10 +219,38 @@ export default function UnifiedCalendarPage() {
           total: 0
         }
       ]);
-      showToast(`Blocked ${selectedCell.propName} on Nov ${selectedCell.day} across all channels.`);
+      showToast(`Blocked ${selectedCell.propName} on ${monthNames[currentMonth]} ${selectedCell.day} across all channels.`);
     }
     setSelectedCell(null);
   };
+
+  const handlePrevMonth = () => {
+    if (currentMonth === 0) {
+      setCurrentMonth(11);
+      setCurrentYear((y) => y - 1);
+    } else {
+      setCurrentMonth((m) => m - 1);
+    }
+  };
+
+  const handleNextMonth = () => {
+    if (currentMonth === 11) {
+      setCurrentMonth(0);
+      setCurrentYear((y) => y + 1);
+    } else {
+      setCurrentMonth((m) => m + 1);
+    }
+  };
+
+  const handleJumpToToday = () => {
+    const now = new Date();
+    setCurrentMonth(now.getMonth());
+    setCurrentYear(now.getFullYear());
+    setSelectedAgendaDay(now.getDate());
+  };
+
+  const isCurrentMonthView = currentYear === todayInfo.year && currentMonth === todayInfo.month;
+  const todayDayNum = todayInfo.day;
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f8fafc]">
@@ -224,30 +270,37 @@ export default function UnifiedCalendarPage() {
           </div>
 
           {/* Month Navigator & Live Refresh Button */}
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
             <button
               onClick={fetchUnifiedLiveSync}
               disabled={isLoadingSync}
-              className="px-3.5 py-2 rounded-2xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs flex items-center gap-1.5 transition border border-slate-700"
+              className="px-3.5 py-2 rounded-2xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs flex items-center gap-1.5 transition border border-slate-700 shadow-sm cursor-pointer"
             >
               <RefreshCw className={`w-3.5 h-3.5 text-emerald-400 ${isLoadingSync ? "animate-spin" : ""}`} />
               {isLoadingSync ? "Syncing..." : "Sync Realtime Feeds"}
             </button>
 
-            <div className="flex items-center gap-2 bg-slate-800 p-1.5 rounded-2xl border border-slate-700">
+            <button
+              onClick={handleJumpToToday}
+              className="px-3 py-2 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs border border-slate-700 transition shadow-sm cursor-pointer"
+            >
+              Today
+            </button>
+
+            <div className="flex items-center gap-1 bg-slate-800 p-1 rounded-2xl border border-slate-700">
               <button
-                onClick={() => setCurrentMonth((prev) => (prev > 0 ? prev - 1 : 11))}
-                className="p-1.5 rounded-xl hover:bg-slate-700 text-slate-300"
+                onClick={handlePrevMonth}
+                className="p-1.5 rounded-xl hover:bg-slate-700 text-slate-300 transition cursor-pointer"
                 aria-label="Previous Month"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
-              <span className="font-bold text-xs text-white px-3">
+              <span className="font-bold text-xs text-white px-2.5 whitespace-nowrap">
                 {monthNames[currentMonth]} {currentYear}
               </span>
               <button
-                onClick={() => setCurrentMonth((prev) => (prev < 11 ? prev + 1 : 0))}
-                className="p-1.5 rounded-xl hover:bg-slate-700 text-slate-300"
+                onClick={handleNextMonth}
+                className="p-1.5 rounded-xl hover:bg-slate-700 text-slate-300 transition cursor-pointer"
                 aria-label="Next Month"
               >
                 <ChevronRight className="w-4 h-4" />
@@ -325,17 +378,17 @@ export default function UnifiedCalendarPage() {
         <div className="md:hidden flex items-center justify-between gap-2 p-1.5 bg-slate-100 rounded-2xl border border-slate-200">
           <button
             onClick={() => setViewMode("timeline")}
-            className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all ${
+            className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               viewMode === "timeline"
                 ? "bg-slate-900 text-white shadow-sm"
                 : "text-slate-600 hover:text-slate-900"
             }`}
           >
-            14-Day Timeline
+            Monthly Grid
           </button>
           <button
             onClick={() => setViewMode("agenda")}
-            className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all ${
+            className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               viewMode === "agenda"
                 ? "bg-slate-900 text-white shadow-sm"
                 : "text-slate-600 hover:text-slate-900"
@@ -358,17 +411,20 @@ export default function UnifiedCalendarPage() {
                   const dayDate = new Date(currentYear, currentMonth, d);
                   const dayName = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][dayDate.getDay()];
                   const isSelected = selectedAgendaDay === d;
+                  const isDayToday = isCurrentMonthView && d === todayDayNum;
                   return (
                     <button
                       key={d}
                       onClick={() => setSelectedAgendaDay(d)}
-                      className={`flex flex-col items-center justify-center min-w-[50px] py-2 px-1.5 rounded-xl text-xs font-bold transition-all shrink-0 ${
+                      className={`flex flex-col items-center justify-center min-w-[52px] py-2 px-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${
                         isSelected
                           ? "bg-[#ff2800] text-white shadow-md shadow-[#ff2800]/25 scale-105"
+                          : isDayToday
+                          ? "bg-amber-100/90 text-amber-900 border border-amber-300 ring-1 ring-amber-300"
                           : "bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-100"
                       }`}
                     >
-                      <span className="text-[10px] opacity-80">{dayName}</span>
+                      <span className="text-[10px] opacity-80">{isDayToday ? "Today" : dayName}</span>
                       <span className="text-sm font-extrabold">{d}</span>
                     </button>
                   );
@@ -453,7 +509,7 @@ export default function UnifiedCalendarPage() {
         {/* Unified Timeline Matrix Table (hidden in agenda mode on mobile) */}
         <div className={`${viewMode === "agenda" ? "hidden md:block" : "block"} bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden`}>
           <div className="md:hidden bg-slate-50 px-4 py-2 text-[11px] text-slate-500 font-medium text-center border-b border-slate-200">
-            👉 Swipe horizontally to view all 14 days
+            👉 Swipe horizontally to view all {totalDaysInMonth} days of {monthNames[currentMonth]}
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs">
@@ -465,12 +521,23 @@ export default function UnifiedCalendarPage() {
                   {days.map((d) => {
                     const dayDate = new Date(currentYear, currentMonth, d);
                     const dayName = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][dayDate.getDay()];
+                    const isDayToday = isCurrentMonthView && d === todayDayNum;
                     return (
-                      <th key={d} className="py-4 px-3 text-center min-w-[70px] border-l border-slate-100">
-                        <div>
-                          {monthNames[currentMonth].slice(0, 3)} {d}
+                      <th
+                        key={d}
+                        className={`py-3.5 px-3 text-center min-w-[72px] border-l border-slate-100 transition-colors ${
+                          isDayToday ? "bg-amber-100/70 border-b-2 border-b-amber-500 font-extrabold text-amber-950" : ""
+                        }`}
+                      >
+                        <div className="flex items-center justify-center gap-1">
+                          <span>{monthNames[currentMonth].slice(0, 3)} {d}</span>
+                          {isDayToday && (
+                            <span className="bg-[#ff2800] text-white text-[9px] px-1.5 py-0.2 rounded-full font-black tracking-wide">
+                              TODAY
+                            </span>
+                          )}
                         </div>
-                        <div className="text-[10px] text-slate-400 font-normal">{dayName}</div>
+                        <div className={`text-[10px] ${isDayToday ? "text-amber-800 font-bold" : "text-slate-400 font-normal"}`}>{dayName}</div>
                       </th>
                     );
                   })}
@@ -511,14 +578,17 @@ export default function UnifiedCalendarPage() {
                         (b) => b.propId === prop.id && d >= b.startDay && d <= b.endDay
                       );
                       const isStart = booking && booking.startDay === d;
+                      const isDayToday = isCurrentMonthView && d === todayDayNum;
 
-                      let cellBg = "hover:bg-slate-100/70 cursor-pointer";
+                      let cellBg = isDayToday
+                        ? "bg-amber-50/50 hover:bg-amber-100/70 cursor-pointer ring-1 ring-inset ring-amber-300"
+                        : "hover:bg-slate-100/70 cursor-pointer";
                       let badge = null;
 
                       if (booking) {
-                        if (booking.channel === "Airbnb") cellBg = "bg-rose-50 text-rose-900";
-                        else if (booking.channel === "Booking.com") cellBg = "bg-blue-50 text-blue-900";
-                        else if (booking.channel === "Direct") cellBg = "bg-emerald-50 text-emerald-900";
+                        if (booking.channel === "Airbnb") cellBg = "bg-rose-50 text-rose-900 border-rose-200";
+                        else if (booking.channel === "Booking.com") cellBg = "bg-blue-50 text-blue-900 border-blue-200";
+                        else if (booking.channel === "Direct") cellBg = "bg-emerald-50 text-emerald-900 border-emerald-200";
                         else if (booking.channel === "Blocked") cellBg = "bg-slate-100 text-slate-400 border-dashed";
 
                         if (isStart) {

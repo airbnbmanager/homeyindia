@@ -44,10 +44,49 @@ interface DayData {
 export default function CalendarPage() {
   const [selectedPropId, setSelectedPropId] = useState(PROPERTIES[0].id);
   const [currentYear, setCurrentYear] = useState(2026);
-  const [currentMonth, setCurrentMonth] = useState(10); // 10 = Nov (0-indexed)
+  const [currentMonth, setCurrentMonth] = useState(9); // 9 = October (0-indexed)
   const [selectedDates, setSelectedDates] = useState<number[]>([]);
   const [activeTab, setActiveTab] = useState<"pricing" | "availability" | "ical">("pricing");
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [todayInfo, setTodayInfo] = useState({ year: 2026, month: 9, day: 29 });
+
+  useEffect(() => {
+    const now = new Date();
+    setTodayInfo({
+      year: now.getFullYear(),
+      month: now.getMonth(),
+      day: now.getDate()
+    });
+    setCurrentYear(now.getFullYear());
+    setCurrentMonth(now.getMonth());
+  }, []);
+
+  const handlePrevMonth = () => {
+    if (currentMonth === 0) {
+      setCurrentMonth(11);
+      setCurrentYear((y) => y - 1);
+    } else {
+      setCurrentMonth((m) => m - 1);
+    }
+  };
+
+  const handleNextMonth = () => {
+    if (currentMonth === 11) {
+      setCurrentMonth(0);
+      setCurrentYear((y) => y + 1);
+    } else {
+      setCurrentMonth((m) => m + 1);
+    }
+  };
+
+  const handleJumpToToday = () => {
+    const now = new Date();
+    setCurrentMonth(now.getMonth());
+    setCurrentYear(now.getFullYear());
+  };
+
+  const isCurrentMonthView = currentYear === todayInfo.year && currentMonth === todayInfo.month;
+  const todayDayNum = todayInfo.day;
 
   // Settings State
   const [basePrice, setBasePrice] = useState(PROPERTIES[0].price);
@@ -431,15 +470,24 @@ export default function CalendarPage() {
 
               <div className="flex items-center gap-2">
                 <button
-                  onClick={() => setCurrentMonth((prev) => (prev > 0 ? prev - 1 : 11))}
-                  className="p-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 transition"
+                  type="button"
+                  onClick={handleJumpToToday}
+                  className="px-3 py-1.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold transition cursor-pointer"
+                >
+                  Today
+                </button>
+                <button
+                  type="button"
+                  onClick={handlePrevMonth}
+                  className="p-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 transition cursor-pointer"
                   aria-label="Previous Month"
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
                 <button
-                  onClick={() => setCurrentMonth((prev) => (prev < 11 ? prev + 1 : 0))}
-                  className="p-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 transition"
+                  type="button"
+                  onClick={handleNextMonth}
+                  className="p-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 transition cursor-pointer"
                   aria-label="Next Month"
                 >
                   <ChevronRight className="w-5 h-5" />
@@ -512,6 +560,7 @@ export default function CalendarPage() {
                 const dayNum = idx + 1;
                 const cell = daysState[dayNum] || {};
                 const isSelected = selectedDates.includes(dayNum);
+                const isDayToday = isCurrentMonthView && dayNum === todayDayNum;
                 const status = cell.status || "available";
                 const price = cell.price || (dayNum % 7 === 5 || dayNum % 7 === 6 ? weekendPrice : basePrice);
 
@@ -532,6 +581,8 @@ export default function CalendarPage() {
                 } else if (status === "blocked") {
                   bgClass = "bg-slate-100 border-dashed border-slate-300 text-slate-400";
                   statusBadge = <span className="text-[9px] font-bold text-slate-500 flex items-center justify-center gap-0.5"><Lock className="w-2.5 h-2.5" /> Blocked</span>;
+                } else if (isDayToday) {
+                  bgClass = "bg-amber-50/80 border-amber-300 ring-2 ring-amber-400/60 text-slate-900";
                 }
 
                 return (
@@ -539,10 +590,17 @@ export default function CalendarPage() {
                     key={dayNum}
                     type="button"
                     onClick={() => handleDateClick(dayNum)}
-                    className={`h-24 sm:h-28 rounded-2xl border p-2 flex flex-col justify-between text-left transition-all relative ${bgClass}`}
+                    className={`h-24 sm:h-28 rounded-2xl border p-2 flex flex-col justify-between text-left transition-all relative cursor-pointer ${bgClass}`}
                   >
                     <div className="flex items-center justify-between w-full">
-                      <span className="font-extrabold text-sm">{dayNum}</span>
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-extrabold text-sm">{dayNum}</span>
+                        {isDayToday && (
+                          <span className="bg-[#ff2800] text-white text-[8px] font-black px-1.5 py-0.2 rounded uppercase tracking-wider">
+                            Today
+                          </span>
+                        )}
+                      </div>
                       {isSelected && (
                         <span className="w-2 h-2 rounded-full bg-[#ff2800]"></span>
                       )}
