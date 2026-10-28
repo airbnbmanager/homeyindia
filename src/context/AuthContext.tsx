@@ -9,14 +9,22 @@ export interface UserProfile {
   email: string;
   firstName: string;
   lastName: string;
+  displayName?: string;
   businessName?: string;
+  businessScope?: string;
   role?: string;
   phone?: string;
   isLoggedIn: boolean;
   avatarUrl?: string;
   propertyCount?: number;
+  propertiesOwned?: string[];
   isSuperhost?: boolean;
+  isOwner?: boolean;
+  isMasterAdmin?: boolean;
+  isSuperAdmin?: boolean;
   kycVerified?: boolean;
+  badge?: string;
+  permissions?: string[];
   [key: string]: unknown;
 }
 
@@ -25,14 +33,45 @@ export const MASTER_UNIQUE_HAVEN_USER: UserProfile = {
   email: "praveensinghaws@gmail.com",
   firstName: "Praveen",
   lastName: "Singh",
+  displayName: "Praveen Singh (Founder & Master Owner)",
   businessName: "The Unique Haven Homes",
-  role: "superhost",
+  businessScope: "The Unique Haven Homes (18 Properties Exclusive)",
+  role: "owner",
   phone: "+91 94544 70872",
   isLoggedIn: true,
   avatarUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
   propertyCount: 18,
+  propertiesOwned: [
+    "TUHH01", "TUHH02", "TUHH03", "TUHH04", "TUHH05", "TUHH06",
+    "TUHH07", "TUHH08", "TUHH09", "TUHH10", "TUHH11", "TUHH12",
+    "TUHH13", "TUHH14", "TUHH15", "TUHH16", "TUHH17", "TUHH18"
+  ],
+  isOwner: true,
+  isMasterAdmin: true,
+  isSuperAdmin: true,
   isSuperhost: true,
   kycVerified: true,
+  badge: "👑 Founder & Master Host",
+  permissions: [
+    "all",
+    "owner",
+    "admin",
+    "properties:manage",
+    "properties:create",
+    "properties:edit",
+    "calendar:manage",
+    "calendar:override",
+    "pricing:manage",
+    "pricing:override",
+    "ical:realtime_sync",
+    "ical:manage",
+    "guests:manage",
+    "guests:register",
+    "whatsapp:automate",
+    "payouts:view",
+    "revenue:full_access",
+    "staff:manage"
+  ],
 };
 
 interface AuthContextType {
@@ -51,7 +90,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // Helper to build profile safely
-function buildProfile(email: string, id: string): UserProfile {
+function buildProfile(email: string, id: string, rawUser?: User | null): UserProfile {
   let savedProfile: Record<string, unknown> = {};
   if (typeof window !== "undefined") {
     try {
@@ -63,6 +102,43 @@ function buildProfile(email: string, id: string): UserProfile {
   }
 
   const cleanEmail = email.trim().toLowerCase();
+  const isMasterOwner =
+    cleanEmail === "praveensinghaws@gmail.com" ||
+    cleanEmail === "uniquehaven@homeyindia.com" ||
+    cleanEmail === "uniquehavenhomes@gmail.com";
+
+  if (isMasterOwner) {
+    // Extract metadata from Supabase Google OAuth if present
+    const userMeta = rawUser?.user_metadata || {};
+    const googleAvatar = userMeta.avatar_url || userMeta.picture || "";
+    const googleFullName = userMeta.full_name || userMeta.name || "";
+    const nameParts = googleFullName ? googleFullName.split(" ") : [];
+
+    return {
+      ...savedProfile,
+      id: id || "host-unique-haven-master",
+      email: cleanEmail,
+      firstName: nameParts[0] || (savedProfile.firstName as string) || "Praveen",
+      lastName: nameParts.slice(1).join(" ") || (savedProfile.lastName as string) || "Singh",
+      displayName: "Praveen Singh (Founder & Master Owner)",
+      businessName: "The Unique Haven Homes",
+      businessScope: "The Unique Haven Homes (18 Properties Exclusive)",
+      role: "owner",
+      isOwner: true,
+      isMasterAdmin: true,
+      isSuperAdmin: true,
+      isSuperhost: true,
+      kycVerified: true,
+      badge: "👑 Founder & Master Host",
+      phone: (savedProfile.phone as string) || "+91 94544 70872",
+      avatarUrl: googleAvatar || (savedProfile.avatarUrl as string) || MASTER_UNIQUE_HAVEN_USER.avatarUrl,
+      propertyCount: 18,
+      propertiesOwned: MASTER_UNIQUE_HAVEN_USER.propertiesOwned,
+      permissions: MASTER_UNIQUE_HAVEN_USER.permissions,
+      isLoggedIn: true,
+    };
+  }
+
   const username = cleanEmail.split("@")[0] || "Host";
   const displayName = username.charAt(0).toUpperCase() + username.slice(1);
 
@@ -73,7 +149,7 @@ function buildProfile(email: string, id: string): UserProfile {
     firstName: (savedProfile.firstName as string) || displayName,
     lastName: (savedProfile.lastName as string) || "Host",
     businessName: (savedProfile.businessName as string) || "The Unique Haven Homes",
-    role: (savedProfile.role as string) || "superhost",
+    role: (savedProfile.role as string) || "host",
     propertyCount: (savedProfile.propertyCount as number) || 18,
     isSuperhost: true,
     kycVerified: true,
@@ -88,7 +164,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const saved = localStorage.getItem("homey_user_profile");
         if (saved) {
           const parsed = JSON.parse(saved);
-          if (parsed?.isLoggedIn) return parsed as UserProfile;
+          if (parsed?.isLoggedIn) {
+            const clean = (parsed.email || "").trim().toLowerCase();
+            if (
+              clean === "praveensinghaws@gmail.com" ||
+              clean === "uniquehaven@homeyindia.com" ||
+              clean === "uniquehavenhomes@gmail.com"
+            ) {
+              return buildProfile(clean, parsed.id || "host-unique-haven-master");
+            }
+            return parsed as UserProfile;
+          }
         }
       } catch (e) {
         console.error("Local profile parse error:", e);
@@ -114,7 +200,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setSession(initialSession);
           setSupabaseUser(initialSession.user);
           const email = initialSession.user.email || "";
-          const prof = buildProfile(email, initialSession.user.id);
+          const prof = buildProfile(email, initialSession.user.id, initialSession.user);
           setUser(prof);
           if (typeof window !== "undefined") {
             localStorage.setItem("homey_user_profile", JSON.stringify(prof));
@@ -138,7 +224,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED" || event === "USER_UPDATED") {
           if (newSession?.user) {
             const email = newSession.user.email || "";
-            const prof = buildProfile(email, newSession.user.id);
+            const prof = buildProfile(email, newSession.user.id, newSession.user);
             setUser(prof);
             if (typeof window !== "undefined") {
               localStorage.setItem("homey_user_profile", JSON.stringify(prof));
@@ -213,7 +299,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
 
       if (data.user) {
-        const prof = buildProfile(cleanEmail, data.user.id);
+        const prof = buildProfile(cleanEmail, data.user.id, data.user);
         setUser(prof);
         setSupabaseUser(data.user);
         setSession(data.session);
@@ -278,7 +364,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return { data: null, error: new Error("Invalid verification code. Please check and try again.") };
       }
 
-      const prof = buildProfile(cleanEmail, data?.user?.id || "");
+      const prof = buildProfile(cleanEmail, data?.user?.id || "", data?.user);
       setUser(prof);
       setSupabaseUser(data.user);
       setSession(data.session);

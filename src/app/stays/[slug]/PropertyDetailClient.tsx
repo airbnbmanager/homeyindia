@@ -439,6 +439,31 @@ export default function PropertyDetailClient({ prop }: { prop: Property }) {
             </div>
           </div>
         </div>
+
+        {/* Mobile Sticky Booking Dock (lg:hidden) */}
+        <div className="lg:hidden fixed bottom-14 left-0 right-0 z-30 bg-white/95 backdrop-blur-xl border-t border-gray-200/90 px-4 py-3 shadow-[0_-4px_25px_rgba(0,0,0,0.1)] flex items-center justify-between">
+          <div>
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-xl font-extrabold text-[#ff2800] font-display">
+                ₹{effectiveBasePrice.toLocaleString("en-IN")}
+              </span>
+              <span className="text-xs text-gray-500">/ night</span>
+            </div>
+            {savings > 0 && (
+              <div className="text-[10px] text-emerald-600 font-bold">
+                Save ₹{savings.toLocaleString("en-IN")} direct vs Airbnb
+              </div>
+            )}
+          </div>
+
+          <button
+            onClick={handleWhatsAppBooking}
+            className="px-5 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md shadow-emerald-600/30 flex items-center gap-1.5 active:scale-95 transition-all cursor-pointer"
+          >
+            <MessageCircle className="w-4 h-4 fill-current" />
+            <span>Book Instantly</span>
+          </button>
+        </div>
       </main>
 
       {/* FULLSCREEN AIRBNB-STYLE PHOTO GALLERY LIGHTBOX */}

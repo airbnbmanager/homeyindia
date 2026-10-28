@@ -221,48 +221,72 @@ export default function HostDashboardPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           
           {/* Top Host Navigation Header  */}
-          <div className="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm space-y-6">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#fff1ef] text-[#ff2800] text-xs font-bold border border-[#ffe2de] mb-2">
-                <span className="w-2 h-2 rounded-full bg-[#ff2800] animate-pulse" />
-                <span>Host Control Centre · Live OTA Sync</span>
+          <div className="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 text-white rounded-3xl p-5 sm:p-7 border border-slate-800 shadow-xl space-y-5">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 text-amber-300 text-xs font-bold border border-amber-400/20 mb-2">
+                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+                  <span>👑 The Unique Haven Homes Exclusive Owner Portal</span>
+                </div>
+                <h1 className="text-2xl sm:text-3xl font-extrabold text-white font-display tracking-tight flex items-center gap-2">
+                  <span>Welcome back, Praveen Singh</span>
+                </h1>
+                <p className="text-xs sm:text-sm text-slate-300 mt-1">
+                  Full Administrative &amp; Operational Control for 18 Luxury Residences in Lucknow
+                </p>
               </div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 font-display tracking-tight">
-                Welcome, Praveen Singh
-              </h1>
-              <p className="text-xs sm:text-sm text-gray-500">
-                The Unique Haven Homes Private Limited · Managing 18 Luxury Stays in Lucknow
-              </p>
+
+              {/* Quick Actions Bar */}
+              <div className="flex flex-wrap items-center gap-2">
+                <Link
+                  href="/unified-calendar"
+                  className="px-3.5 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-bold backdrop-blur-md border border-white/10 flex items-center gap-1.5 transition-all"
+                >
+                  <Calendar className="w-3.5 h-3.5 text-amber-400" />
+                  <span>14-Day Calendar</span>
+                </Link>
+                <Link
+                  href="/channel-manager"
+                  className="px-3.5 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-bold backdrop-blur-md border border-white/10 flex items-center gap-1.5 transition-all"
+                >
+                  <RefreshCw className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Live OTA Sync</span>
+                </Link>
+                <Link
+                  href="/stays"
+                  className="px-3.5 py-2 rounded-full bg-[#ff2800] hover:bg-[#e0220d] text-white text-xs font-bold shadow-md shadow-[#ff2800]/30 flex items-center gap-1.5 transition-all"
+                >
+                  <span>18 Stays</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
             </div>
 
-            {/* Quick Actions Bar */}
-            <div className="flex flex-wrap items-center gap-2.5">
-              <Link
-                href="/unified-calendar"
-                className="px-4 py-2.5 rounded-full bg-white border border-gray-200 text-gray-800 font-bold text-xs hover:border-[#ff2800] hover:text-[#ff2800] shadow-xs transition-colors flex items-center gap-1.5"
-              >
-                <Calendar className="w-4 h-4 text-gray-500" />
-                <span>Unified Calendar</span>
-              </Link>
-              <Link
-                href="/channel-manager"
-                className="px-4 py-2.5 rounded-full bg-white border border-gray-200 text-gray-800 font-bold text-xs hover:border-[#ff2800] hover:text-[#ff2800] shadow-xs transition-colors flex items-center gap-1.5"
-              >
-                <Layers className="w-4 h-4 text-gray-500" />
-                <span>50+ Channels</span>
-              </Link>
-              <Link
-                href="/account"
-                className="px-4 py-2.5 rounded-full bg-[#0c1838] hover:bg-black text-white font-bold text-xs shadow-md transition-all flex items-center gap-1.5"
-              >
-                <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                <span>Aadhaar Verified</span>
-              </Link>
-            </div>
+            {/* 4 Mini KPI Cards in Mobile 2x2 / Desktop 4x1 */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-4 pt-2 border-t border-slate-800">
+              <div className="bg-slate-900/80 p-3 sm:p-4 rounded-2xl border border-slate-800">
+                <span className="text-[10px] sm:text-xs text-slate-400 uppercase font-bold block">Gross Revenue</span>
+                <span className="text-base sm:text-xl font-extrabold font-mono text-emerald-400 mt-0.5 block">₹1,85,000+</span>
+                <span className="text-[9px] text-slate-500">Oct 2026 Direct + OTA</span>
+              </div>
+              <div className="bg-slate-900/80 p-3 sm:p-4 rounded-2xl border border-slate-800">
+                <span className="text-[10px] sm:text-xs text-slate-400 uppercase font-bold block">Occupancy</span>
+                <span className="text-base sm:text-xl font-extrabold font-mono text-amber-400 mt-0.5 block">91.6%</span>
+                <span className="text-[9px] text-slate-500">Superhost Benchmark</span>
+              </div>
+              <div className="bg-slate-900/80 p-3 sm:p-4 rounded-2xl border border-slate-800">
+                <span className="text-[10px] sm:text-xs text-slate-400 uppercase font-bold block">Today Arrivals</span>
+                <span className="text-base sm:text-xl font-extrabold font-mono text-white mt-0.5 block">2 Check-ins</span>
+                <span className="text-[9px] text-emerald-400">Keys &amp; WiFi Ready</span>
+              </div>
+              <div className="bg-slate-900/80 p-3 sm:p-4 rounded-2xl border border-slate-800">
+                <span className="text-[10px] sm:text-xs text-slate-400 uppercase font-bold block">Live Inventory</span>
+                <span className="text-base sm:text-xl font-extrabold font-mono text-white mt-0.5 block">18 Stays</span>
+                <span className="text-[9px] text-emerald-400">● 2-Way iCal Active</span>
+              </div>
             </div>
 
-            <HostNavTabs variant="light" />
+            <HostNavTabs variant="dark" />
           </div>
 
           {/* Activity Filter Tabs  */}
@@ -308,8 +332,86 @@ export default function HostDashboardPage() {
               </div>
             </div>
 
-            {/* Bookings Table  */}
-            <div className="bg-white rounded-3xl border border-gray-200 overflow-hidden shadow-sm">
+            {/* Mobile Responsive Booking Cards (md:hidden) */}
+            <div className="md:hidden space-y-3">
+              {filteredBookings.map((b) => (
+                <div
+                  key={b.id}
+                  onClick={() => setSelectedBooking(b)}
+                  className="bg-white rounded-2xl p-4 border border-gray-200 shadow-sm active:scale-[0.99] transition-all space-y-3 cursor-pointer"
+                >
+                  {/* Top Row: Property & Status */}
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <div className="font-extrabold text-sm text-gray-900 leading-snug">
+                        {b.propertyName}
+                      </div>
+                      <div className="text-[11px] text-gray-400 font-medium">
+                        {b.propertyUnit}
+                      </div>
+                    </div>
+                    <span
+                      className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold border shrink-0"
+                      style={{
+                        borderColor: `${b.channelColor}40`,
+                        backgroundColor: `${b.channelColor}12`,
+                        color: b.channelColor,
+                      }}
+                    >
+                      {b.channel}
+                    </span>
+                  </div>
+
+                  {/* Middle: Guest & Dates */}
+                  <div className="bg-gray-50/80 rounded-xl p-3 grid grid-cols-2 gap-2 text-xs">
+                    <div>
+                      <span className="text-[10px] text-gray-400 uppercase font-bold block">Guest</span>
+                      <span className="font-bold text-gray-900 truncate block">{b.guestName}</span>
+                      <span className="text-[11px] text-gray-500">{b.adults} Guests · {b.nights}N</span>
+                    </div>
+                    <div className="border-l border-gray-200 pl-3">
+                      <span className="text-[10px] text-gray-400 uppercase font-bold block">Dates</span>
+                      <span className="font-bold text-gray-900 text-[11px] block">{b.checkIn}</span>
+                      <span className="text-[10px] text-gray-500">to {b.checkOut}</span>
+                    </div>
+                  </div>
+
+                  {/* Financials & Quick Action Buttons */}
+                  <div className="flex items-center justify-between pt-1">
+                    <div>
+                      <span className="text-[10px] text-gray-400 uppercase font-bold block">Net Payout</span>
+                      <span className="text-base font-extrabold text-[#ff2800] font-mono">
+                        ₹{b.netPayout.toLocaleString("en-IN")}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                      <a
+                        href={`https://wa.me/${b.guestPhone.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
+                          `Hello ${b.guestName}, Praveen Singh here from The Unique Haven Homes. We are delighted to host you at ${b.propertyName}! Here are your check-in details for ${b.checkIn}.`
+                        )}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-8 h-8 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white flex items-center justify-center shadow-xs"
+                        aria-label="WhatsApp Guest"
+                      >
+                        <Phone className="w-3.5 h-3.5" />
+                      </a>
+                      <button
+                        onClick={() => setSelectedBooking(b)}
+                        className="px-3 py-1.5 rounded-full bg-slate-900 text-white text-[11px] font-bold shadow-xs flex items-center gap-1 cursor-pointer"
+                      >
+                        <span>Folio</span>
+                        <ChevronRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop Bookings Table (hidden on mobile)  */}
+            <div className="hidden md:block bg-white rounded-3xl border border-gray-200 overflow-hidden shadow-sm">
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
                   <thead className="bg-gray-50/80 border-b border-gray-100 text-gray-400 font-bold uppercase tracking-wider text-[10px]">

@@ -43,6 +43,8 @@ export default function UnifiedCalendarPage() {
   const [searchFilter, setSearchFilter] = useState("");
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isLoadingSync, setIsLoadingSync] = useState(false);
+  const [viewMode, setViewMode] = useState<"timeline" | "agenda">("timeline");
+  const [selectedAgendaDay, setSelectedAgendaDay] = useState<number>(1);
   const [liveStats, setLiveStats] = useState<{
     totalProperties: number;
     totalReservations: number;
@@ -319,8 +321,140 @@ export default function UnifiedCalendarPage() {
           </div>
         </div>
 
-        {/* Unified Timeline Matrix Table */}
-        <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+        {/* Mobile View Switcher */}
+        <div className="md:hidden flex items-center justify-between gap-2 p-1.5 bg-slate-100 rounded-2xl border border-slate-200">
+          <button
+            onClick={() => setViewMode("timeline")}
+            className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all ${
+              viewMode === "timeline"
+                ? "bg-slate-900 text-white shadow-sm"
+                : "text-slate-600 hover:text-slate-900"
+            }`}
+          >
+            14-Day Timeline
+          </button>
+          <button
+            onClick={() => setViewMode("agenda")}
+            className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all ${
+              viewMode === "agenda"
+                ? "bg-slate-900 text-white shadow-sm"
+                : "text-slate-600 hover:text-slate-900"
+            }`}
+          >
+            18 Stays Agenda
+          </button>
+        </div>
+
+        {/* Mobile Agenda View (when toggled on mobile) */}
+        {viewMode === "agenda" && (
+          <div className="md:hidden space-y-4">
+            {/* Horizontal Day Selector */}
+            <div className="bg-white p-3 rounded-2xl border border-slate-200 shadow-xs space-y-2">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                Select Date ({monthNames[currentMonth]} {currentYear})
+              </span>
+              <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+                {days.map((d) => {
+                  const dayDate = new Date(currentYear, currentMonth, d);
+                  const dayName = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][dayDate.getDay()];
+                  const isSelected = selectedAgendaDay === d;
+                  return (
+                    <button
+                      key={d}
+                      onClick={() => setSelectedAgendaDay(d)}
+                      className={`flex flex-col items-center justify-center min-w-[50px] py-2 px-1.5 rounded-xl text-xs font-bold transition-all shrink-0 ${
+                        isSelected
+                          ? "bg-[#ff2800] text-white shadow-md shadow-[#ff2800]/25 scale-105"
+                          : "bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-100"
+                      }`}
+                    >
+                      <span className="text-[10px] opacity-80">{dayName}</span>
+                      <span className="text-sm font-extrabold">{d}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* 18 Property Status Cards for Selected Day */}
+            <div className="space-y-3">
+              {filteredProps.map((prop) => {
+                const booking = bookings.find(
+                  (b) => b.propId === prop.id && selectedAgendaDay >= b.startDay && selectedAgendaDay <= b.endDay
+                );
+
+                return (
+                  <div
+                    key={prop.id}
+                    className="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs space-y-3"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-slate-100 shrink-0 border border-slate-200">
+                        <img
+                          src={prop.image}
+                          alt={prop.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-extrabold text-sm text-slate-900 truncate">{prop.name}</div>
+                        <div className="text-[11px] text-slate-400 font-medium truncate">
+                          #{prop.id} · {prop.zone}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+                      <div>
+                        {booking ? (
+                          <span
+                            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold ${
+                              booking.channel === "Airbnb"
+                                ? "bg-rose-50 text-rose-700 border border-rose-200"
+                                : booking.channel === "Blocked"
+                                ? "bg-slate-100 text-slate-700 border border-slate-200"
+                                : "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                            }`}
+                          >
+                            <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
+                            {booking.channel === "Blocked"
+                              ? "Maintenance Block"
+                              : `Booked: ${booking.guestName}`}
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                            Available · ₹{prop.price.toLocaleString("en-IN")}/night
+                          </span>
+                        )}
+                      </div>
+
+                      <button
+                        onClick={() =>
+                          setSelectedCell({
+                            propId: prop.id,
+                            propName: prop.name,
+                            day: selectedAgendaDay,
+                            price: prop.price,
+                          })
+                        }
+                        className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-xs cursor-pointer"
+                      >
+                        Manage
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Unified Timeline Matrix Table (hidden in agenda mode on mobile) */}
+        <div className={`${viewMode === "agenda" ? "hidden md:block" : "block"} bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden`}>
+          <div className="md:hidden bg-slate-50 px-4 py-2 text-[11px] text-slate-500 font-medium text-center border-b border-slate-200">
+            👉 Swipe horizontally to view all 14 days
+          </div>
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
@@ -425,74 +559,87 @@ export default function UnifiedCalendarPage() {
         </div>
       </main>
 
-      {/* Quick Action Drawer */}
+      {/* Quick Action Drawer / Bottom Sheet */}
       {selectedCell && (
-        <div className="fixed inset-y-0 right-0 w-80 bg-white shadow-2xl border-l border-slate-200 z-50 p-6 flex flex-col justify-between animate-in slide-in-from-right duration-200">
-          <div>
-            <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-              <h3 className="font-bold text-slate-900 text-base font-display">Manage Date</h3>
-              <button
-                onClick={() => setSelectedCell(null)}
-                className="p-1 rounded-lg hover:bg-slate-100 text-slate-400"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
+        <div className="fixed inset-0 z-50 flex justify-end animate-in fade-in duration-200">
+          {/* Backdrop */}
+          <div
+            onClick={() => setSelectedCell(null)}
+            className="fixed inset-0 bg-black/50 backdrop-blur-xs transition-opacity"
+          />
 
-            <div className="mt-4 space-y-4">
-              <div>
-                <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Property</div>
-                <div className="text-sm font-bold text-slate-900 mt-0.5">{selectedCell.propName}</div>
-              </div>
-
-              <div>
-                <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Date</div>
-                <div className="text-sm font-bold text-slate-900 mt-0.5">
-                  {monthNames[currentMonth]} {selectedCell.day}, {currentYear}
-                </div>
-              </div>
-
-              <hr className="border-slate-100" />
-
-              <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                  Override Nightly Price
-                </label>
-                <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400">₹</span>
-                  <input
-                    type="number"
-                    placeholder={selectedCell.price.toString()}
-                    value={quickNewPrice}
-                    onChange={(e) => setQuickNewPrice(e.target.value)}
-                    className="w-full pl-8 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm font-bold text-slate-900 outline-none focus:border-[#ff2800]"
-                  />
+          {/* Sheet Body (Bottom Sheet on mobile, Right Drawer on desktop) */}
+          <div className="relative w-full max-md:max-h-[85vh] max-md:rounded-t-3xl max-md:mt-auto sm:w-85 bg-white shadow-2xl border-t sm:border-l border-slate-200 z-10 p-6 flex flex-col justify-between animate-in slide-in-from-bottom sm:slide-in-from-right duration-250 overflow-y-auto">
+            <div>
+              <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#ff2800] animate-pulse" />
+                  <h3 className="font-bold text-slate-900 text-base font-display">Manage Date &amp; Price</h3>
                 </div>
                 <button
-                  onClick={handleApplyPrice}
-                  className="w-full mt-2.5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition shadow-sm"
+                  onClick={() => setSelectedCell(null)}
+                  className="p-1.5 rounded-full hover:bg-slate-100 text-slate-400 cursor-pointer"
+                  aria-label="Close"
                 >
-                  Apply &amp; Broadcast (0.8s)
+                  <X className="w-5 h-5" />
                 </button>
               </div>
 
-              <hr className="border-slate-100" />
+              <div className="mt-4 space-y-4">
+                <div>
+                  <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Property</div>
+                  <div className="text-sm font-bold text-slate-900 mt-0.5">{selectedCell.propName}</div>
+                </div>
 
-              <div>
-                <div className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Availability Lock</div>
-                <button
-                  onClick={handleToggleBlock}
-                  className="w-full py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-800 text-xs font-bold transition flex items-center justify-center gap-2"
-                >
-                  <Lock className="w-4 h-4 text-slate-500" />
-                  Toggle Block / Maintenance
-                </button>
+                <div>
+                  <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Selected Date</div>
+                  <div className="text-sm font-bold text-slate-900 mt-0.5">
+                    {monthNames[currentMonth]} {selectedCell.day}, {currentYear}
+                  </div>
+                </div>
+
+                <hr className="border-slate-100" />
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                    Override Nightly Price
+                  </label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400">₹</span>
+                    <input
+                      type="number"
+                      placeholder={selectedCell.price.toString()}
+                      value={quickNewPrice}
+                      onChange={(e) => setQuickNewPrice(e.target.value)}
+                      className="w-full pl-8 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm font-bold text-slate-900 outline-none focus:border-[#ff2800]"
+                    />
+                  </div>
+                  <button
+                    onClick={handleApplyPrice}
+                    className="w-full mt-2.5 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition shadow-sm cursor-pointer"
+                  >
+                    Apply &amp; Broadcast (0.8s)
+                  </button>
+                </div>
+
+                <hr className="border-slate-100" />
+
+                <div>
+                  <div className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Availability Lock</div>
+                  <button
+                    onClick={handleToggleBlock}
+                    className="w-full py-3 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-800 text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <Lock className="w-4 h-4 text-slate-500" />
+                    Toggle Block / Maintenance
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="text-[11px] text-slate-400 text-center">
-            2-Way synchronized across Airbnb, The Unique Haven Homes &amp; Homey India.
+            <div className="text-[11px] text-slate-400 text-center pt-6">
+              2-Way synchronized across Airbnb, The Unique Haven Homes &amp; Homey India.
+            </div>
           </div>
         </div>
       )}

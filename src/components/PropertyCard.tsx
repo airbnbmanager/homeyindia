@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Star, MapPin, Users, Bed, Bath, ArrowRight, ChevronLeft, ChevronRight, Grid } from "lucide-react";
+import { Star, MapPin, Users, Bed, Bath, ArrowRight, ChevronLeft, ChevronRight, Grid, MessageCircle } from "lucide-react";
 import { Property } from "@/data/properties";
 
 export default function PropertyCard({ prop }: { prop: Property }) {
@@ -138,13 +138,28 @@ export default function PropertyCard({ prop }: { prop: Property }) {
             </div>
           </div>
 
-          <Link
-            href={`/stays/${prop.slug}`}
-            className="px-4 py-2.5 rounded-full bg-gray-900 hover:bg-[#ff2800] text-white font-bold text-xs shadow-md transition-all flex items-center gap-1.5"
-          >
-            <span>View Stay</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
+          <div className="flex items-center gap-2">
+            <a
+              href={`https://wa.me/919454470872?text=${encodeURIComponent(
+                `Hi Praveen Singh, I am interested in booking *${prop.name}* (${prop.id}) in Lucknow directly via Homey India.`
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-9 h-9 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 flex items-center justify-center transition-all hover:scale-105"
+              aria-label="Direct WhatsApp inquiry"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <MessageCircle className="w-4 h-4 fill-current" />
+            </a>
+
+            <Link
+              href={`/stays/${prop.slug}`}
+              className="px-4 py-2.5 rounded-full bg-gray-900 hover:bg-[#ff2800] text-white font-bold text-xs shadow-md transition-all flex items-center gap-1.5"
+            >
+              <span>View Stay</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
         </div>
       </div>
     </div>

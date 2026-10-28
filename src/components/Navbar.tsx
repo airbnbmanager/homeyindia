@@ -20,6 +20,11 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const { user, signOut } = useAuth();
 
+  const isMasterOwner =
+    user?.isOwner ||
+    user?.email?.toLowerCase() === "praveensinghaws@gmail.com" ||
+    user?.email?.toLowerCase() === "uniquehaven@homeyindia.com";
+
   const features = [
     { title: "Unified Calendar", desc: "Real-time multi-calendar for all properties", href: "/unified-calendar", icon: Calendar },
     { title: "Channel Manager", desc: "Instant 2-way sync with Airbnb, Booking.com, MMT", href: "/channel-manager", icon: Layers },
@@ -180,22 +185,45 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
 
           {/* Right Action Elements */}
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* Mobile-only Stays pill */}
-            <Link
-              href="/stays"
-              className="sm:hidden inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-[#fff1ef] text-[#ff2800] border border-[#ffe2de] text-xs font-bold whitespace-nowrap"
-            >
-              <BedDouble className="w-3.5 h-3.5" />
-              <span>18 Stays</span>
-            </Link>
+            {/* If Master Owner Praveen Singh is logged in */}
+            {isMasterOwner ? (
+              <>
+                <Link
+                  href="/dashboard"
+                  className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-900 hover:bg-black text-white text-xs font-bold border border-slate-700 shadow-sm transition-all"
+                >
+                  <span className="text-amber-400">👑</span>
+                  <span>Praveen Singh · TUHH Master</span>
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-0.5" />
+                </Link>
+                <Link
+                  href="/dashboard"
+                  className="sm:hidden inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-slate-900 text-white border border-slate-700 text-xs font-bold whitespace-nowrap"
+                >
+                  <span className="text-amber-400">👑</span>
+                  <span>Master Host</span>
+                </Link>
+              </>
+            ) : (
+              <>
+                {/* Mobile-only Stays pill */}
+                <Link
+                  href="/stays"
+                  className="sm:hidden inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-[#fff1ef] text-[#ff2800] border border-[#ffe2de] text-xs font-bold whitespace-nowrap"
+                >
+                  <BedDouble className="w-3.5 h-3.5" />
+                  <span>18 Stays</span>
+                </Link>
 
-            {/* Desktop Start Free Trial Button */}
-            <Link
-              href="/start-trial"
-              className="hidden sm:inline-flex whitespace-nowrap px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-[#ff2800] hover:bg-[#e5220d] text-white font-bold text-xs sm:text-sm shadow-md shadow-[#ff2800]/25 transition-all hover:scale-[1.02]"
-            >
-              Start free trial
-            </Link>
+                {/* Desktop Start Free Trial Button */}
+                <Link
+                  href="/start-trial"
+                  className="hidden sm:inline-flex whitespace-nowrap px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-[#ff2800] hover:bg-[#e5220d] text-white font-bold text-xs sm:text-sm shadow-md shadow-[#ff2800]/25 transition-all hover:scale-[1.02]"
+                >
+                  Start free trial
+                </Link>
+              </>
+            )}
 
             {/* Single Unified Account & Menu Button Pill */}
             <button
@@ -234,19 +262,40 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
             {/* Header */}
             <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-xs shadow-sm border border-slate-200">
-                  {user ? (
+                <div
+                  className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs shadow-sm border ${
+                    isMasterOwner
+                      ? "bg-slate-950 text-amber-400 border-amber-500/40"
+                      : "bg-slate-100 text-slate-700 border-slate-200"
+                  }`}
+                >
+                  {isMasterOwner ? (
+                    <span className="text-base">👑</span>
+                  ) : user ? (
                     <span className="text-[#ff2800] font-bold">{user.firstName?.[0]?.toUpperCase() || "H"}</span>
                   ) : (
                     <User className="w-4 h-4 text-slate-500" />
                   )}
                 </div>
                 <div>
-                  <span className="font-bold text-gray-900 text-sm block">
-                    {user ? `Hey, ${user.firstName}!` : "Welcome to Homey India"}
+                  <span className="font-bold text-gray-900 text-sm flex items-center gap-1.5">
+                    {isMasterOwner
+                      ? "Praveen Singh"
+                      : user
+                      ? `Hey, ${user.firstName}!`
+                      : "Welcome to Homey India"}
+                    {isMasterOwner && (
+                      <span className="text-[9px] bg-amber-100 text-amber-900 px-1.5 py-0.5 rounded font-extrabold border border-amber-200">
+                        OWNER
+                      </span>
+                    )}
                   </span>
-                  <span className="text-[10px] text-gray-500">
-                    {user ? (user.email || "Verified Host Profile") : "Sign in to access host portal & bookings"}
+                  <span className="text-[10px] text-gray-500 block truncate max-w-[200px]">
+                    {isMasterOwner
+                      ? "The Unique Haven Homes · 18 Properties"
+                      : user
+                      ? user.email || "Verified Host Profile"
+                      : "Sign in to access host portal & bookings"}
                   </span>
                 </div>
               </div>
@@ -261,40 +310,83 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
 
             {/* Quick Action Cards */}
             <div className="p-4 bg-gray-50/70 border-b border-gray-100 space-y-2">
-              <Link
-                href="/stays"
-                onClick={() => setRightDrawerOpen(false)}
-                className="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-[#ff2800] to-[#e0220d] text-white shadow-md hover:scale-[1.01] transition-transform"
-              >
-                <div className="flex items-center gap-2.5">
-                  <BedDouble className="w-5 h-5 text-white" />
-                  <div>
-                    <div className="font-bold text-xs">Book 18 Luxury Stays</div>
-                    <div className="text-[10px] text-white/80">The Unique Haven Homes · Lucknow</div>
+              {isMasterOwner ? (
+                <>
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setRightDrawerOpen(false)}
+                    className="flex items-center justify-between p-3 rounded-xl bg-slate-900 text-white shadow-md hover:bg-black transition-all"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-7 h-7 rounded-lg bg-amber-400/20 text-amber-400 flex items-center justify-center font-bold text-xs">
+                        👑
+                      </div>
+                      <div>
+                        <div className="font-bold text-xs">Host Control Dashboard</div>
+                        <div className="text-[10px] text-slate-400">18 Properties · Live OTA &amp; P&amp;L</div>
+                      </div>
+                    </div>
+                    <ArrowRight className="w-4 h-4 text-amber-400" />
+                  </Link>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <Link
+                      href="/unified-calendar"
+                      onClick={() => setRightDrawerOpen(false)}
+                      className="p-2.5 rounded-xl bg-white border border-gray-200 text-center hover:border-gray-400 transition-colors"
+                    >
+                      <div className="text-xs font-bold text-gray-900">14-Day Calendar</div>
+                      <div className="text-[10px] text-emerald-600 font-semibold">● Airbnb Live</div>
+                    </Link>
+
+                    <Link
+                      href="/stays"
+                      onClick={() => setRightDrawerOpen(false)}
+                      className="p-2.5 rounded-xl bg-white border border-gray-200 text-center hover:border-gray-400 transition-colors"
+                    >
+                      <div className="text-xs font-bold text-gray-900">18 Stays Catalog</div>
+                      <div className="text-[10px] text-gray-500">Lucknow Portfolio</div>
+                    </Link>
                   </div>
-                </div>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/stays"
+                    onClick={() => setRightDrawerOpen(false)}
+                    className="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-[#ff2800] to-[#e0220d] text-white shadow-md hover:scale-[1.01] transition-transform"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <BedDouble className="w-5 h-5 text-white" />
+                      <div>
+                        <div className="font-bold text-xs">Book 18 Luxury Stays</div>
+                        <div className="text-[10px] text-white/80">The Unique Haven Homes · Lucknow</div>
+                      </div>
+                    </div>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
 
-              <div className="grid grid-cols-2 gap-2">
-                <Link
-                  href="/start-trial"
-                  onClick={() => setRightDrawerOpen(false)}
-                  className="p-2.5 rounded-xl bg-white border border-gray-200 text-center hover:border-gray-400 transition-colors"
-                >
-                  <div className="text-xs font-bold text-gray-900">Start Free Trial</div>
-                  <div className="text-[10px] text-gray-500">30 days free PMS</div>
-                </Link>
+                  <div className="grid grid-cols-2 gap-2">
+                    <Link
+                      href="/start-trial"
+                      onClick={() => setRightDrawerOpen(false)}
+                      className="p-2.5 rounded-xl bg-white border border-gray-200 text-center hover:border-gray-400 transition-colors"
+                    >
+                      <div className="text-xs font-bold text-gray-900">Start Free Trial</div>
+                      <div className="text-[10px] text-gray-500">30 days free PMS</div>
+                    </Link>
 
-                <Link
-                  href="/book-a-demo"
-                  onClick={() => setRightDrawerOpen(false)}
-                  className="p-2.5 rounded-xl bg-white border border-gray-200 text-center hover:border-gray-400 transition-colors"
-                >
-                  <div className="text-xs font-bold text-gray-900">Book Demo</div>
-                  <div className="text-[10px] text-gray-500">Live 1-on-1 walk</div>
-                </Link>
-              </div>
+                    <Link
+                      href="/book-a-demo"
+                      onClick={() => setRightDrawerOpen(false)}
+                      className="p-2.5 rounded-xl bg-white border border-gray-200 text-center hover:border-gray-400 transition-colors"
+                    >
+                      <div className="text-xs font-bold text-gray-900">Book Demo</div>
+                      <div className="text-[10px] text-gray-500">Live 1-on-1 walk</div>
+                    </Link>
+                  </div>
+                </>
+              )}
             </div>
 
             {/* Links List */}
