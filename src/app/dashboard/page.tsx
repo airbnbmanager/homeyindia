@@ -83,18 +83,20 @@ export default function HostDashboardPage() {
         const liveItems: BookingItem[] = data.allReservations.map((r: any) => {
           const prop = PROPERTIES.find((p) => p.id === r.propertyId);
           const nightlyRate = prop?.price || 4800;
-          const nights = r.nights || 1;
-          const baseAmount = r.amount > 0 ? r.amount : nightlyRate * nights;
-          const taxAmount = Math.round(baseAmount * 0.12);
-          const totalAmount = baseAmount + taxAmount;
-          const platformFee = Math.round(baseAmount * 0.15); // Airbnb 15% host fee
-          const tdsAmount = Math.round(baseAmount * 0.01);
-          const netPayout = baseAmount - tdsAmount;
-
           const [sY, sM, sD] = r.startDate.split("-").map(Number);
           const [eY, eM, eD] = r.endDate.split("-").map(Number);
           const sDate = new Date(sY, sM - 1, sD);
           const eDate = new Date(eY, eM - 1, eD);
+          const nights = r.nights || Math.max(1, Math.round((eDate.getTime() - sDate.getTime()) / (1000 * 60 * 60 * 24)));
+          
+          const isDirect = r.source === "Direct" || r.source === "Direct Website" || r.bookingMode === "Offline";
+          const grossAmount = r.grossAmount > 0 ? r.grossAmount : (r.amount > 0 ? r.amount : nightlyRate * nights);
+          const baseAmount = grossAmount;
+          const taxAmount = Math.round(baseAmount * 0.12);
+          const totalAmount = baseAmount;
+          const platformFee = isDirect ? 0 : (r.platformFee > 0 ? r.platformFee : Math.round(baseAmount * 0.15));
+          const tdsAmount = isDirect ? 0 : Math.round(baseAmount * 0.01);
+          const netPayout = r.netPayout > 0 ? r.netPayout : (baseAmount - platformFee - tdsAmount);
 
           let bStatus: "ongoing" | "upcoming" | "checkout_today" | "request" | "offline" = "upcoming";
           if (today >= sDate && today < eDate) {
@@ -107,35 +109,37 @@ export default function HostDashboardPage() {
             bStatus = "ongoing";
           }
 
-          const id = r.confirmationCode ? `ABB-${r.confirmationCode}` : `ABB-${r.uid.slice(0, 10)}`;
+          const id = r.confirmationCode && !r.confirmationCode.startsWith("B17") 
+            ? `ABB-${r.confirmationCode}` 
+            : (r.bookingId || `DIR-${r.uid.slice(0, 10)}`);
 
           return {
             id,
             propertyId: r.propertyId,
-            propertyName: prop ? prop.name : r.propertyName,
+            propertyName: prop ? prop.name : (r.propertyName || "The Unique Haven Residence"),
             propertyUnit: prop ? `${prop.location} (${prop.type})` : (r.unitNo || "#TUHH"),
-            channel: "Airbnb" as const,
-            channelColor: "#ff385c",
-            guestName: r.guestName || (r.confirmationCode ? `Guest (${r.confirmationCode})` : "Airbnb Guest"),
+            channel: isDirect ? ("Direct" as const) : ("Airbnb" as const),
+            channelColor: isDirect ? "#0ea5e9" : "#ff385c",
+            guestName: r.guestName,
             guestPhone: r.guestPhone || (r.phoneEnd ? `+91 XXXXX ${r.phoneEnd}` : "+91 94544 70872"),
-            guestEmail: r.confirmationCode ? `${r.confirmationCode.toLowerCase()}@guest.airbnb.com` : "guest@airbnb.com",
-            adults: 2,
+            guestEmail: r.confirmationCode ? `${r.confirmationCode.toLowerCase()}@guest.airbnb.com` : "guest@uniquehaven.in",
+            adults: r.guests || 2,
             children: 0,
             checkIn: fmt(r.startDate),
             checkOut: fmt(r.endDate),
             checkInTime: "02:00 PM",
             checkOutTime: "11:00 AM",
             nights,
-            baseAmount,
+            baseAmount: Math.round(baseAmount),
             taxAmount,
-            totalAmount,
-            platformFee,
-            tdsAmount,
-            netPayout,
-            paymentStatus: "Paid in Full" as const,
+            totalAmount: Math.round(totalAmount),
+            platformFee: Math.round(platformFee),
+            tdsAmount: Math.round(tdsAmount),
+            netPayout: Math.round(netPayout),
+            paymentStatus: (r.paymentStatus === "Paid" ? "Paid in Full" : "Pending") as any,
             payoutStatus: (bStatus === "ongoing" || today >= eDate) ? ("Paid" as const) : ("Upcoming Payout" as const),
             bookingStatus: bStatus,
-            bookedOn: "Realtime Airbnb iCal",
+            bookedOn: isDirect ? "Direct Master Database" : "Realtime Airbnb Sync",
             reservationUrl: r.reservationUrl,
           };
         });

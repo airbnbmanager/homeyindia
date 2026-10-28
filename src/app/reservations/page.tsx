@@ -86,35 +86,62 @@ export default function ReservationsPage() {
           }
         };
 
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
         const liveList: Reservation[] = data.allReservations.map((r: any) => {
           const prop = PROPERTIES.find((p) => p.id === r.propertyId);
-          const gross = r.amount > 0 ? r.amount : (prop?.price ? prop.price * (r.nights || 1) : 6000);
+          const [sY, sM, sD] = r.startDate.split("-").map(Number);
+          const [eY, eM, eD] = r.endDate.split("-").map(Number);
+          const sDate = new Date(sY, sM - 1, sD);
+          const eDate = new Date(eY, eM - 1, eD);
+
+          const nights = r.nights || Math.max(1, Math.round((eDate.getTime() - sDate.getTime()) / (1000 * 60 * 60 * 24)));
+          const isDirect = r.source === "Direct" || r.source === "Direct Website" || r.bookingMode === "Offline";
+          
+          const gross = r.grossAmount > 0 
+            ? r.grossAmount 
+            : (r.amount > 0 ? r.amount : (prop?.price ? prop.price * nights : 6000));
+          
+          const channelFee = isDirect ? 0 : (r.platformFee > 0 ? r.platformFee : Math.round(gross * 0.15));
           const guestTax = Math.round(gross * 0.12);
-          const channelFee = Math.round(gross * 0.15);
-          const tds = Math.round(gross * 0.01);
-          const net = gross - channelFee - tds;
+          const tds = isDirect ? 0 : Math.round(gross * 0.01);
+          const net = r.netPayout > 0 ? r.netPayout : (gross - channelFee - tds);
+
+          let status: "Upcoming" | "Ongoing" | "Completed" | "Cancelled" = "Upcoming";
+          if (today >= sDate && today < eDate) {
+            status = "Ongoing";
+          } else if (today >= eDate) {
+            status = "Completed";
+          } else {
+            status = "Upcoming";
+          }
+
+          const id = r.confirmationCode && !r.confirmationCode.startsWith("B17") 
+            ? `ABB-${r.confirmationCode}` 
+            : (r.bookingId || `DIR-${r.uid.slice(0, 10)}`);
 
           return {
-            id: r.confirmationCode ? `ABB-${r.confirmationCode}` : `ABB-${r.uid.slice(0, 10)}`,
-            source: "Airbnb" as const,
+            id,
+            source: isDirect ? ("Direct Website" as const) : ("Airbnb" as const),
             propertyId: r.propertyId,
-            propertyName: prop ? `${prop.name} (${prop.type})` : r.propertyName,
+            propertyName: prop ? `${prop.name} (${prop.type})` : (r.propertyName || "The Unique Haven Residence"),
             guestName: r.guestName,
-            guestPhone: r.guestPhone || `+91 XXXXX ${r.phoneEnd || "6100"}`,
-            guestEmail: r.confirmationCode ? `${r.confirmationCode.toLowerCase()}@guest.airbnb.com` : "guest@airbnb.com",
-            adults: 2,
+            guestPhone: r.guestPhone || (r.phoneEnd ? `+91 XXXXX ${r.phoneEnd}` : "+91 94544 70872"),
+            guestEmail: r.confirmationCode ? `${r.confirmationCode.toLowerCase()}@guest.airbnb.com` : "guest@uniquehaven.in",
+            adults: r.guests || 2,
             children: 0,
             checkIn: fmt(r.startDate),
             checkOut: fmt(r.endDate),
-            nights: r.nights || 1,
-            grossAmount: gross,
+            nights,
+            grossAmount: Math.round(gross),
             guestTax,
             channelFee,
             tds,
-            netPayout: net,
-            status: "Upcoming" as const,
-            bookedOn: "Realtime Airbnb iCal",
-            payoutStatus: "Paid" as const,
+            netPayout: Math.round(net),
+            status,
+            bookedOn: isDirect ? "Direct Master Database" : "Realtime Airbnb Sync",
+            payoutStatus: r.paymentStatus === "Paid" || today >= eDate ? ("Paid" as const) : ("Pending" as const),
           };
         });
 

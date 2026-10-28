@@ -214,9 +214,9 @@ export default function CalendarPage() {
             if (cur.getFullYear() === currentYear && cur.getMonth() === currentMonth) {
               const d = cur.getDate();
               newDays[d] = {
-                status: "airbnb",
-                guestName: res.guestName || `Airbnb (${res.confirmationCode || "Reserved"})`,
-                price: selectedProperty.price,
+                status: (res.source === "Direct" || res.source === "Direct Website") ? "direct" : "airbnb",
+                guestName: res.guestName || (res.confirmationCode ? `Airbnb (${res.confirmationCode})` : "Reserved"),
+                price: res.amount > 0 && res.nights > 0 ? Math.round(res.amount / res.nights) : selectedProperty.price,
               };
             }
             cur.setDate(cur.getDate() + 1);

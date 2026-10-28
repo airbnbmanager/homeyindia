@@ -132,10 +132,10 @@ export default function UnifiedCalendarPage() {
                 propId,
                 startDay,
                 endDay,
-                channel: "Airbnb",
-                guestName: res.guestName || `Airbnb (${res.confirmationCode || "Reserved"})`,
+                channel: res.source === "Direct" || res.source === "Direct Website" ? "Direct" : "Airbnb",
+                guestName: res.guestName || (res.confirmationCode ? `Airbnb (${res.confirmationCode})` : "Reserved"),
                 nights: res.nights || (endDay - startDay || 1),
-                total: res.amount || (propPrice * (res.nights || 1)),
+                total: res.amount > 0 ? res.amount : (propPrice * (res.nights || 1)),
                 confirmationCode: res.confirmationCode,
               });
             }
