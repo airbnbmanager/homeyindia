@@ -193,7 +193,7 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
                   className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-900 hover:bg-black text-white text-xs font-bold border border-slate-700 shadow-sm transition-all"
                 >
                   <span className="text-amber-400">👑</span>
-                  <span>Praveen Singh · TUHH Master</span>
+                  <span>Praveen Singh · Paid Pro Member</span>
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-0.5" />
                 </Link>
                 <Link
@@ -201,7 +201,7 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
                   className="sm:hidden inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-slate-900 text-white border border-slate-700 text-xs font-bold whitespace-nowrap"
                 >
                   <span className="text-amber-400">👑</span>
-                  <span>Master Host</span>
+                  <span>Paid Pro Host</span>
                 </Link>
               </>
             ) : (
@@ -285,14 +285,15 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
                       ? `Hey, ${user.firstName}!`
                       : "Welcome to Homey India"}
                     {isMasterOwner && (
-                      <span className="text-[9px] bg-amber-100 text-amber-900 px-1.5 py-0.5 rounded font-extrabold border border-amber-200">
-                        OWNER
+                      <span className="text-[9px] bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded font-extrabold border border-emerald-300 flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                        PAID MEMBER
                       </span>
                     )}
                   </span>
                   <span className="text-[10px] text-gray-500 block truncate max-w-[200px]">
                     {isMasterOwner
-                      ? "The Unique Haven Homes · 18 Properties"
+                      ? "Enterprise Lifetime Plan · All 18 Stays"
                       : user
                       ? user.email || "Verified Host Profile"
                       : "Sign in to access host portal & bookings"}

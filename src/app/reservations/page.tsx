@@ -58,149 +58,14 @@ interface Reservation {
   payoutStatus: "Paid" | "Pending" | "Processing";
 }
 
-const MOCK_RESERVATIONS: Reservation[] = [
-  {
-    id: "HH-2066",
-    source: "Direct Website",
-    propertyId: "LUL-101",
-    propertyName: "The Luxe Haven (1BHK Flat)",
-    guestName: "Aditya Verma",
-    guestPhone: "+91 98201 44512",
-    guestEmail: "aditya.v@gmail.com",
-    adults: 2,
-    children: 1,
-    checkIn: "28 Oct 2026",
-    checkOut: "31 Oct 2026",
-    nights: 3,
-    grossAmount: 7950,
-    guestTax: 954,
-    channelFee: 0,
-    tds: 80,
-    netPayout: 7870,
-    status: "Upcoming",
-    bookedOn: "24 Oct 2026",
-    payoutStatus: "Pending"
-  },
-  {
-    id: "ABB-HMXKJB3XKN",
-    source: "Airbnb",
-    propertyId: "GOM-201",
-    propertyName: "The Dark Blue Haven (2BHK Flat)",
-    guestName: "Kavita Singhal",
-    guestPhone: "+91 94150 88231",
-    guestEmail: "kavita.singhal@yahoo.com",
-    adults: 4,
-    children: 0,
-    checkIn: "26 Oct 2026",
-    checkOut: "29 Oct 2026",
-    nights: 3,
-    grossAmount: 11850,
-    guestTax: 1422,
-    channelFee: 1777,
-    tds: 118,
-    netPayout: 9955,
-    status: "Ongoing",
-    bookedOn: "20 Oct 2026",
-    payoutStatus: "Processing"
-  },
-  {
-    id: "GMT-0152911396",
-    source: "Goibibo",
-    propertyId: "LUL-102",
-    propertyName: "The Elegant Haven (1BHK Flat)",
-    guestName: "Rohan Kapoor",
-    guestPhone: "+91 97112 39011",
-    guestEmail: "rohan.kapoor@outlook.com",
-    adults: 2,
-    children: 0,
-    checkIn: "24 Oct 2026",
-    checkOut: "26 Oct 2026",
-    nights: 2,
-    grossAmount: 5300,
-    guestTax: 636,
-    channelFee: 795,
-    tds: 53,
-    netPayout: 4452,
-    status: "Completed",
-    bookedOn: "15 Oct 2026",
-    payoutStatus: "Paid"
-  },
-  {
-    id: "BKG-99238411",
-    source: "Booking.com",
-    propertyId: "SHA-301",
-    propertyName: "The Grand Haven Villa",
-    guestName: "Dr. Anirudh Sharma",
-    guestPhone: "+91 98390 12345",
-    guestEmail: "anirudh.sharma@medanta.org",
-    adults: 8,
-    children: 2,
-    checkIn: "02 Nov 2026",
-    checkOut: "07 Nov 2026",
-    nights: 5,
-    grossAmount: 42500,
-    guestTax: 5100,
-    channelFee: 6375,
-    tds: 425,
-    netPayout: 35700,
-    status: "Upcoming",
-    bookedOn: "22 Oct 2026",
-    payoutStatus: "Pending"
-  },
-  {
-    id: "ABB-HM88WADEKM",
-    source: "Airbnb",
-    propertyId: "LUL-103",
-    propertyName: "The Modern Haven (1BHK Flat)",
-    guestName: "Meenakshi Das",
-    guestPhone: "+91 98114 99012",
-    guestEmail: "meenakshi.das@gmail.com",
-    adults: 2,
-    children: 0,
-    checkIn: "18 Oct 2026",
-    checkOut: "21 Oct 2026",
-    nights: 3,
-    grossAmount: 7950,
-    guestTax: 954,
-    channelFee: 1192,
-    tds: 80,
-    netPayout: 6678,
-    status: "Completed",
-    bookedOn: "10 Oct 2026",
-    payoutStatus: "Paid"
-  },
-  {
-    id: "ABB-HMZXZBCJRB",
-    source: "Airbnb",
-    propertyId: "GOM-202",
-    propertyName: "The Vintage Haven (2BHK Flat)",
-    guestName: "Sameer Nanda",
-    guestPhone: "+91 99100 23145",
-    guestEmail: "sameer.n@nanda.in",
-    adults: 3,
-    children: 1,
-    checkIn: "12 Oct 2026",
-    checkOut: "14 Oct 2026",
-    nights: 2,
-    grossAmount: 6800,
-    guestTax: 816,
-    channelFee: 1020,
-    tds: 68,
-    netPayout: 5712,
-    status: "Cancelled",
-    bookedOn: "05 Oct 2026",
-    payoutStatus: "Paid"
-  }
-];
-
 export default function ReservationsPage() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [sourceFilter, setSourceFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [activeReservation, setActiveReservation] = useState<Reservation | null>(null);
   const [showManualModal, setShowManualModal] = useState(false);
-  const [reservationsList, setReservationsList] = useState<Reservation[]>(MOCK_RESERVATIONS);
-  const [isLoadingRealtime, setIsLoadingRealtime] = useState(false);
+  const [reservationsList, setReservationsList] = useState<Reservation[]>([]);
+  const [isLoadingRealtime, setIsLoadingRealtime] = useState(true);
   const [realtimeSyncedCount, setRealtimeSyncedCount] = useState(0);
 
   // Fetch live bookings from Airbnb iCal feeds via sync API
@@ -254,11 +119,7 @@ export default function ReservationsPage() {
         });
 
         setRealtimeSyncedCount(liveList.length);
-        // Prepend real live Airbnb reservations ahead of mock
-        setReservationsList([
-          ...liveList,
-          ...MOCK_RESERVATIONS.filter((m) => m.source !== "Airbnb")
-        ]);
+        setReservationsList(liveList);
       }
     } catch (err) {
       console.warn("Failed to fetch live reservations:", err);

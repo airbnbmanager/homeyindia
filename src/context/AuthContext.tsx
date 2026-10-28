@@ -22,6 +22,14 @@ export interface UserProfile {
   isOwner?: boolean;
   isMasterAdmin?: boolean;
   isSuperAdmin?: boolean;
+  isPaidMember?: boolean;
+  isPaid?: boolean;
+  plan?: string;
+  planName?: string;
+  subscriptionStatus?: "active" | "trial" | "expired" | "none";
+  billingCycle?: string;
+  isTrial?: boolean;
+  trialDaysLeft?: number;
   kycVerified?: boolean;
   badge?: string;
   permissions?: string[];
@@ -49,9 +57,17 @@ export const MASTER_UNIQUE_HAVEN_USER: UserProfile = {
   isOwner: true,
   isMasterAdmin: true,
   isSuperAdmin: true,
+  isPaidMember: true,
+  isPaid: true,
+  plan: "enterprise_lifetime",
+  planName: "Enterprise Master (Lifetime Paid & Verified)",
+  subscriptionStatus: "active",
+  billingCycle: "lifetime",
+  isTrial: false,
+  trialDaysLeft: 0,
   isSuperhost: true,
   kycVerified: true,
-  badge: "👑 Founder & Master Host",
+  badge: "👑 Founder & Paid Master Host",
   permissions: [
     "all",
     "owner",
@@ -127,9 +143,17 @@ function buildProfile(email: string, id: string, rawUser?: User | null): UserPro
       isOwner: true,
       isMasterAdmin: true,
       isSuperAdmin: true,
+      isPaidMember: true,
+      isPaid: true,
+      plan: "enterprise_lifetime",
+      planName: "Enterprise Master (Lifetime Paid & Verified)",
+      subscriptionStatus: "active",
+      billingCycle: "lifetime",
+      isTrial: false,
+      trialDaysLeft: 0,
       isSuperhost: true,
       kycVerified: true,
-      badge: "👑 Founder & Master Host",
+      badge: "👑 Founder & Paid Master Host",
       phone: (savedProfile.phone as string) || "+91 94544 70872",
       avatarUrl: googleAvatar || (savedProfile.avatarUrl as string) || MASTER_UNIQUE_HAVEN_USER.avatarUrl,
       propertyCount: 18,
@@ -150,8 +174,15 @@ function buildProfile(email: string, id: string, rawUser?: User | null): UserPro
     lastName: (savedProfile.lastName as string) || "Host",
     businessName: (savedProfile.businessName as string) || "The Unique Haven Homes",
     role: (savedProfile.role as string) || "host",
-    propertyCount: (savedProfile.propertyCount as number) || 18,
-    isSuperhost: true,
+    propertyCount: (savedProfile.propertyCount as number) || 1,
+    isSuperhost: false,
+    isPaidMember: false,
+    isPaid: false,
+    plan: "trial",
+    planName: "Free Trial (30 Days)",
+    subscriptionStatus: "trial" as const,
+    isTrial: true,
+    trialDaysLeft: 14,
     kycVerified: true,
     isLoggedIn: true,
   };

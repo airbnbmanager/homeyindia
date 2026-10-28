@@ -138,7 +138,13 @@ export default function AccountSettingsPage() {
             </div>
 
             {/* Quick Status Pill */}
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-xs shadow-xs">
+                <span className="text-amber-500">👑</span>
+                <span className="font-extrabold text-emerald-900">
+                  {user?.isPaidMember ? "Enterprise Lifetime (Paid Member)" : "Active Pro Host"}
+                </span>
+              </div>
               <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-gray-200 text-xs shadow-sm">
                 <div className={`w-2.5 h-2.5 rounded-full ${aadhaarStep === "verified" ? "bg-emerald-500" : "bg-amber-500 animate-pulse"}`} />
                 <span className="font-bold text-gray-800">

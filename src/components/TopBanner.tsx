@@ -3,8 +3,10 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { X } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 
 export default function TopBanner({ onDismiss }: { onDismiss?: () => void }) {
+  const { user } = useAuth();
   const [dismissed, setDismissed] = useState(false);
   const [timeLeft, setTimeLeft] = useState({ days: 20, hours: 1, mins: 18, secs: 45 });
 
@@ -21,7 +23,7 @@ export default function TopBanner({ onDismiss }: { onDismiss?: () => void }) {
     return () => clearInterval(timer);
   }, []);
 
-  if (dismissed) return null;
+  if (dismissed || user?.isPaidMember || user?.email === "praveensinghaws@gmail.com") return null;
 
   const handleDismiss = () => {
     setDismissed(true);
