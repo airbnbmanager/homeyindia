@@ -2,9 +2,10 @@
 
 import TopBanner from "@/components/TopBanner";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import AuthModal from "@/components/AuthModal";
+import { useAuth } from "@/context/AuthContext";
 import { 
   Menu, X, ChevronDown, Calendar, Layers, ShieldCheck, 
   TrendingUp, DollarSign, MessageSquare, Users, 
@@ -17,16 +18,7 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [featuresAccordionOpen, setFeaturesAccordionOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
-  const [currentUser, setCurrentUser] = useState<any>(null);
-
-  useEffect(() => {
-    const saved = localStorage.getItem("homey_user_profile");
-    if (saved) {
-      try {
-        setCurrentUser(JSON.parse(saved));
-      } catch (e) {}
-    }
-  }, []);
+  const { user, signOut } = useAuth();
 
   const features = [
     { title: "Unified Calendar", desc: "Real-time multi-calendar for all properties", href: "/unified-calendar", icon: Calendar },
@@ -206,18 +198,25 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
             {/* Single Unified Account & Menu Button Pill */}
             <button
               onClick={() => setRightDrawerOpen(true)}
-              className="h-9 sm:h-10 px-2.5 sm:px-3 rounded-full border border-gray-200 bg-white hover:bg-gray-50 flex items-center gap-2 shadow-sm transition-all focus:outline-none"
+              className="h-9 sm:h-10 px-2.5 sm:px-3 rounded-full border border-gray-200 bg-white hover:bg-gray-50 flex items-center gap-2 shadow-sm transition-all focus:outline-none cursor-pointer"
               aria-label="Open main menu and account drawer"
             >
-              <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-gray-100 flex items-center justify-center text-gray-600">
-                <User className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              <div className="relative w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-gray-100 flex items-center justify-center text-gray-700 font-bold text-xs">
+                {user ? (
+                  <>
+                    <span className="text-[#ff3823]">{user.firstName?.[0]?.toUpperCase() || "H"}</span>
+                    <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-white" />
+                  </>
+                ) : (
+                  <User className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-600" />
+                )}
               </div>
               <Menu className="w-4 h-4 text-gray-700" />
             </button>
           </div>
         </div>
       </header>
-      <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} onSuccess={(user) => setCurrentUser(user)} />
+      <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} />
 
       {/* Slide-Over Mobile & Desktop Drawer */}
       {rightDrawerOpen && (
@@ -234,18 +233,18 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
             <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-xs shadow-sm border border-slate-200">
-                  {currentUser ? (
-                    <span className="text-[#ff3823] font-bold">{currentUser.firstName?.[0]?.toUpperCase() || "H"}</span>
+                  {user ? (
+                    <span className="text-[#ff3823] font-bold">{user.firstName?.[0]?.toUpperCase() || "H"}</span>
                   ) : (
                     <User className="w-4 h-4 text-slate-500" />
                   )}
                 </div>
                 <div>
                   <span className="font-bold text-gray-900 text-sm block">
-                    {currentUser ? `Hey, ${currentUser.firstName}!` : "Welcome to Homey India"}
+                    {user ? `Hey, ${user.firstName}!` : "Welcome to Homey India"}
                   </span>
                   <span className="text-[10px] text-gray-500">
-                    {currentUser ? (currentUser.email || "Verified Host Profile") : "Sign in to access host portal & bookings"}
+                    {user ? (user.email || "Verified Host Profile") : "Sign in to access host portal & bookings"}
                   </span>
                 </div>
               </div>
@@ -300,10 +299,10 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
             <div className="flex-1 px-5 py-4 space-y-4 text-sm font-medium text-gray-800 overflow-y-auto">
               {/* Auth Row */}
               <div className="flex items-center justify-between pb-2 border-b border-gray-100">
-                {!currentUser ? (
+                {!user ? (
                   <button
                     onClick={() => { setRightDrawerOpen(false); setAuthModalOpen(true); }}
-                    className="py-1 font-bold text-[#ff3823] hover:text-[#e0220d] transition-colors text-xs uppercase tracking-wider flex items-center gap-1.5"
+                    className="py-1 font-bold text-[#ff3823] hover:text-[#e0220d] transition-colors text-xs uppercase tracking-wider flex items-center gap-1.5 cursor-pointer"
                   >
                     <span>Sign In / OTP Login</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -314,12 +313,11 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
                       <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> Verified Host
                     </span>
                     <button
-                      onClick={() => {
-                        localStorage.removeItem("homey_user_profile");
-                        setCurrentUser(null);
+                      onClick={async () => {
+                        await signOut();
                         setRightDrawerOpen(false);
                       }}
-                      className="text-xs text-gray-400 hover:text-red-600 transition-colors"
+                      className="text-xs text-gray-400 hover:text-red-600 transition-colors cursor-pointer"
                     >
                       Sign Out
                     </button>

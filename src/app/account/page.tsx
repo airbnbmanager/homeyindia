@@ -9,8 +9,10 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { useAuth } from "@/context/AuthContext";
 
 export default function AccountSettingsPage() {
+  const { user, updateProfile } = useAuth();
   const [activeTab, setActiveTab] = useState<"personal" | "verification">("personal");
   const [verificationSubTab, setVerificationSubTab] = useState<"aadhaar" | "foreign">("aadhaar");
 
@@ -76,6 +78,7 @@ export default function AccountSettingsPage() {
   const handleSavePersonalInfo = (e: React.FormEvent) => {
     e.preventDefault();
     localStorage.setItem("homey_user_profile", JSON.stringify(personalInfo));
+    updateProfile(personalInfo);
     setIsSaved(true);
     setTimeout(() => setIsSaved(false), 3000);
   };

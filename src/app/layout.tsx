@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { DM_Sans, DM_Serif_Display } from "next/font/google";
 import "./globals.css";
 import PwaRegistrar from "@/components/PwaRegistrar";
+import { AuthProvider } from "@/context/AuthContext";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -111,8 +112,10 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-title" content="Homey India" />
       </head>
       <body className="antialiased selection:bg-[#ff3823]/10 selection:text-[#ff3823]">
-        <PwaRegistrar />
-        {children}
+        <AuthProvider>
+          <PwaRegistrar />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );
