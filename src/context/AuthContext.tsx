@@ -13,7 +13,7 @@ export interface UserProfile {
   phone?: string;
   isLoggedIn: boolean;
   avatarUrl?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 interface AuthContextType {
@@ -22,63 +22,62 @@ interface AuthContextType {
   session: Session | null;
   isLoading: boolean;
   signInWithOtp: (email: string) => Promise<{ error: AuthError | Error | null }>;
-  verifyOtp: (email: string, token: string) => Promise<{ data: any; error: AuthError | Error | null }>;
+  verifyOtp: (email: string, token: string) => Promise<{ data: { user: User | null; session: Session | null } | null; error: AuthError | Error | null }>;
   signOut: () => Promise<void>;
   updateProfile: (updates: Partial<UserProfile>) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<UserProfile | null>(null);
-  const [supabaseUser, setSupabaseUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  // Helper to build profile
-  const buildProfile = (email: string, id: string): UserProfile => {
-    let savedProfile: any = {};
-    if (typeof window !== "undefined") {
-      try {
-        const saved = localStorage.getItem("homey_user_profile");
-        if (saved) savedProfile = JSON.parse(saved);
-      } catch (e) {
-        console.error("Error reading saved user profile:", e);
-      }
+// Helper to build profile safely
+function buildProfile(email: string, id: string): UserProfile {
+  let savedProfile: Record<string, unknown> = {};
+  if (typeof window !== "undefined") {
+    try {
+      const saved = localStorage.getItem("homey_user_profile");
+      if (saved) savedProfile = JSON.parse(saved);
+    } catch (e) {
+      console.error("Error reading saved user profile:", e);
     }
+  }
 
-    const cleanEmail = email.trim().toLowerCase();
-    const username = cleanEmail.split("@")[0] || "Host";
-    const displayName = username.charAt(0).toUpperCase() + username.slice(1);
+  const cleanEmail = email.trim().toLowerCase();
+  const username = cleanEmail.split("@")[0] || "Host";
+  const displayName = username.charAt(0).toUpperCase() + username.slice(1);
 
-    return {
-      ...savedProfile,
-      id: id || savedProfile.id || `user-${Date.now()}`,
-      email: cleanEmail,
-      firstName: savedProfile.firstName || displayName,
-      lastName: savedProfile.lastName || "Host",
-      role: savedProfile.role || "host",
-      isLoggedIn: true,
-    };
+  return {
+    ...savedProfile,
+    id: id || (savedProfile.id as string) || `user-${Date.now()}`,
+    email: cleanEmail,
+    firstName: (savedProfile.firstName as string) || displayName,
+    lastName: (savedProfile.lastName as string) || "Host",
+    role: (savedProfile.role as string) || "host",
+    isLoggedIn: true,
   };
+}
 
-  useEffect(() => {
-    // 1. Initial check: check localStorage first for instant UI response
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<UserProfile | null>(() => {
     if (typeof window !== "undefined") {
       try {
         const saved = localStorage.getItem("homey_user_profile");
         if (saved) {
           const parsed = JSON.parse(saved);
-          if (parsed?.isLoggedIn) {
-            setUser(parsed);
-          }
+          if (parsed?.isLoggedIn) return parsed as UserProfile;
         }
       } catch (e) {
         console.error("Local profile parse error:", e);
       }
     }
+    return null;
+  });
 
-    // 2. Fetch active Supabase session
+  const [supabaseUser, setSupabaseUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Fetch active Supabase session
     async function initSession() {
       try {
         const { data: { session: initialSession }, error } = await supabase.auth.getSession();
@@ -105,7 +104,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     initSession();
 
-    // 3. Listen to Supabase auth state changes
+    // Listen to Supabase auth state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, newSession) => {
         setSession(newSession);
@@ -153,15 +152,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
 
       return { error };
-    } catch (err: any) {
-      return { error: err };
+    } catch (err: unknown) {
+      return { error: err instanceof Error ? err : new Error(String(err)) };
     }
   };
 
   const verifyOtp = async (
     email: string,
     token: string
-  ): Promise<{ data: any; error: AuthError | Error | null }> => {
+  ): Promise<{ data: { user: User | null; session: Session | null } | null; error: AuthError | Error | null }> => {
     try {
       const cleanEmail = email.trim().toLowerCase();
       const cleanToken = token.trim();
@@ -189,9 +188,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         localStorage.setItem("homey_user_profile", JSON.stringify(prof));
       }
 
-      return { data, error: null };
-    } catch (err: any) {
-      return { data: null, error: err };
+      return { data: { user: data.user, session: data.session }, error: null };
+    } catch (err: unknown) {
+      return { data: null, error: err instanceof Error ? err : new Error(String(err)) };
     }
   };
 

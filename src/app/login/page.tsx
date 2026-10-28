@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight, CheckCircle2, ShieldCheck, Mail, RefreshCw, Edit2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -19,11 +18,13 @@ export default function LoginPage() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    let interval: any;
+    let interval: NodeJS.Timeout | undefined;
     if (step === "otp" && timer > 0) {
       interval = setInterval(() => setTimer((t) => t - 1), 1000);
     }
-    return () => clearInterval(interval);
+    return () => {
+      if (interval) clearInterval(interval);
+    };
   }, [step, timer]);
 
   // If already logged in, redirect to dashboard

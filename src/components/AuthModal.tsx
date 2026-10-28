@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { X, ArrowRight, CheckCircle2, Mail, ShieldCheck, RefreshCw, Edit2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/context/AuthContext";
+import { useAuth, UserProfile } from "@/context/AuthContext";
 
 export default function AuthModal({
   isOpen,
@@ -12,7 +12,7 @@ export default function AuthModal({
 }: {
   isOpen: boolean;
   onClose: () => void;
-  onSuccess?: (user: any) => void;
+  onSuccess?: (user: UserProfile | null) => void;
 }) {
   const router = useRouter();
   const { user, signInWithOtp, verifyOtp } = useAuth();
@@ -24,24 +24,24 @@ export default function AuthModal({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    let interval: any;
+    let interval: NodeJS.Timeout | undefined;
     if (step === "otp" && timer > 0) {
       interval = setInterval(() => setTimer((t) => t - 1), 1000);
     }
-    return () => clearInterval(interval);
+    return () => {
+      if (interval) clearInterval(interval);
+    };
   }, [step, timer]);
 
-  // Reset modal state when closed or opened
-  useEffect(() => {
-    if (isOpen) {
-      setErrorMessage(null);
-      if (user?.isLoggedIn) {
-        setStep("success");
-      }
-    }
-  }, [isOpen, user]);
-
   if (!isOpen) return null;
+
+  const handleClose = () => {
+    setErrorMessage(null);
+    setStep("input");
+    setEmail("");
+    setOtp(["", "", "", "", "", ""]);
+    onClose();
+  };
 
   const handleSendOtp = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -60,7 +60,6 @@ export default function AuthModal({
 
       if (error) {
         console.warn("Supabase OTP notice:", error.message);
-        // Note: Supabase might rate limit or warn, but let's inform user clearly if severe
         if (error.message?.includes("rate limit")) {
           setErrorMessage("Too many attempts. Please wait a minute before requesting another code.");
           setIsLoading(false);
@@ -74,7 +73,7 @@ export default function AuthModal({
       setTimeout(() => {
         document.getElementById("modal-otp-input-0")?.focus();
       }, 100);
-    } catch (err: any) {
+    } catch {
       setStep("otp");
       setTimer(60);
     } finally {
@@ -83,7 +82,6 @@ export default function AuthModal({
   };
 
   const handleOtpChange = (val: string, index: number) => {
-    // allow only numbers or single character
     const cleaned = val.replace(/\D/g, "");
     const char = cleaned.slice(-1);
 
@@ -127,7 +125,7 @@ export default function AuthModal({
 
     setIsLoading(true);
 
-    const { data, error } = await verifyOtp(email, code);
+    const { error } = await verifyOtp(email, code);
 
     if (error) {
       setIsLoading(false);
@@ -142,8 +140,8 @@ export default function AuthModal({
     setStep("success");
 
     setTimeout(() => {
-      if (onSuccess) onSuccess(data?.user || user);
-      onClose();
+      if (onSuccess) onSuccess(user);
+      handleClose();
       router.push("/account");
     }, 1000);
   };
@@ -155,7 +153,7 @@ export default function AuthModal({
         className="relative w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-gray-100 animate-in zoom-in-95 duration-200"
       >
         <button
-          onClick={onClose}
+          onClick={handleClose}
           className="absolute top-5 right-5 p-2 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-900 transition-colors"
           aria-label="Close login dialog"
         >
