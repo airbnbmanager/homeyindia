@@ -15,7 +15,7 @@ export default function BookDemoPage() {
       <main className="flex-grow pt-32 pb-24">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <div className="text-center max-w-2xl mx-auto mb-12">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#ff3823] bg-[#fff1ef] px-3.5 py-1.5 rounded-full border border-[#ffe2de]">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#ff2800] bg-[#fff1ef] px-3.5 py-1.5 rounded-full border border-[#ffe2de]">
               1-on-1 Consultation
             </span>
             <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 font-display mt-3">
@@ -44,14 +44,14 @@ export default function BookDemoPage() {
                         onClick={() => setSelectedSlot(slot)}
                         className={`p-3 rounded-xl border cursor-pointer flex items-center justify-between transition-colors ${
                           selectedSlot === slot
-                            ? "bg-[#fff1ef] border-[#ff3823] text-[#ff3823] font-bold"
+                            ? "bg-[#fff1ef] border-[#ff2800] text-[#ff2800] font-bold"
                             : "border-gray-200 text-gray-700 hover:bg-gray-50"
                         }`}
                       >
                         <span className="flex items-center gap-2">
                           <Clock className="w-4 h-4 text-gray-400" /> {slot}
                         </span>
-                        {selectedSlot === slot && <CheckCircle2 className="w-4 h-4 text-[#ff3823]" />}
+                        {selectedSlot === slot && <CheckCircle2 className="w-4 h-4 text-[#ff2800]" />}
                       </div>
                     ))}
                   </div>
@@ -81,7 +81,7 @@ export default function BookDemoPage() {
                   </div>
                   <button
                     onClick={() => setConfirmed(true)}
-                    className="w-full mt-3 py-3 rounded-full bg-[#ff3823] hover:bg-[#e5220d] text-white font-bold text-xs shadow-md transition-all"
+                    className="w-full mt-3 py-3 rounded-full bg-[#ff2800] hover:bg-[#e5220d] text-white font-bold text-xs shadow-md transition-all"
                   >
                     Confirm My Demo for {selectedSlot}
                   </button>

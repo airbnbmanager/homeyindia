@@ -149,7 +149,7 @@ export default function PropertySettingsClient({ propertyId }: { propertyId: str
                 activeSection === "info" ? "bg-slate-900 text-white shadow" : "text-slate-600 hover:bg-slate-50"
               }`}
             >
-              <Building className="w-4 h-4 text-[#ff3823]" /> Property Details &amp; Space
+              <Building className="w-4 h-4 text-[#ff2800]" /> Property Details &amp; Space
             </button>
             <button
               onClick={() => setActiveSection("photos")}
@@ -157,7 +157,7 @@ export default function PropertySettingsClient({ propertyId }: { propertyId: str
                 activeSection === "photos" ? "bg-slate-900 text-white shadow" : "text-slate-600 hover:bg-slate-50"
               }`}
             >
-              <Camera className="w-4 h-4 text-[#ff3823]" /> Photos ({photos.length})
+              <Camera className="w-4 h-4 text-[#ff2800]" /> Photos ({photos.length})
             </button>
             <button
               onClick={() => setActiveSection("rules")}
@@ -165,7 +165,7 @@ export default function PropertySettingsClient({ propertyId }: { propertyId: str
                 activeSection === "rules" ? "bg-slate-900 text-white shadow" : "text-slate-600 hover:bg-slate-50"
               }`}
             >
-              <ShieldAlert className="w-4 h-4 text-[#ff3823]" /> House Rules &amp; Policies
+              <ShieldAlert className="w-4 h-4 text-[#ff2800]" /> House Rules &amp; Policies
             </button>
 
             <hr className="my-3 border-slate-100" />
@@ -197,7 +197,7 @@ export default function PropertySettingsClient({ propertyId }: { propertyId: str
                       type="text"
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#ff3823]/20 focus:border-[#ff3823]"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#ff2800]/20 focus:border-[#ff2800]"
                     />
                   </div>
 
@@ -209,7 +209,7 @@ export default function PropertySettingsClient({ propertyId }: { propertyId: str
                       type="text"
                       value={tagline}
                       onChange={(e) => setTagline(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#ff3823]/20 focus:border-[#ff3823]"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#ff2800]/20 focus:border-[#ff2800]"
                     />
                   </div>
 
@@ -221,7 +221,7 @@ export default function PropertySettingsClient({ propertyId }: { propertyId: str
                       rows={4}
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-800 leading-relaxed focus:outline-none focus:ring-2 focus:ring-[#ff3823]/20 focus:border-[#ff3823]"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-800 leading-relaxed focus:outline-none focus:ring-2 focus:ring-[#ff2800]/20 focus:border-[#ff2800]"
                     />
                   </div>
 
@@ -233,7 +233,7 @@ export default function PropertySettingsClient({ propertyId }: { propertyId: str
                       rows={2}
                       value={neighbourhood}
                       onChange={(e) => setNeighbourhood(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-800 leading-relaxed focus:outline-none focus:ring-2 focus:ring-[#ff3823]/20 focus:border-[#ff3823]"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-800 leading-relaxed focus:outline-none focus:ring-2 focus:ring-[#ff2800]/20 focus:border-[#ff2800]"
                     />
                   </div>
                 </div>
@@ -383,7 +383,7 @@ export default function PropertySettingsClient({ propertyId }: { propertyId: str
                         className="object-cover group-hover:scale-105 transition duration-300"
                       />
                       {idx === 0 && (
-                        <span className="absolute top-2 left-2 bg-[#ff3823] text-white font-extrabold text-[10px] px-2 py-0.5 rounded-md uppercase tracking-wider shadow">
+                        <span className="absolute top-2 left-2 bg-[#ff2800] text-white font-extrabold text-[10px] px-2 py-0.5 rounded-md uppercase tracking-wider shadow">
                           Cover Photo
                         </span>
                       )}
@@ -393,7 +393,7 @@ export default function PropertySettingsClient({ propertyId }: { propertyId: str
                     </div>
                   ))}
 
-                  <div className="aspect-video rounded-2xl border-2 border-dashed border-slate-300 hover:border-[#ff3823] flex flex-col items-center justify-center text-slate-400 hover:text-[#ff3823] cursor-pointer transition p-4 text-center">
+                  <div className="aspect-video rounded-2xl border-2 border-dashed border-slate-300 hover:border-[#ff2800] flex flex-col items-center justify-center text-slate-400 hover:text-[#ff2800] cursor-pointer transition p-4 text-center">
                     <Upload className="w-6 h-6 mb-1" />
                     <span className="text-xs font-bold">+ Upload Photos</span>
                   </div>
@@ -419,7 +419,7 @@ export default function PropertySettingsClient({ propertyId }: { propertyId: str
                       type="checkbox"
                       checked={petsAllowed}
                       onChange={(e) => setPetsAllowed(e.target.checked)}
-                      className="w-5 h-5 rounded text-[#ff3823] focus:ring-[#ff3823]"
+                      className="w-5 h-5 rounded text-[#ff2800] focus:ring-[#ff2800]"
                     />
                   </label>
 
@@ -432,7 +432,7 @@ export default function PropertySettingsClient({ propertyId }: { propertyId: str
                       type="checkbox"
                       checked={smokingAllowed}
                       onChange={(e) => setSmokingAllowed(e.target.checked)}
-                      className="w-5 h-5 rounded text-[#ff3823] focus:ring-[#ff3823]"
+                      className="w-5 h-5 rounded text-[#ff2800] focus:ring-[#ff2800]"
                     />
                   </label>
 
@@ -445,7 +445,7 @@ export default function PropertySettingsClient({ propertyId }: { propertyId: str
                       type="checkbox"
                       checked={partiesAllowed}
                       onChange={(e) => setPartiesAllowed(e.target.checked)}
-                      className="w-5 h-5 rounded text-[#ff3823] focus:ring-[#ff3823]"
+                      className="w-5 h-5 rounded text-[#ff2800] focus:ring-[#ff2800]"
                     />
                   </label>
 
@@ -458,7 +458,7 @@ export default function PropertySettingsClient({ propertyId }: { propertyId: str
                       type="checkbox"
                       checked={quietHours}
                       onChange={(e) => setQuietHours(e.target.checked)}
-                      className="w-5 h-5 rounded text-[#ff3823] focus:ring-[#ff3823]"
+                      className="w-5 h-5 rounded text-[#ff2800] focus:ring-[#ff2800]"
                     />
                   </label>
 
@@ -471,7 +471,7 @@ export default function PropertySettingsClient({ propertyId }: { propertyId: str
                       type="checkbox"
                       checked={hasCCTV}
                       onChange={(e) => setHasCCTV(e.target.checked)}
-                      className="w-5 h-5 rounded text-[#ff3823] focus:ring-[#ff3823]"
+                      className="w-5 h-5 rounded text-[#ff2800] focus:ring-[#ff2800]"
                     />
                   </label>
                 </div>
@@ -488,7 +488,7 @@ export default function PropertySettingsClient({ propertyId }: { propertyId: str
               </Link>
               <button
                 onClick={handleSave}
-                className="px-6 py-2.5 rounded-xl bg-[#ff3823] text-white font-bold text-xs hover:bg-[#e5220d] transition shadow-lg shadow-[#ff3823]/20 flex items-center gap-1.5"
+                className="px-6 py-2.5 rounded-xl bg-[#ff2800] text-white font-bold text-xs hover:bg-[#e5220d] transition shadow-lg shadow-[#ff2800]/20 flex items-center gap-1.5"
               >
                 <Check className="w-4 h-4" /> Save &amp; Sync Listing
               </button>

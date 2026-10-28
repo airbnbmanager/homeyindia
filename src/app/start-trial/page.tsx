@@ -34,7 +34,7 @@ export default function StartTrialPage() {
         <div className="max-w-2xl mx-auto px-4 sm:px-6">
           {/* Header */}
           <div className="text-center mb-10">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#ff3823] bg-[#fff1ef] px-3.5 py-1.5 rounded-full border border-[#ffe2de]">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#ff2800] bg-[#fff1ef] px-3.5 py-1.5 rounded-full border border-[#ffe2de]">
               30-Day Zero Risk Trial
             </span>
             <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 font-display mt-3">
@@ -51,11 +51,11 @@ export default function StartTrialPage() {
               <div>
                 {/* Step Indicators */}
                 <div className="flex items-center justify-between mb-8 pb-4 border-b border-gray-100 text-xs font-semibold">
-                  <span className={step >= 1 ? "text-[#ff3823]" : "text-gray-400"}>1. Host Profile</span>
+                  <span className={step >= 1 ? "text-[#ff2800]" : "text-gray-400"}>1. Host Profile</span>
                   <span className="text-gray-300">→</span>
-                  <span className={step >= 2 ? "text-[#ff3823]" : "text-gray-400"}>2. Property Portfolio</span>
+                  <span className={step >= 2 ? "text-[#ff2800]" : "text-gray-400"}>2. Property Portfolio</span>
                   <span className="text-gray-300">→</span>
-                  <span className={step >= 3 ? "text-[#ff3823]" : "text-gray-400"}>3. Channels</span>
+                  <span className={step >= 3 ? "text-[#ff2800]" : "text-gray-400"}>3. Channels</span>
                 </div>
 
                 {step === 1 && (
@@ -69,7 +69,7 @@ export default function StartTrialPage() {
                           placeholder="e.g. Rajesh Khurana"
                           value={formData.fullName}
                           onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                          className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#ff3823] focus:outline-none text-sm"
+                          className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#ff2800] focus:outline-none text-sm"
                         />
                       </div>
                     </div>
@@ -83,7 +83,7 @@ export default function StartTrialPage() {
                           placeholder="rajesh@yourdomain.com"
                           value={formData.email}
                           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                          className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#ff3823] focus:outline-none text-sm"
+                          className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#ff2800] focus:outline-none text-sm"
                         />
                       </div>
                     </div>
@@ -97,7 +97,7 @@ export default function StartTrialPage() {
                           placeholder="+91 98765 43210"
                           value={formData.phone}
                           onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                          className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#ff3823] focus:outline-none text-sm"
+                          className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#ff2800] focus:outline-none text-sm"
                         />
                       </div>
                       <span className="text-[11px] text-gray-400 mt-1 block">We will send your trial activation OTP and login credentials via WhatsApp.</span>
@@ -105,7 +105,7 @@ export default function StartTrialPage() {
 
                     <button
                       onClick={() => setStep(2)}
-                      className="w-full mt-4 py-3 rounded-full bg-[#ff3823] hover:bg-[#e5220d] text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2"
+                      className="w-full mt-4 py-3 rounded-full bg-[#ff2800] hover:bg-[#e5220d] text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2"
                     >
                       Next: Property Details <ArrowRight className="w-4 h-4" />
                     </button>
@@ -119,7 +119,7 @@ export default function StartTrialPage() {
                       <select
                         value={formData.propertyCount}
                         onChange={(e) => setFormData({ ...formData, propertyCount: e.target.value })}
-                        className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#ff3823] focus:outline-none text-sm bg-white"
+                        className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#ff2800] focus:outline-none text-sm bg-white"
                       >
                         <option value="1">1 Property (Single Homestay)</option>
                         <option value="2-5">2 to 5 Properties</option>
@@ -136,7 +136,7 @@ export default function StartTrialPage() {
                         placeholder="e.g. North Goa, Manali, Lonavala, etc."
                         value={formData.primaryLocation}
                         onChange={(e) => setFormData({ ...formData, primaryLocation: e.target.value })}
-                        className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#ff3823] focus:outline-none text-sm"
+                        className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#ff2800] focus:outline-none text-sm"
                       />
                     </div>
 
@@ -149,7 +149,7 @@ export default function StartTrialPage() {
                       </button>
                       <button
                         onClick={() => setStep(3)}
-                        className="w-1/2 py-2.5 rounded-full bg-[#ff3823] hover:bg-[#e5220d] text-white font-semibold text-xs shadow-md"
+                        className="w-1/2 py-2.5 rounded-full bg-[#ff2800] hover:bg-[#e5220d] text-white font-semibold text-xs shadow-md"
                       >
                         Next: Connect Channels
                       </button>
@@ -175,12 +175,12 @@ export default function StartTrialPage() {
                             onClick={() => handleChannelToggle(ch.id)}
                             className={`p-3 rounded-xl border cursor-pointer flex items-center justify-between transition-colors ${
                               formData.currentChannels.includes(ch.id)
-                                ? "bg-[#fff1ef] border-[#ff3823] text-[#ff3823] font-bold"
+                                ? "bg-[#fff1ef] border-[#ff2800] text-[#ff2800] font-bold"
                                 : "border-gray-200 text-gray-700 hover:bg-gray-50"
                             }`}
                           >
                             <span>{ch.name}</span>
-                            {formData.currentChannels.includes(ch.id) && <CheckCircle2 className="w-4 h-4 text-[#ff3823]" />}
+                            {formData.currentChannels.includes(ch.id) && <CheckCircle2 className="w-4 h-4 text-[#ff2800]" />}
                           </div>
                         ))}
                       </div>
@@ -195,7 +195,7 @@ export default function StartTrialPage() {
                       </button>
                       <button
                         onClick={() => setSubmitted(true)}
-                        className="w-2/3 py-3 rounded-full bg-[#ff3823] hover:bg-[#e5220d] text-white font-bold text-sm shadow-lg shadow-[#ff3823]/30 transition-all flex items-center justify-center gap-2"
+                        className="w-2/3 py-3 rounded-full bg-[#ff2800] hover:bg-[#e5220d] text-white font-bold text-sm shadow-lg shadow-[#ff2800]/30 transition-all flex items-center justify-center gap-2"
                       >
                         Launch My 30-Day Free Trial <Sparkles className="w-4 h-4" />
                       </button>
@@ -216,7 +216,7 @@ export default function StartTrialPage() {
                 <div className="pt-4">
                   <Link
                     href="/unified-calendar"
-                    className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#ff3823] text-white font-bold text-sm shadow-md hover:bg-[#e5220d] transition-all"
+                    className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#ff2800] text-white font-bold text-sm shadow-md hover:bg-[#e5220d] transition-all"
                   >
                     Open Homey India Live Calendar <ArrowRight className="w-4 h-4" />
                   </Link>

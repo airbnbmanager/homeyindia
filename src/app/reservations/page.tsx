@@ -2,7 +2,7 @@
 
 import HostNavTabs from "@/components/HostNavTabs";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
@@ -31,7 +31,8 @@ import {
   Tag,
   ShieldCheck,
   Zap,
-  Printer
+  Printer,
+  RefreshCw
 } from "lucide-react";
 
 interface Reservation {
@@ -199,6 +200,76 @@ export default function ReservationsPage() {
   const [activeReservation, setActiveReservation] = useState<Reservation | null>(null);
   const [showManualModal, setShowManualModal] = useState(false);
   const [reservationsList, setReservationsList] = useState<Reservation[]>(MOCK_RESERVATIONS);
+  const [isLoadingRealtime, setIsLoadingRealtime] = useState(false);
+  const [realtimeSyncedCount, setRealtimeSyncedCount] = useState(0);
+
+  // Fetch live bookings from Airbnb iCal feeds via sync API
+  const fetchLiveReservations = useCallback(async () => {
+    setIsLoadingRealtime(true);
+    try {
+      const res = await fetch("/api/calendar/sync?property_id=all");
+      const data = await res.json();
+
+      if (data.success && Array.isArray(data.allReservations)) {
+        const fmt = (dStr: string) => {
+          try {
+            const [y, m, d] = dStr.split("-").map(Number);
+            const dt = new Date(y, m - 1, d);
+            return dt.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+          } catch {
+            return dStr;
+          }
+        };
+
+        const liveList: Reservation[] = data.allReservations.map((r: any) => {
+          const prop = PROPERTIES.find((p) => p.id === r.propertyId);
+          const gross = r.amount > 0 ? r.amount : (prop?.price ? prop.price * (r.nights || 1) : 6000);
+          const guestTax = Math.round(gross * 0.12);
+          const channelFee = Math.round(gross * 0.15);
+          const tds = Math.round(gross * 0.01);
+          const net = gross - channelFee - tds;
+
+          return {
+            id: r.confirmationCode ? `ABB-${r.confirmationCode}` : `ABB-${r.uid.slice(0, 10)}`,
+            source: "Airbnb" as const,
+            propertyId: r.propertyId,
+            propertyName: prop ? `${prop.name} (${prop.type})` : r.propertyName,
+            guestName: r.guestName,
+            guestPhone: r.guestPhone || `+91 XXXXX ${r.phoneEnd || "6100"}`,
+            guestEmail: r.confirmationCode ? `${r.confirmationCode.toLowerCase()}@guest.airbnb.com` : "guest@airbnb.com",
+            adults: 2,
+            children: 0,
+            checkIn: fmt(r.startDate),
+            checkOut: fmt(r.endDate),
+            nights: r.nights || 1,
+            grossAmount: gross,
+            guestTax,
+            channelFee,
+            tds,
+            netPayout: net,
+            status: "Upcoming" as const,
+            bookedOn: "Realtime Airbnb iCal",
+            payoutStatus: "Paid" as const,
+          };
+        });
+
+        setRealtimeSyncedCount(liveList.length);
+        // Prepend real live Airbnb reservations ahead of mock
+        setReservationsList([
+          ...liveList,
+          ...MOCK_RESERVATIONS.filter((m) => m.source !== "Airbnb")
+        ]);
+      }
+    } catch (err) {
+      console.warn("Failed to fetch live reservations:", err);
+    } finally {
+      setIsLoadingRealtime(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchLiveReservations();
+  }, [fetchLiveReservations]);
 
   // Manual booking form fields
   const [mPropId, setMPropId] = useState(PROPERTIES[0].id);
@@ -245,7 +316,7 @@ export default function ReservationsPage() {
 
       return true;
     });
-  }, [selectedCategory, sourceFilter, searchQuery]);
+  }, [selectedCategory, sourceFilter, searchQuery, reservationsList]);
 
     const handleCreateManualBooking = (e: React.FormEvent) => {
     e.preventDefault();
@@ -318,8 +389,17 @@ export default function ReservationsPage() {
 
           <div className="flex items-center gap-3">
             <button
+              onClick={fetchLiveReservations}
+              disabled={isLoadingRealtime}
+              className="px-3.5 py-2 rounded-xl bg-slate-800 text-white font-bold text-xs hover:bg-slate-700 transition border border-slate-700 flex items-center gap-1.5 shadow"
+              title="Sync live bookings directly from Airbnb"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 text-emerald-400 ${isLoadingRealtime ? "animate-spin" : ""}`} />
+              {isLoadingRealtime ? "Syncing Airbnb..." : "Sync Live Feeds"}
+            </button>
+            <button
               onClick={() => setShowManualModal(true)}
-              className="px-4 py-2 rounded-xl bg-[#ff3823] text-white font-bold text-xs hover:bg-[#e5220d] transition shadow-lg shadow-[#ff3823]/20 flex items-center gap-1.5"
+              className="px-4 py-2 rounded-xl bg-[#ff2800] text-white font-bold text-xs hover:bg-[#e5220d] transition shadow-lg shadow-[#ff2800]/20 flex items-center gap-1.5"
             >
               <Plus className="w-4 h-4" /> Create Manual Booking
             </button>
@@ -452,7 +532,7 @@ export default function ReservationsPage() {
                   placeholder="Search by Booking ID, guest name, property or phone..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2.5 rounded-2xl border border-slate-200 bg-white text-xs font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#ff3823]/20 focus:border-[#ff3823] shadow-sm"
+                  className="w-full pl-9 pr-4 py-2.5 rounded-2xl border border-slate-200 bg-white text-xs font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#ff2800]/20 focus:border-[#ff2800] shadow-sm"
                 />
               </div>
 
@@ -587,7 +667,7 @@ export default function ReservationsPage() {
                 onClick={() => showToast(`Downloaded GST Tax Invoice for #${activeReservation.id}`)}
                 className="px-4 py-2.5 rounded-xl bg-slate-900 text-white font-bold text-xs hover:bg-slate-800 transition flex items-center gap-1.5 shadow"
               >
-                <Printer className="w-4 h-4 text-[#ff3823]" /> GST Invoice
+                <Printer className="w-4 h-4 text-[#ff2800]" /> GST Invoice
               </button>
             </div>
 
@@ -762,7 +842,7 @@ export default function ReservationsPage() {
                     type="checkbox"
                     checked={mHasGST}
                     onChange={(e) => setMHasGST(e.target.checked)}
-                    className="rounded text-[#ff3823]"
+                    className="rounded text-[#ff2800]"
                   />
                   <span className="text-[11px] font-bold text-slate-700">Guest requires GST Invoice?</span>
                 </label>
@@ -878,7 +958,7 @@ export default function ReservationsPage() {
               </button>
               <button
                 type="submit"
-                className="flex-1 py-3 rounded-xl bg-[#ff3823] text-white font-bold text-xs hover:bg-[#e5220d] transition shadow-lg shadow-[#ff3823]/20"
+                className="flex-1 py-3 rounded-xl bg-[#ff2800] text-white font-bold text-xs hover:bg-[#e5220d] transition shadow-lg shadow-[#ff2800]/20"
               >
                 Create Booking &amp; Lock OTAs
               </button>

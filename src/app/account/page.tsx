@@ -120,7 +120,7 @@ export default function AccountSettingsPage() {
           <div className="mb-6">
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-[#ff3823] transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-[#ff2800] transition-colors"
             >
               <ArrowLeft className="w-3.5 h-3.5" /> Back to Dashboard
             </Link>
@@ -181,7 +181,7 @@ export default function AccountSettingsPage() {
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${activeTab === "verification" ? "bg-[#ff3823] text-white" : "bg-gray-100 text-gray-600"}`}>
+                  <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${activeTab === "verification" ? "bg-[#ff2800] text-white" : "bg-gray-100 text-gray-600"}`}>
                     <ShieldCheck className="w-4 h-4" />
                   </div>
                   <div>
@@ -238,7 +238,7 @@ export default function AccountSettingsPage() {
                           required
                           value={personalInfo.firstName}
                           onChange={(e) => setPersonalInfo({ ...personalInfo, firstName: e.target.value })}
-                          className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#ff3823] focus:outline-none text-sm font-medium"
+                          className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#ff2800] focus:outline-none text-sm font-medium"
                         />
                       </div>
                       <div>
@@ -248,7 +248,7 @@ export default function AccountSettingsPage() {
                           required
                           value={personalInfo.lastName}
                           onChange={(e) => setPersonalInfo({ ...personalInfo, lastName: e.target.value })}
-                          className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#ff3823] focus:outline-none text-sm font-medium"
+                          className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#ff2800] focus:outline-none text-sm font-medium"
                         />
                       </div>
                     </div>
@@ -264,7 +264,7 @@ export default function AccountSettingsPage() {
                             required
                             value={personalInfo.email}
                             onChange={(e) => setPersonalInfo({ ...personalInfo, email: e.target.value })}
-                            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#ff3823] focus:outline-none text-sm font-medium"
+                            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#ff2800] focus:outline-none text-sm font-medium"
                           />
                         </div>
                       </div>
@@ -277,7 +277,7 @@ export default function AccountSettingsPage() {
                             required
                             value={personalInfo.phone}
                             onChange={(e) => setPersonalInfo({ ...personalInfo, phone: e.target.value })}
-                            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#ff3823] focus:outline-none text-sm font-medium"
+                            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#ff2800] focus:outline-none text-sm font-medium"
                           />
                         </div>
                       </div>
@@ -291,7 +291,7 @@ export default function AccountSettingsPage() {
                           type="text"
                           value={personalInfo.preferredName}
                           onChange={(e) => setPersonalInfo({ ...personalInfo, preferredName: e.target.value })}
-                          className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#ff3823] focus:outline-none text-sm"
+                          className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#ff2800] focus:outline-none text-sm"
                         />
                       </div>
                       <div>
@@ -300,7 +300,7 @@ export default function AccountSettingsPage() {
                           type="date"
                           value={personalInfo.dob}
                           onChange={(e) => setPersonalInfo({ ...personalInfo, dob: e.target.value })}
-                          className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#ff3823] focus:outline-none text-sm"
+                          className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#ff2800] focus:outline-none text-sm"
                         />
                       </div>
                     </div>
@@ -315,7 +315,7 @@ export default function AccountSettingsPage() {
                             type="text"
                             value={personalInfo.address1}
                             onChange={(e) => setPersonalInfo({ ...personalInfo, address1: e.target.value })}
-                            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#ff3823] focus:outline-none text-sm"
+                            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#ff2800] focus:outline-none text-sm"
                           />
                         </div>
                         <div>
@@ -324,7 +324,7 @@ export default function AccountSettingsPage() {
                             type="text"
                             value={personalInfo.address2}
                             onChange={(e) => setPersonalInfo({ ...personalInfo, address2: e.target.value })}
-                            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#ff3823] focus:outline-none text-sm"
+                            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#ff2800] focus:outline-none text-sm"
                           />
                         </div>
                       </div>
@@ -436,7 +436,7 @@ export default function AccountSettingsPage() {
                           maxLength={500}
                           value={personalInfo.about}
                           onChange={(e) => setPersonalInfo({ ...personalInfo, about: e.target.value })}
-                          className="w-full p-3 rounded-xl border border-gray-200 text-sm focus:border-[#ff3823] focus:outline-none"
+                          className="w-full p-3 rounded-xl border border-gray-200 text-sm focus:border-[#ff2800] focus:outline-none"
                         />
                       </div>
                     </div>
@@ -457,7 +457,7 @@ export default function AccountSettingsPage() {
 
                       <button
                         type="submit"
-                        className="px-8 py-3 rounded-full bg-[#ff3823] hover:bg-[#e5220d] text-white font-bold text-sm shadow-md transition-all hover:scale-105"
+                        className="px-8 py-3 rounded-full bg-[#ff2800] hover:bg-[#e5220d] text-white font-bold text-sm shadow-md transition-all hover:scale-105"
                       >
                         Save Personal Info
                       </button>
@@ -482,7 +482,7 @@ export default function AccountSettingsPage() {
                       onClick={() => setVerificationSubTab("aadhaar")}
                       className={`pb-3 px-4 font-bold text-xs sm:text-sm border-b-2 transition-all ${
                         verificationSubTab === "aadhaar"
-                          ? "border-[#ff3823] text-[#ff3823]"
+                          ? "border-[#ff2800] text-[#ff2800]"
                           : "border-transparent text-gray-500 hover:text-gray-900"
                       }`}
                     >
@@ -492,7 +492,7 @@ export default function AccountSettingsPage() {
                       onClick={() => setVerificationSubTab("foreign")}
                       className={`pb-3 px-4 font-bold text-xs sm:text-sm border-b-2 transition-all ${
                         verificationSubTab === "foreign"
-                          ? "border-[#ff3823] text-[#ff3823]"
+                          ? "border-[#ff2800] text-[#ff2800]"
                           : "border-transparent text-gray-500 hover:text-gray-900"
                       }`}
                     >
@@ -524,7 +524,7 @@ export default function AccountSettingsPage() {
                               placeholder="XXXX XXXX XXXX"
                               value={aadhaarNumber}
                               onChange={(e) => handleFormatAadhaar(e.target.value)}
-                              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#ff3823] focus:outline-none text-base font-mono font-bold tracking-widest"
+                              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#ff2800] focus:outline-none text-base font-mono font-bold tracking-widest"
                             />
                           </div>
 
@@ -539,7 +539,7 @@ export default function AccountSettingsPage() {
 
                           <button
                             type="submit"
-                            className="w-full py-3.5 rounded-full bg-[#ff3823] hover:bg-[#e5220d] text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2"
+                            className="w-full py-3.5 rounded-full bg-[#ff2800] hover:bg-[#e5220d] text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2"
                           >
                             <ShieldCheck className="w-4 h-4" />
                             <span>Verify Aadhaar via OTP</span>
@@ -565,7 +565,7 @@ export default function AccountSettingsPage() {
                               placeholder="123456"
                               value={aadhaarOtp}
                               onChange={(e) => setAadhaarOtp(e.target.value.replace(/\D/g, ""))}
-                              className="w-full text-center py-3 rounded-xl border border-gray-200 focus:border-[#ff3823] focus:outline-none text-2xl font-mono font-black tracking-widest"
+                              className="w-full text-center py-3 rounded-xl border border-gray-200 focus:border-[#ff2800] focus:outline-none text-2xl font-mono font-black tracking-widest"
                             />
                             <div className="flex justify-between items-center text-xs text-gray-500 mt-2">
                               <span>Resend OTP ({aadhaarTimer}s)</span>
@@ -573,7 +573,7 @@ export default function AccountSettingsPage() {
                                 type="button"
                                 onClick={() => setAadhaarTimer(120)}
                                 disabled={aadhaarTimer > 0}
-                                className={`font-semibold ${aadhaarTimer === 0 ? "text-[#ff3823] hover:underline" : "text-gray-400 cursor-not-allowed"}`}
+                                className={`font-semibold ${aadhaarTimer === 0 ? "text-[#ff2800] hover:underline" : "text-gray-400 cursor-not-allowed"}`}
                               >
                                 Request New Code
                               </button>
@@ -637,7 +637,7 @@ export default function AccountSettingsPage() {
                             <label className="block text-xs font-bold text-gray-700 uppercase mb-1">
                               Passport First & Last Page
                             </label>
-                            <label className="border-2 border-dashed border-gray-300 hover:border-[#ff3823] rounded-2xl p-6 flex flex-col items-center justify-center cursor-pointer transition-colors bg-white">
+                            <label className="border-2 border-dashed border-gray-300 hover:border-[#ff2800] rounded-2xl p-6 flex flex-col items-center justify-center cursor-pointer transition-colors bg-white">
                               <Upload className="w-8 h-8 text-gray-400 mb-2" />
                               <span className="text-xs font-bold text-gray-900">
                                 {passportUploaded ? `Uploaded: ${passportFileName}` : "Drag & drop a document, or Browse"}
@@ -695,7 +695,7 @@ export default function AccountSettingsPage() {
                               }
                               setForeignSubmitted(true);
                             }}
-                            className="w-full py-3.5 rounded-full bg-[#ff3823] hover:bg-[#e5220d] text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2"
+                            className="w-full py-3.5 rounded-full bg-[#ff2800] hover:bg-[#e5220d] text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2"
                           >
                             <FileText className="w-4 h-4" />
                             <span>Save & Submit for Verification</span>

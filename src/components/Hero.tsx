@@ -88,7 +88,7 @@ export default function Hero() {
             <div className="space-y-2">
               <h1 className="text-4xl sm:text-5xl lg:text-[54px] font-extrabold text-[#0c1838] tracking-tight leading-[1.08] font-display">
                 PMS & Channel Manager for{" "}
-                <span className="font-serif italic font-normal text-[#ff3823] tracking-normal">Vacation Rentals</span>{" "}
+                <span className="font-serif italic font-normal text-[#ff2800] tracking-normal">Vacation Rentals</span>{" "}
                 & Homestays
               </h1>
             </div>
@@ -96,7 +96,7 @@ export default function Hero() {
             {/* Subheading */}
             <p className="text-base sm:text-lg text-gray-600 leading-relaxed font-normal max-w-xl">
               Manage Airbnb, Booking.com, Vrbo, MakeMyTrip, direct bookings, pricing, and availability from{" "}
-              <strong className="font-semibold text-gray-900 underline decoration-[#ff3823]/40 decoration-2 underline-offset-4">
+              <strong className="font-semibold text-gray-900 underline decoration-[#ff2800]/40 decoration-2 underline-offset-4">
                 one powerful app
               </strong>
               .
@@ -133,15 +133,15 @@ export default function Hero() {
             <div className="flex flex-wrap items-center gap-3 pt-3">
               <Link
                 href="/start-trial"
-                className="px-8 py-3.5 rounded-full bg-[#ff3823] hover:bg-[#e5220d] text-white font-bold text-sm shadow-lg shadow-[#ff3823]/30 transition-all hover:scale-[1.02] flex items-center gap-2"
+                className="px-8 py-3.5 rounded-full bg-[#ff2800] hover:bg-[#e5220d] text-white font-bold text-sm shadow-lg shadow-[#ff2800]/30 transition-all hover:scale-[1.02] flex items-center gap-2"
               >
                 Start free trial
               </Link>
               <Link
                 href="/stays"
-                className="px-6 py-3.5 rounded-full bg-white hover:bg-gray-50 text-gray-900 font-bold text-sm border border-gray-300 shadow-sm transition-all flex items-center gap-2 hover:border-[#ff3823] text-left"
+                className="px-6 py-3.5 rounded-full bg-white hover:bg-gray-50 text-gray-900 font-bold text-sm border border-gray-300 shadow-sm transition-all flex items-center gap-2 hover:border-[#ff2800] text-left"
               >
-                <BedDouble className="w-4 h-4 text-[#ff3823]" />
+                <BedDouble className="w-4 h-4 text-[#ff2800]" />
                 <span>Explore All 18 Stays</span>
               </Link>
               <Link
@@ -159,7 +159,7 @@ export default function Hero() {
                 <span className="text-xl">🪔</span>
                 <div>
                   <div className="font-bold text-gray-900">
-                    Special launch offer — <span className="text-[#ff3823]">up to 35% off</span>
+                    Special launch offer — <span className="text-[#ff2800]">up to 35% off</span>
                   </div>
                   <div className="text-gray-500 text-[11px]">New hosts & Lucknow property managers only</div>
                 </div>
@@ -172,7 +172,7 @@ export default function Hero() {
                   <span className="text-gray-300">:</span>
                   <span>50</span>
                 </div>
-                <Link href="/pricing" className="text-[11px] font-bold text-[#ff3823] underline hover:text-[#d9220e]">
+                <Link href="/pricing" className="text-[11px] font-bold text-[#ff2800] underline hover:text-[#d9220e]">
                   See pricing
                 </Link>
               </div>
@@ -236,15 +236,15 @@ export default function Hero() {
                     {/* Timeline Laser Scanner Motion Graphic */}
                     <div className="relative overflow-x-auto text-xs">
                       {/* Scanning Line Animation */}
-                      <div className="absolute top-0 bottom-0 w-[2px] bg-gradient-to-b from-transparent via-[#ff3823] to-transparent shadow-[0_0_8px_#ff3823] pointer-events-none z-10 animate-[scan_4s_ease-in-out_infinite]" />
+                      <div className="absolute top-0 bottom-0 w-[2px] bg-gradient-to-b from-transparent via-[#ff2800] to-transparent shadow-[0_0_8px_#ff2800] pointer-events-none z-10 animate-[scan_4s_ease-in-out_infinite]" />
 
                       <div className="min-w-[500px]">
                         <div className="grid grid-cols-8 gap-1.5 text-center text-gray-400 font-medium mb-2.5">
                           <div className="text-left pl-1">Channel</div>
                           <div>Mon 12</div>
                           <div>Tue 13</div>
-                          <div className="text-[#ff3823] font-bold">Wed 14</div>
-                          <div className="text-[#ff3823] font-bold">Thu 15</div>
+                          <div className="text-[#ff2800] font-bold">Wed 14</div>
+                          <div className="text-[#ff2800] font-bold">Thu 15</div>
                           <div>Fri 16</div>
                           <div>Sat 17</div>
                           <div>Sun 18</div>
@@ -418,7 +418,7 @@ export default function Hero() {
                       {/* Red Button */}
                       <Link
                         href="/offline-bookings"
-                        className="w-full py-2 rounded-lg bg-[#ff3823] hover:bg-[#e5220d] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-sm hover:scale-[1.01]"
+                        className="w-full py-2 rounded-lg bg-[#ff2800] hover:bg-[#e5220d] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-sm hover:scale-[1.01]"
                       >
                         Create booking & send payment link
                       </Link>
@@ -441,7 +441,7 @@ export default function Hero() {
                           <Lock className="w-2.5 h-2.5 text-emerald-600" />
                           www.theuniquehavenhomes.com
                         </span>
-                        <span className="text-[9px] text-[#ff3823] font-bold">0% Commission Engine</span>
+                        <span className="text-[9px] text-[#ff2800] font-bold">0% Commission Engine</span>
                       </div>
                     </div>
 
@@ -454,7 +454,7 @@ export default function Hero() {
                           <span>Stays</span>
                           <span>Experiences</span>
                           <span>About</span>
-                          <span className="text-[#ff3823] font-bold">Book</span>
+                          <span className="text-[#ff2800] font-bold">Book</span>
                         </div>
                       </div>
 
@@ -472,9 +472,9 @@ export default function Hero() {
                       <div className="bg-white text-gray-900 rounded-lg p-1.5 flex items-center justify-between gap-2 shadow-lg">
                         <div className="pl-2 border-r border-gray-200 pr-2 flex-1">
                           <div className="text-[9px] text-gray-400 font-bold uppercase">Where</div>
-                          <div className="text-[11px] font-bold text-[#ff3823] flex items-center gap-1">
+                          <div className="text-[11px] font-bold text-[#ff2800] flex items-center gap-1">
                             <span>{destinations[typewriterIndex]}</span>
-                            <span className="w-1.5 h-3 bg-[#ff3823] animate-pulse inline-block" />
+                            <span className="w-1.5 h-3 bg-[#ff2800] animate-pulse inline-block" />
                           </div>
                         </div>
                         <div className="border-r border-gray-200 pr-2 flex-1 hidden sm:block">
@@ -487,7 +487,7 @@ export default function Hero() {
                         </div>
                         <Link
                           href="/stays"
-                          className="w-8 h-8 rounded-md bg-[#ff3823] hover:bg-[#e5220d] text-white flex items-center justify-center shrink-0 transition-transform hover:scale-105"
+                          className="w-8 h-8 rounded-md bg-[#ff2800] hover:bg-[#e5220d] text-white flex items-center justify-center shrink-0 transition-transform hover:scale-105"
                           title="View Lucknow Stays"
                         >
                           <Search className="w-3.5 h-3.5" />
@@ -502,7 +502,7 @@ export default function Hero() {
                       </span>
                       <Link
                         href="/stays"
-                        className="text-[#ff3823] font-bold hover:underline flex items-center gap-1 text-xs"
+                        className="text-[#ff2800] font-bold hover:underline flex items-center gap-1 text-xs"
                       >
                         Explore 18 Stays <ExternalLink className="w-3 h-3" />
                       </Link>
@@ -621,25 +621,25 @@ export default function Hero() {
 
                             {/* Bar 2: Red OTA Commission step */}
                             <div className="flex-1 flex flex-col items-center">
-                              <div className="w-full bg-[#ff3823] rounded-md transition-all duration-1000 ease-out shadow-xs" style={{ height: "24px", marginBottom: "91px" }} />
+                              <div className="w-full bg-[#ff2800] rounded-md transition-all duration-1000 ease-out shadow-xs" style={{ height: "24px", marginBottom: "91px" }} />
                               <span className="text-[9px] text-gray-400 mt-1 truncate">OTA</span>
                             </div>
 
                             {/* Bar 3: Red Staff Expense step */}
                             <div className="flex-1 flex flex-col items-center">
-                              <div className="w-full bg-[#ff3823] rounded-md transition-all duration-1000 ease-out shadow-xs" style={{ height: "30px", marginBottom: "61px" }} />
+                              <div className="w-full bg-[#ff2800] rounded-md transition-all duration-1000 ease-out shadow-xs" style={{ height: "30px", marginBottom: "61px" }} />
                               <span className="text-[9px] text-gray-400 mt-1 truncate">Staff</span>
                             </div>
 
                             {/* Bar 4: Red Cleaning step */}
                             <div className="flex-1 flex flex-col items-center">
-                              <div className="w-full bg-[#ff3823] rounded-md transition-all duration-1000 ease-out shadow-xs" style={{ height: "16px", marginBottom: "45px" }} />
+                              <div className="w-full bg-[#ff2800] rounded-md transition-all duration-1000 ease-out shadow-xs" style={{ height: "16px", marginBottom: "45px" }} />
                               <span className="text-[9px] text-gray-400 mt-1 truncate">Clean</span>
                             </div>
 
                             {/* Bar 5: Red Supplies step */}
                             <div className="flex-1 flex flex-col items-center">
-                              <div className="w-full bg-[#ff3823] rounded-md transition-all duration-1000 ease-out shadow-xs" style={{ height: "14px", marginBottom: "31px" }} />
+                              <div className="w-full bg-[#ff2800] rounded-md transition-all duration-1000 ease-out shadow-xs" style={{ height: "14px", marginBottom: "31px" }} />
                               <span className="text-[9px] text-gray-400 mt-1 truncate">Bills</span>
                             </div>
 
@@ -727,16 +727,16 @@ export default function Hero() {
                       <div>
                         <div className="flex items-center justify-between pb-2 border-b border-gray-100">
                           <span className="font-bold text-xs text-gray-900">Inbox</span>
-                          <span className="text-[9px] bg-red-100 text-[#ff3823] font-bold px-1.5 py-0.2 rounded-full animate-pulse">
+                          <span className="text-[9px] bg-red-100 text-[#ff2800] font-bold px-1.5 py-0.2 rounded-full animate-pulse">
                             2 new
                           </span>
                         </div>
 
                         <div className="space-y-1.5 mt-2">
-                          <div className="p-2 rounded-lg bg-[#fff1ef] border border-[#ff3823]/30 cursor-pointer">
+                          <div className="p-2 rounded-lg bg-[#fff1ef] border border-[#ff2800]/30 cursor-pointer">
                             <div className="flex items-center justify-between">
                               <span className="font-bold text-[11px] text-gray-900">Priya</span>
-                              <span className="text-[9px] text-[#ff3823] font-semibold">now</span>
+                              <span className="text-[9px] text-[#ff2800] font-semibold">now</span>
                             </div>
                             <p className="text-[10px] text-gray-600 truncate mt-0.5">What time is check-in?</p>
                           </div>
@@ -781,7 +781,7 @@ export default function Hero() {
                           <div className="bg-gray-100 p-2.5 rounded-xl rounded-tl-none max-w-[85%] text-gray-800 shadow-xs animate-in slide-in-from-left duration-200">
                             Hi! What time is check-in?
                           </div>
-                          <div className="bg-[#ff3823] text-white p-2.5 rounded-xl rounded-tr-none ml-auto max-w-[85%] shadow-xs animate-in slide-in-from-right duration-300">
+                          <div className="bg-[#ff2800] text-white p-2.5 rounded-xl rounded-tr-none ml-auto max-w-[85%] shadow-xs animate-in slide-in-from-right duration-300">
                             Check-in is from 2 PM. I have sent the door code too!
                           </div>
                         </div>
@@ -794,7 +794,7 @@ export default function Hero() {
                           placeholder="Type a reply..."
                           className="flex-1 bg-gray-50 rounded-lg px-2.5 py-1.5 text-[10px] border border-gray-200 outline-none"
                         />
-                        <button className="w-7 h-7 rounded-lg bg-[#ff3823] text-white flex items-center justify-center shrink-0 hover:scale-105 transition-transform">
+                        <button className="w-7 h-7 rounded-lg bg-[#ff2800] text-white flex items-center justify-center shrink-0 hover:scale-105 transition-transform">
                           <Send className="w-3 h-3" />
                         </button>
                       </div>
@@ -889,13 +889,13 @@ export default function Hero() {
                   <div className={`w-8 h-8 rounded-xl flex items-center justify-center transition-colors shrink-0 ${
                     activeFeature === idx
                       ? "bg-[#0c1838] text-white shadow-sm"
-                      : "bg-gray-100 text-gray-600 group-hover:text-[#ff3823]"
+                      : "bg-gray-100 text-gray-600 group-hover:text-[#ff2800]"
                   }`}>
                     <item.icon className="w-4 h-4" />
                   </div>
                   <div className="min-w-0">
                     <div className={`text-xs font-bold flex items-center gap-1 ${
-                      activeFeature === idx ? "text-[#0c1838]" : "text-gray-900 group-hover:text-[#ff3823]"
+                      activeFeature === idx ? "text-[#0c1838]" : "text-gray-900 group-hover:text-[#ff2800]"
                     }`}>
                       <span className="truncate">{item.title}</span>
                       {item.badge && (

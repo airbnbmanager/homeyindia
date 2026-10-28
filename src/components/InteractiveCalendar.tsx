@@ -111,11 +111,11 @@ export default function InteractiveCalendar() {
         {/* Section Heading */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-[#ff3823] bg-[#fff1ef] px-3 py-1 rounded-full border border-[#ffe2de]">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#ff2800] bg-[#fff1ef] px-3 py-1 rounded-full border border-[#ffe2de]">
               Unified Calendar
             </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight font-display mt-3">
-              One live calendar to <span className="text-[#ff3823]">manage everything.</span>
+              One live calendar to <span className="text-[#ff2800]">manage everything.</span>
             </h2>
             <p className="mt-3 text-base text-gray-600 max-w-2xl">
               Every booking, rate change, and blocked date from Airbnb, Booking.com, Vrbo, MakeMyTrip, and your direct website synced in real time. On your laptop and on your phone.
@@ -123,7 +123,7 @@ export default function InteractiveCalendar() {
           </div>
           <Link
             href="/unified-calendar"
-            className="text-sm font-semibold text-[#ff3823] hover:text-[#d7382a] flex items-center gap-1 group"
+            className="text-sm font-semibold text-[#ff2800] hover:text-[#d7382a] flex items-center gap-1 group"
           >
             Explore Unified Calendar specs <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
@@ -134,7 +134,7 @@ export default function InteractiveCalendar() {
           {/* Top Bar of the App */}
           <div className="bg-gray-900 text-white px-4 sm:px-6 py-3.5 flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-7 h-7 rounded-lg bg-[#ff3823] flex items-center justify-center font-bold text-xs text-white">
+              <div className="w-7 h-7 rounded-lg bg-[#ff2800] flex items-center justify-center font-bold text-xs text-white">
                 Y
               </div>
               <span className="text-sm font-bold tracking-tight">Homey India Calendar</span>
@@ -151,7 +151,7 @@ export default function InteractiveCalendar() {
 
               <button 
                 onClick={() => setNewBookingModalOpen(true)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#ff3823] hover:bg-[#e5220d] text-white font-semibold shadow-sm transition-colors"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#ff2800] hover:bg-[#e5220d] text-white font-semibold shadow-sm transition-colors"
               >
                 <Plus className="w-3.5 h-3.5" /> Add Offline / Direct Booking
               </button>
@@ -201,11 +201,11 @@ export default function InteractiveCalendar() {
                     <div 
                       key={d.date} 
                       className={`py-2.5 px-1 ${
-                        d.isToday ? "bg-red-50/80 font-bold text-[#ff3823]" : d.isWeekend ? "bg-amber-50/30 font-medium text-gray-900" : "text-gray-600"
+                        d.isToday ? "bg-red-50/80 font-bold text-[#ff2800]" : d.isWeekend ? "bg-amber-50/30 font-medium text-gray-900" : "text-gray-600"
                       }`}
                     >
                       <div className="text-[10px] uppercase font-semibold text-gray-400">{d.day}</div>
-                      <div className={`text-xs mt-0.5 ${d.isToday ? "w-5 h-5 mx-auto rounded-full bg-[#ff3823] text-white flex items-center justify-center font-bold shadow-sm" : ""}`}>
+                      <div className={`text-xs mt-0.5 ${d.isToday ? "w-5 h-5 mx-auto rounded-full bg-[#ff2800] text-white flex items-center justify-center font-bold shadow-sm" : ""}`}>
                         {d.date}
                       </div>
                     </div>
@@ -283,7 +283,7 @@ export default function InteractiveCalendar() {
           {/* Bottom Bar: Action Helper */}
           <div className="p-4 bg-gray-50 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
             <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-[#ff3823]" />
+              <Sparkles className="w-4 h-4 text-[#ff2800]" />
               <span><strong>Pro Tip:</strong> Click any empty date cell to create a walk-in, phone, or direct booking with instant GST invoice!</span>
             </div>
             <div className="flex items-center gap-2">
@@ -325,7 +325,7 @@ export default function InteractiveCalendar() {
                 </div>
                 <div className="flex justify-between py-1 border-b border-gray-50">
                   <span className="text-gray-500">Total Revenue:</span>
-                  <span className="font-extrabold text-[#ff3823]">{selectedBooking.amount}</span>
+                  <span className="font-extrabold text-[#ff2800]">{selectedBooking.amount}</span>
                 </div>
                 <div className="flex justify-between py-1 border-b border-gray-50">
                   <span className="text-gray-500">Payment & WhatsApp:</span>
@@ -342,7 +342,7 @@ export default function InteractiveCalendar() {
                 </button>
                 <button
                   onClick={() => alert(`GST Invoice sent to ${selectedBooking.guest}`)}
-                  className="w-full py-2.5 rounded-full bg-[#ff3823] hover:bg-[#e5220d] text-white font-semibold text-xs shadow-md transition-colors"
+                  className="w-full py-2.5 rounded-full bg-[#ff2800] hover:bg-[#e5220d] text-white font-semibold text-xs shadow-md transition-colors"
                 >
                   Send WhatsApp Invoice
                 </button>
@@ -385,7 +385,7 @@ export default function InteractiveCalendar() {
                     <input 
                       type="text" 
                       defaultValue={selectedDates.start} 
-                      className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#ff3823] focus:outline-none" 
+                      className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#ff2800] focus:outline-none" 
                     />
                   </div>
                   <div>
@@ -393,7 +393,7 @@ export default function InteractiveCalendar() {
                     <input 
                       type="text" 
                       defaultValue={selectedDates.end} 
-                      className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#ff3823] focus:outline-none" 
+                      className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#ff2800] focus:outline-none" 
                     />
                   </div>
                 </div>
@@ -404,7 +404,7 @@ export default function InteractiveCalendar() {
                     <input 
                       type="text" 
                       placeholder="e.g. Vikram Malhotra" 
-                      className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#ff3823] focus:outline-none" 
+                      className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#ff2800] focus:outline-none" 
                     />
                   </div>
                   <div>
@@ -412,7 +412,7 @@ export default function InteractiveCalendar() {
                     <input 
                       type="text" 
                       placeholder="+91 98765 43210" 
-                      className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#ff3823] focus:outline-none" 
+                      className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#ff2800] focus:outline-none" 
                     />
                   </div>
                 </div>
@@ -423,12 +423,12 @@ export default function InteractiveCalendar() {
                     <input 
                       type="text" 
                       defaultValue="₹24,000" 
-                      className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#ff3823] focus:outline-none font-bold text-gray-900" 
+                      className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#ff2800] focus:outline-none font-bold text-gray-900" 
                     />
                   </div>
                   <div>
                     <label className="block font-semibold text-gray-700 mb-1">Payment Status</label>
-                    <select className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#ff3823] focus:outline-none bg-white">
+                    <select className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#ff2800] focus:outline-none bg-white">
                       <option>Paid via UPI / Bank</option>
                       <option>Advance Paid (Balance at Check-in)</option>
                       <option>Pending Payment</option>
@@ -449,7 +449,7 @@ export default function InteractiveCalendar() {
                     alert("Booking created successfully! Syncing availability across all connected OTAs...");
                     setNewBookingModalOpen(false);
                   }}
-                  className="w-1/2 py-2.5 rounded-full bg-[#ff3823] hover:bg-[#e5220d] text-white font-semibold text-xs shadow-md"
+                  className="w-1/2 py-2.5 rounded-full bg-[#ff2800] hover:bg-[#e5220d] text-white font-semibold text-xs shadow-md"
                 >
                   Confirm & Sync All OTAs
                 </button>

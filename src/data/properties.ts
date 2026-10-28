@@ -21,9 +21,187 @@ export interface Property {
   phone: string;
   description: string;
   amenities: string[];
+  airbnbIcalUrl?: string;
+  icalExportUrl?: string;
 }
 
-export const PROPERTIES: Property[] = [
+export const PROPERTY_ICAL_FEEDS: Record<
+  string,
+  {
+    id: string;
+    name: string;
+    unitNo: string;
+    type: string;
+    location: string;
+    airbnbIcalUrl: string;
+    masterExportPath: string;
+  }
+> = {
+  "GOM-101": {
+    id: "GOM-101",
+    name: "RedRose entire Palace luxury 3BHK flat Gomti Nagar",
+    unitNo: "FLAT101",
+    type: "Flat",
+    location: "Gomti Nagar",
+    airbnbIcalUrl: "https://www.airbnb.co.in/calendar/ical/1654261872286835347.ics?t=bb89803f5ab34e169feb2df5d9bfd624",
+    masterExportPath: "/api/calendar/GOM-101/export.ics"
+  },
+  "GOM-102": {
+    id: "GOM-102",
+    name: "Black beauty 3bhk luxurious At chinhat Gomti Nagar",
+    unitNo: "FLAT102",
+    type: "Flat",
+    location: "Chinhat Gomti Nagar",
+    airbnbIcalUrl: "https://www.airbnb.co.in/calendar/ical/1676840617430941240.ics?t=56b6541fe4424420b736238a2808f88f",
+    masterExportPath: "/api/calendar/GOM-102/export.ics"
+  },
+  "GOM-201": {
+    id: "GOM-201",
+    name: "The dark blue 3BHK luxury flat, GomtiNagar Chinhat",
+    unitNo: "FLAT201",
+    type: "Flat",
+    location: "Gomti Nagar",
+    airbnbIcalUrl: "https://www.airbnb.co.in/calendar/ical/1655969170448425308.ics?t=b70be735740f4a788e2673f9212aeceb",
+    masterExportPath: "/api/calendar/GOM-201/export.ics"
+  },
+  "GOM-202": {
+    id: "GOM-202",
+    name: "The brown 3BHK luxury flat in Chinhat Gomti Nagar",
+    unitNo: "FLAT202",
+    type: "Flat",
+    location: "Chinhat Gomti Nagar",
+    airbnbIcalUrl: "https://www.airbnb.co.in/calendar/ical/1660898784168880636.ics?t=08645ba100bd4309a93e5d12c0a9be95",
+    masterExportPath: "/api/calendar/GOM-202/export.ics"
+  },
+  "GOM-301": {
+    id: "GOM-301",
+    name: "The light green 3BHK luxury flat in Gomti Nagar",
+    unitNo: "FLAT301",
+    type: "Flat",
+    location: "Gomti Nagar",
+    airbnbIcalUrl: "https://www.airbnb.co.in/calendar/ical/1679155811558485410.ics?t=412f320aa7914f03a493dd6b6c0a5b82",
+    masterExportPath: "/api/calendar/GOM-301/export.ics"
+  },
+  "GOM-302": {
+    id: "GOM-302",
+    name: "The unique 3BHK luxury flat Chinhat Gomti Nagar",
+    unitNo: "FLAT302",
+    type: "Flat",
+    location: "Chinhat Gomti Nagar",
+    airbnbIcalUrl: "https://www.airbnb.co.in/calendar/ical/1679190202218939181.ics?t=d9baa8396fdf41e79189a2b9f4422687",
+    masterExportPath: "/api/calendar/GOM-302/export.ics"
+  },
+  "GOM-401": {
+    id: "GOM-401",
+    name: "The Nawabi Stay Near Max hospital Gomti Nagar",
+    unitNo: "FLAT401",
+    type: "Flat",
+    location: "Max Hospital / Gomti Nagar",
+    airbnbIcalUrl: "https://www.airbnb.co.in/calendar/ical/1723434530455939144.ics?t=1988cdcccd9d47b987f8fcbaefd2a468",
+    masterExportPath: "/api/calendar/GOM-401/export.ics"
+  },
+  "GOM-501": {
+    id: "GOM-501",
+    name: "Starlight Blue PentHouse/ Max Hospital/Gomti nagar",
+    unitNo: "FLAT501",
+    type: "PentHouse",
+    location: "Max Hospital / Gomti Nagar",
+    airbnbIcalUrl: "https://www.airbnb.co.in/calendar/ical/1718385679817913835.ics?t=3275964db887468899fb2b2e5c2bd9f4",
+    masterExportPath: "/api/calendar/GOM-501/export.ics"
+  },
+  "LUL-101": {
+    id: "LUL-101",
+    name: "The Luxe Haven | 1BHK Near Lulu Mall & Medanta",
+    unitNo: "101",
+    type: "1BHK Luxury Flat",
+    location: "Near Lulu Mall & Medanta",
+    airbnbIcalUrl: "https://www.airbnb.co.in/calendar/ical/1798067011361845302.ics?t=b561f047fb10494aa2ac406aa6161f3c",
+    masterExportPath: "/api/calendar/LUL-101/export.ics"
+  },
+  "LUL-402": {
+    id: "LUL-402",
+    name: "Celebrity garden 5 bed lulu mall/Medanta/ Ekana",
+    unitNo: "FLAT402",
+    type: "Flat",
+    location: "Lulu Mall / Medanta / Ekana",
+    airbnbIcalUrl: "https://www.airbnb.co.in/calendar/ical/1606514664948608755.ics?t=207cb15204934234b014f8dde91b08b3",
+    masterExportPath: "/api/calendar/LUL-402/export.ics"
+  },
+  "VIL-101": {
+    id: "VIL-101",
+    name: "Gomti Grand | 4BHK Private Estate · Near Lulu & Palassio",
+    unitNo: "Entire Estate",
+    type: "Villa",
+    location: "Lulu & Palassio Mall",
+    airbnbIcalUrl: "https://www.airbnb.co.in/calendar/ical/1721732716374002170.ics?t=0abeb683a0554321a1f291d623501153",
+    masterExportPath: "/api/calendar/VIL-101/export.ics"
+  },
+  "VIL-102": {
+    id: "VIL-102",
+    name: "Royal White House | Presidential Estate · Near Lulu Mall & Airport",
+    unitNo: "Presidential Estate",
+    type: "Villa",
+    location: "Lulu / Ekana / Airport",
+    airbnbIcalUrl: "https://www.airbnb.co.in/calendar/ical/1718315215180636685.ics?t=4a2e4d8f6d2a488b9bab48f5b34d2bea",
+    masterExportPath: "/api/calendar/VIL-102/export.ics"
+  },
+  "VIL-103": {
+    id: "VIL-103",
+    name: "The Pink House | 5BR Duplex (2nd & 3rd Floor) · Vishesh Khand, Gomti Nagar",
+    unitNo: "2nd & 3rd Floor",
+    type: "Duplex Penthouse",
+    location: "Vishesh Khand, Gomti Nagar",
+    airbnbIcalUrl: "https://www.airbnb.co.in/calendar/ical/1592729438969718723.ics?t=46f74aae4ca34429a9b67e3fb11975c6",
+    masterExportPath: "/api/calendar/VIL-103/export.ics"
+  },
+  "VIL-104": {
+    id: "VIL-104",
+    name: "The Green House | 3BHK 1st Floor · Vishesh Khand, Gomti Nagar",
+    unitNo: "1st Floor",
+    type: "3BHK Flat",
+    location: "Vishesh Khand, Gomti Nagar",
+    airbnbIcalUrl: "https://www.airbnb.co.in/calendar/ical/1593461780265937816.ics?t=9d1ab8fbe505484292525c53d4d83ccf",
+    masterExportPath: "/api/calendar/VIL-104/export.ics"
+  },
+  "VIL-105": {
+    id: "VIL-105",
+    name: "The Yellow House | 3BHK Ground Floor · Vishesh Khand, Gomti Nagar",
+    unitNo: "Ground Floor",
+    type: "3BHK Flat",
+    location: "Vishesh Khand, Gomti Nagar",
+    airbnbIcalUrl: "https://www.airbnb.co.in/calendar/ical/1592729918855637425.ics?t=ec890a7e24b4486da7dd52a0bafab8d6",
+    masterExportPath: "/api/calendar/VIL-105/export.ics"
+  },
+  "VIL-106": {
+    id: "VIL-106",
+    name: "Green Forest | 3BHK 2nd Floor · Near Lulu Mall & Medanta",
+    unitNo: "2nd Floor",
+    type: "3BHK Flat",
+    location: "Near Lulu Mall & Medanta",
+    airbnbIcalUrl: "https://www.airbnb.co.in/calendar/ical/1739254108962193705.ics?t=fe6549fe3aea4c45b3abdd08dba19cce",
+    masterExportPath: "/api/calendar/VIL-106/export.ics"
+  },
+  "VIL-107": {
+    id: "VIL-107",
+    name: "The Velvet House | 3BHK 1st Floor · Near Lulu Mall & Medanta",
+    unitNo: "1st Floor",
+    type: "3BHK Flat",
+    location: "Near Lulu Mall & Medanta",
+    airbnbIcalUrl: "https://www.airbnb.co.in/calendar/ical/1727830063287100082.ics?t=58b7babbadde40aaae503f767ae9de4c",
+    masterExportPath: "/api/calendar/VIL-107/export.ics"
+  },
+  "VIL-108": {
+    id: "VIL-108",
+    name: "Pink Paradise | 3BHK 3rd Floor · Near Lulu Mall & Medanta",
+    unitNo: "3rd Floor",
+    type: "3BHK Flat",
+    location: "Near Lulu Mall & Medanta",
+    airbnbIcalUrl: "https://www.airbnb.co.in/calendar/ical/1756799939825259443.ics?s=0ae34e2ae136b52e9626bd0e8d5f77e2",
+    masterExportPath: "/api/calendar/VIL-108/export.ics"
+  }
+};
+
+const RAW_PROPERTIES: Property[] = [
   {
     "id": "LUL-101",
     "slug": "the-luxe-haven",
@@ -4347,4 +4525,14 @@ export const PROPERTIES: Property[] = [
     ]
   }
 ];
+
+export const PROPERTIES: Property[] = RAW_PROPERTIES.map((p) => {
+  const feed = PROPERTY_ICAL_FEEDS[p.id];
+  return {
+    ...p,
+    airbnbIcalUrl: feed?.airbnbIcalUrl,
+    icalExportUrl: feed ? `/api/calendar/${p.id}/export.ics` : undefined,
+  };
+});
+
 export const UNIQUE_HAVEN_PROPERTIES = PROPERTIES;

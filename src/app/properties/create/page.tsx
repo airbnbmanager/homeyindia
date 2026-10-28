@@ -120,7 +120,7 @@ export default function CreateListingWizard() {
         {/* Progress Bar */}
         <div className="max-w-4xl mx-auto mt-4 bg-slate-800 h-1.5 rounded-full overflow-hidden">
           <div
-            className="bg-[#ff3823] h-full transition-all duration-300"
+            className="bg-[#ff2800] h-full transition-all duration-300"
             style={{ width: `${(step / totalSteps) * 100}%` }}
           ></div>
         </div>
@@ -140,7 +140,7 @@ export default function CreateListingWizard() {
           {step === 1 && (
             <div className="space-y-6">
               <div>
-                <span className="px-3 py-1 rounded-full bg-[#ff3823]/10 text-[#ff3823] font-bold text-xs uppercase tracking-wider">
+                <span className="px-3 py-1 rounded-full bg-[#ff2800]/10 text-[#ff2800] font-bold text-xs uppercase tracking-wider">
                   Homey India Quality Benchmark
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-display mt-2">
@@ -199,11 +199,11 @@ export default function CreateListingWizard() {
                       onClick={() => setPropertyType(pt.name)}
                       className={`p-5 rounded-2xl border text-left transition flex flex-col justify-between h-36 ${
                         isSelected
-                          ? "border-[#ff3823] bg-[#fff1ef] ring-2 ring-[#ff3823]/20 shadow-md"
+                          ? "border-[#ff2800] bg-[#fff1ef] ring-2 ring-[#ff2800]/20 shadow-md"
                           : "border-slate-200 hover:border-slate-300 bg-white"
                       }`}
                     >
-                      <Icon className={`w-6 h-6 ${isSelected ? "text-[#ff3823]" : "text-slate-600"}`} />
+                      <Icon className={`w-6 h-6 ${isSelected ? "text-[#ff2800]" : "text-slate-600"}`} />
                       <div>
                         <div className="font-bold text-slate-900 text-sm">{pt.name}</div>
                         <div className="text-[11px] text-slate-500 mt-0.5">{pt.desc}</div>
@@ -235,7 +235,7 @@ export default function CreateListingWizard() {
                     onClick={() => setHostRole(role)}
                     className={`p-4 rounded-2xl border text-center font-bold text-xs transition ${
                       hostRole === role
-                        ? "border-[#ff3823] bg-[#fff1ef] text-[#ff3823] ring-2 ring-[#ff3823]/20"
+                        ? "border-[#ff2800] bg-[#fff1ef] text-[#ff2800] ring-2 ring-[#ff2800]/20"
                         : "border-slate-200 text-slate-700 hover:bg-slate-50"
                     }`}
                   >
@@ -471,7 +471,7 @@ export default function CreateListingWizard() {
                       key={amenity}
                       className={`p-3.5 rounded-2xl border text-xs font-bold cursor-pointer transition flex items-center gap-2.5 ${
                         isChecked
-                          ? "border-[#ff3823] bg-[#fff1ef] text-[#ff3823]"
+                          ? "border-[#ff2800] bg-[#fff1ef] text-[#ff2800]"
                           : "border-slate-200 text-slate-700 hover:bg-slate-50"
                       }`}
                     >
@@ -482,7 +482,7 @@ export default function CreateListingWizard() {
                           if (e.target.checked) setSelectedAmenities([...selectedAmenities, amenity]);
                           else setSelectedAmenities(selectedAmenities.filter((a) => a !== amenity));
                         }}
-                        className="rounded text-[#ff3823] focus:ring-[#ff3823]"
+                        className="rounded text-[#ff2800] focus:ring-[#ff2800]"
                       />
                       <span>{amenity}</span>
                     </label>
@@ -629,7 +629,7 @@ export default function CreateListingWizard() {
               <button
                 type="button"
                 onClick={handlePublish}
-                className="px-8 py-3 rounded-xl bg-[#ff3823] text-white font-bold text-sm hover:bg-[#e5220d] transition shadow-xl shadow-[#ff3823]/25 flex items-center gap-2"
+                className="px-8 py-3 rounded-xl bg-[#ff2800] text-white font-bold text-sm hover:bg-[#e5220d] transition shadow-xl shadow-[#ff2800]/25 flex items-center gap-2"
               >
                 <Check className="w-5 h-5" /> Publish Listing Now
               </button>

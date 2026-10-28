@@ -151,7 +151,7 @@ export default function PropertiesPage() {
             </Link>
             <Link
               href="/properties/create"
-              className="px-4 py-2 rounded-xl bg-[#ff3823] text-white text-xs font-bold hover:bg-[#e5220d] transition flex items-center gap-1.5 shadow-lg shadow-[#ff3823]/20"
+              className="px-4 py-2 rounded-xl bg-[#ff2800] text-white text-xs font-bold hover:bg-[#e5220d] transition flex items-center gap-1.5 shadow-lg shadow-[#ff2800]/20"
             >
               <Plus className="w-4 h-4" /> Create New Listing
             </Link>
@@ -189,7 +189,7 @@ export default function PropertiesPage() {
                 activeTab === "cluster" ? "bg-slate-900 text-white shadow" : "text-slate-600 hover:text-slate-900"
               }`}
             >
-              <FolderTree className="w-3.5 h-3.5 text-[#ff3823]" /> Magic Cluster ({clusters.length})
+              <FolderTree className="w-3.5 h-3.5 text-[#ff2800]" /> Magic Cluster ({clusters.length})
             </button>
           </div>
 
@@ -203,7 +203,7 @@ export default function PropertiesPage() {
                   placeholder="Search by name, ID, zone..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-9 pr-4 py-2 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#ff3823]/20 focus:border-[#ff3823] w-64 shadow-sm"
+                  className="pl-9 pr-4 py-2 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#ff2800]/20 focus:border-[#ff2800] w-64 shadow-sm"
                 />
               </div>
 
@@ -224,7 +224,7 @@ export default function PropertiesPage() {
               onClick={() => setShowClusterModal(true)}
               className="px-4 py-2 rounded-xl bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition flex items-center gap-1.5 shadow"
             >
-              <Plus className="w-4 h-4 text-[#ff3823]" /> New Cluster
+              <Plus className="w-4 h-4 text-[#ff2800]" /> New Cluster
             </button>
           )}
         </div>
@@ -268,7 +268,7 @@ export default function PropertiesPage() {
                           <div>
                             <Link
                               href={`/properties/${prop.id}`}
-                              className="font-bold text-slate-900 text-sm hover:text-[#ff3823] transition flex items-center gap-1"
+                              className="font-bold text-slate-900 text-sm hover:text-[#ff2800] transition flex items-center gap-1"
                             >
                               {prop.name}
                             </Link>
@@ -341,7 +341,7 @@ export default function PropertiesPage() {
           <div className="space-y-6">
             <div className="p-6 rounded-3xl bg-gradient-to-r from-slate-900 to-indigo-950 text-white flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-xl">
               <div className="max-w-2xl">
-                <span className="px-3 py-1 rounded-full bg-[#ff3823]/20 text-[#ff3823] font-bold text-xs border border-[#ff3823]/30 uppercase tracking-wider">
+                <span className="px-3 py-1 rounded-full bg-[#ff2800]/20 text-[#ff2800] font-bold text-xs border border-[#ff2800]/30 uppercase tracking-wider">
                   Homey Magic Cluster Technology
                 </span>
                 <h3 className="text-xl sm:text-2xl font-bold font-display mt-2">
@@ -355,7 +355,7 @@ export default function PropertiesPage() {
 
               <button
                 onClick={() => setShowClusterModal(true)}
-                className="px-5 py-3 rounded-2xl bg-[#ff3823] text-white font-bold text-xs hover:bg-[#e5220d] transition shrink-0 shadow-lg shadow-[#ff3823]/25 flex items-center gap-2"
+                className="px-5 py-3 rounded-2xl bg-[#ff2800] text-white font-bold text-xs hover:bg-[#e5220d] transition shrink-0 shadow-lg shadow-[#ff2800]/25 flex items-center gap-2"
               >
                 <Plus className="w-4 h-4" /> Create New Cluster
               </button>
@@ -431,7 +431,7 @@ export default function PropertiesPage() {
                       </span>
                       <button
                         onClick={() => showToast(`Cluster "${cluster.name}" settings updated.`)}
-                        className="text-slate-700 hover:text-[#ff3823] font-bold"
+                        className="text-slate-700 hover:text-[#ff2800] font-bold"
                       >
                         Edit Cluster
                       </button>
@@ -464,7 +464,7 @@ export default function PropertiesPage() {
                   placeholder="e.g. Raj Mahal Villa & Royal Suites"
                   value={newClusterName}
                   onChange={(e) => setNewClusterName(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#ff3823]/20 focus:border-[#ff3823]"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#ff2800]/20 focus:border-[#ff2800]"
                 />
               </div>
 
@@ -501,7 +501,7 @@ export default function PropertiesPage() {
                             if (e.target.checked) setSelectedChildren([...selectedChildren, p.id]);
                             else setSelectedChildren(selectedChildren.filter((id) => id !== p.id));
                           }}
-                          className="rounded text-[#ff3823] focus:ring-[#ff3823]"
+                          className="rounded text-[#ff2800] focus:ring-[#ff2800]"
                         />
                         <span>{p.name} ({p.type})</span>
                       </label>
@@ -521,7 +521,7 @@ export default function PropertiesPage() {
               </button>
               <button
                 type="submit"
-                className="flex-1 py-3 rounded-xl bg-[#ff3823] text-white font-bold text-sm hover:bg-[#e5220d] transition shadow-lg shadow-[#ff3823]/20"
+                className="flex-1 py-3 rounded-xl bg-[#ff2800] text-white font-bold text-sm hover:bg-[#e5220d] transition shadow-lg shadow-[#ff2800]/20"
               >
                 Save &amp; Activate Cluster
               </button>

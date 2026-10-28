@@ -14,7 +14,7 @@ export default function ContactPage() {
       <main className="flex-grow pt-32 pb-24">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#ff3823] bg-[#fff1ef] px-3.5 py-1.5 rounded-full border border-[#ffe2de]">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#ff2800] bg-[#fff1ef] px-3.5 py-1.5 rounded-full border border-[#ffe2de]">
               Direct Contact & Host Desk
             </span>
             <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 font-display mt-3">
@@ -29,7 +29,7 @@ export default function ContactPage() {
           <div className="bg-white rounded-3xl border border-gray-200/90 shadow-lg p-8 sm:p-10 mb-10">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-8 border-b border-gray-100">
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-[#ff3823] to-[#ff6b57] text-white flex items-center justify-center font-bold text-2xl shadow-md">
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-[#ff2800] to-[#ff6b57] text-white flex items-center justify-center font-bold text-2xl shadow-md">
                   PS
                 </div>
                 <div>
@@ -43,7 +43,7 @@ export default function ContactPage() {
                     Head of Operations & Lead Hospitality Specialist • Homey India & The Unique Haven Homes
                   </p>
                   <p className="text-xs text-gray-400 flex items-center gap-1.5 mt-1">
-                    <MapPin className="w-3.5 h-3.5 text-[#ff3823]" /> Lucknow, Uttar Pradesh, India
+                    <MapPin className="w-3.5 h-3.5 text-[#ff2800]" /> Lucknow, Uttar Pradesh, India
                   </p>
                 </div>
               </div>
@@ -53,7 +53,7 @@ export default function ContactPage() {
                   href="tel:+919454470872"
                   className="flex-1 md:flex-initial inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-white hover:bg-gray-50 text-gray-900 font-bold text-xs border border-gray-300 shadow-sm transition-all"
                 >
-                  <Phone className="w-3.5 h-3.5 text-[#ff3823]" />
+                  <Phone className="w-3.5 h-3.5 text-[#ff2800]" />
                   Call +91 94544 70872
                 </a>
                 <a
@@ -91,7 +91,7 @@ export default function ContactPage() {
           {/* Additional Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="p-6 rounded-3xl bg-white border border-gray-200/80 shadow-sm text-center space-y-2">
-              <Phone className="w-8 h-8 text-[#ff3823] mx-auto" />
+              <Phone className="w-8 h-8 text-[#ff2800] mx-auto" />
               <h3 className="font-bold text-gray-900 text-sm">24/7 Calling Desk</h3>
               <p className="text-xs text-gray-600 font-medium">+91 94544 70872</p>
               <span className="text-[10px] text-emerald-600 font-semibold block">Direct Connection with Praveen Singh</span>

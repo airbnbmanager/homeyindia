@@ -14,7 +14,7 @@ export default function AboutPage() {
       <main className="flex-grow pt-32 pb-24">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#ff3823] bg-[#fff1ef] px-3.5 py-1.5 rounded-full border border-[#ffe2de]">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#ff2800] bg-[#fff1ef] px-3.5 py-1.5 rounded-full border border-[#ffe2de]">
               Our Story & Mission
             </span>
             <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 font-display mt-4">
@@ -36,9 +36,9 @@ export default function AboutPage() {
             <div className="p-8 rounded-3xl bg-gradient-to-br from-[#0c1838] to-[#1a2b56] text-white">
               <h3 className="text-xl font-bold text-white mb-2">Our Core Pillars</h3>
               <ul className="space-y-3 mt-4 text-sm text-gray-300">
-                <li className="flex items-center gap-2"><Sparkles className="w-4 h-4 text-[#ff3823]" /> <strong>0.8s 2-Way Sync:</strong> The fastest channel manager synchronization engine in the industry.</li>
-                <li className="flex items-center gap-2"><Heart className="w-4 h-4 text-[#ff3823]" /> <strong>Direct Booking Maximization:</strong> Helping hosts keep 100% of their revenues with zero commission websites.</li>
-                <li className="flex items-center gap-2"><Shield className="w-4 h-4 text-[#ff3823]" /> <strong>Transparent Financials:</strong> Giving hosts true property-level net profit analytics, not just vanity GMV.</li>
+                <li className="flex items-center gap-2"><Sparkles className="w-4 h-4 text-[#ff2800]" /> <strong>0.8s 2-Way Sync:</strong> The fastest channel manager synchronization engine in the industry.</li>
+                <li className="flex items-center gap-2"><Heart className="w-4 h-4 text-[#ff2800]" /> <strong>Direct Booking Maximization:</strong> Helping hosts keep 100% of their revenues with zero commission websites.</li>
+                <li className="flex items-center gap-2"><Shield className="w-4 h-4 text-[#ff2800]" /> <strong>Transparent Financials:</strong> Giving hosts true property-level net profit analytics, not just vanity GMV.</li>
               </ul>
             </div>
           </div>

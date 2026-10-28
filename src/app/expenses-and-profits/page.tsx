@@ -208,7 +208,7 @@ export default function ExpensesPage() {
             </button>
             <button
               onClick={() => setShowAddModal(true)}
-              className="px-4 py-2 rounded-xl bg-[#ff3823] text-white font-bold text-xs hover:bg-[#e5220d] transition shadow-lg shadow-[#ff3823]/20 flex items-center gap-1.5"
+              className="px-4 py-2 rounded-xl bg-[#ff2800] text-white font-bold text-xs hover:bg-[#e5220d] transition shadow-lg shadow-[#ff2800]/20 flex items-center gap-1.5"
             >
               <Plus className="w-4 h-4" /> Add New Expense
             </button>
@@ -485,7 +485,7 @@ export default function ExpensesPage() {
                 />
               </div>
 
-              <div className="p-3 rounded-2xl border-2 border-dashed border-slate-200 hover:border-[#ff3823] cursor-pointer text-center text-slate-500 hover:text-[#ff3823] transition">
+              <div className="p-3 rounded-2xl border-2 border-dashed border-slate-200 hover:border-[#ff2800] cursor-pointer text-center text-slate-500 hover:text-[#ff2800] transition">
                 <Upload className="w-5 h-5 mx-auto mb-1" />
                 <span className="text-[11px] font-bold">Upload Tax Invoice / Bill Receipt (PNG, PDF)</span>
               </div>
@@ -501,7 +501,7 @@ export default function ExpensesPage() {
               </button>
               <button
                 type="submit"
-                className="flex-1 py-2.5 rounded-xl bg-[#ff3823] text-white font-bold text-xs hover:bg-[#e5220d] shadow"
+                className="flex-1 py-2.5 rounded-xl bg-[#ff2800] text-white font-bold text-xs hover:bg-[#e5220d] shadow"
               >
                 Save Expense
               </button>

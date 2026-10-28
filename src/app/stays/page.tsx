@@ -71,7 +71,7 @@ export default function StaysPage() {
                 placeholder="Search by property name (e.g. Royal White House, Starlight...)"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 rounded-xl border border-gray-200 text-xs sm:text-sm focus:border-[#ff3823] focus:outline-none"
+                className="w-full pl-10 pr-4 py-2 rounded-xl border border-gray-200 text-xs sm:text-sm focus:border-[#ff2800] focus:outline-none"
               />
             </div>
 
@@ -88,7 +88,7 @@ export default function StaysPage() {
                   onClick={() => setFilterZone(f.val)}
                   className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
                     filterZone === f.val
-                      ? "bg-[#ff3823] text-white shadow-md shadow-[#ff3823]/25"
+                      ? "bg-[#ff2800] text-white shadow-md shadow-[#ff2800]/25"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                   }`}
                 >

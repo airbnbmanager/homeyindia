@@ -29,6 +29,8 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
     { title: "Expenses & Profits", desc: "Track net profit, payouts, and vendor costs", href: "/expenses-and-profits", icon: DollarSign },
     { title: "Unified Inbox", desc: "Chat with guests across Airbnb, Booking.com & WhatsApp", href: "/unified-inbox", icon: MessageSquare },
     { title: "Co-Hosts & Team", desc: "Multi-role permissions for cleaners, co-hosts & managers", href: "/co-hosts-and-team", icon: Users },
+    { title: "Offline Bookings", desc: "Walk-in, phone, Instagram and WhatsApp booking invoices", href: "/offline-bookings", icon: PhoneCall },
+    { title: "AI Analytics", desc: "Predictive RevPAR, ADR and channel yield insights", href: "/ai-analytics", icon: Sparkles },
   ];
 
   const solutions = [
@@ -52,13 +54,13 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
           {/* Brand Logo */}
           <div className="flex items-center gap-6 lg:gap-8">
             <Link href="/" className="flex items-center gap-2 group shrink-0">
-              <div className="w-8 h-8 rounded-lg bg-[#ff3823] flex items-center justify-center text-white shadow-md shadow-[#ff3823]/25 group-hover:scale-105 transition-transform">
+              <div className="w-8 h-8 rounded-lg bg-[#ff2800] flex items-center justify-center text-white shadow-md shadow-[#ff2800]/25 group-hover:scale-105 transition-transform">
                 <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
                   <path d="M12 2L2 9.5V20C2 21.1 2.9 22 4 22H20C21.1 22 22 21.1 22 20V9.5L12 2ZM12 4.5L19.5 10.2V20H15V14H9V20H4.5V10.2L12 4.5Z" />
                 </svg>
               </div>
               <span className="font-display font-extrabold text-xl sm:text-2xl tracking-tight text-gray-900">
-                homeyindia<span className="text-[#ff3823]">.</span>
+                homeyindia<span className="text-[#ff2800]">.</span>
               </span>
             </Link>
 
@@ -82,11 +84,11 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
                         href={item.href}
                         className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-gray-50 transition-colors group"
                       >
-                        <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center text-[#ff3823] shrink-0">
+                        <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center text-[#ff2800] shrink-0">
                           <item.icon className="w-4 h-4" />
                         </div>
                         <div>
-                          <div className="text-xs font-bold text-gray-900 group-hover:text-[#ff3823]">{item.title}</div>
+                          <div className="text-xs font-bold text-gray-900 group-hover:text-[#ff2800]">{item.title}</div>
                           <p className="text-[11px] text-gray-500 leading-tight mt-0.5">{item.desc}</p>
                         </div>
                       </Link>
@@ -113,11 +115,11 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
                         href={item.href}
                         className="flex items-start gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors group"
                       >
-                        <div className="w-9 h-9 rounded-lg bg-gray-50 flex items-center justify-center text-[#ff3823] shrink-0">
+                        <div className="w-9 h-9 rounded-lg bg-gray-50 flex items-center justify-center text-[#ff2800] shrink-0">
                           <item.icon className="w-4 h-4" />
                         </div>
                         <div>
-                          <div className="text-sm font-semibold text-gray-900 group-hover:text-[#ff3823]">{item.title}</div>
+                          <div className="text-sm font-semibold text-gray-900 group-hover:text-[#ff2800]">{item.title}</div>
                           <p className="text-xs text-gray-500 leading-snug mt-0.5">{item.desc}</p>
                         </div>
                       </Link>
@@ -144,11 +146,11 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
                         href={item.href}
                         className="flex items-start gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors group"
                       >
-                        <div className="w-9 h-9 rounded-lg bg-gray-50 flex items-center justify-center text-[#ff3823] shrink-0">
+                        <div className="w-9 h-9 rounded-lg bg-gray-50 flex items-center justify-center text-[#ff2800] shrink-0">
                           <item.icon className="w-4 h-4" />
                         </div>
                         <div>
-                          <div className="text-sm font-semibold text-gray-900 group-hover:text-[#ff3823]">{item.title}</div>
+                          <div className="text-sm font-semibold text-gray-900 group-hover:text-[#ff2800]">{item.title}</div>
                           <p className="text-xs text-gray-500 leading-snug mt-0.5">{item.desc}</p>
                         </div>
                       </Link>
@@ -160,9 +162,9 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
               {/* Direct Booking Stays Link */}
               <Link 
                 href="/stays" 
-                className="px-3 py-2 rounded-lg text-gray-700 hover:text-[#ff3823] hover:bg-gray-50 transition-colors font-semibold flex items-center gap-1.5"
+                className="px-3 py-2 rounded-lg text-gray-700 hover:text-[#ff2800] hover:bg-gray-50 transition-colors font-semibold flex items-center gap-1.5"
               >
-                <BedDouble className="w-4 h-4 text-[#ff3823]" />
+                <BedDouble className="w-4 h-4 text-[#ff2800]" />
                 <span>Book your stay</span>
               </Link>
 
@@ -181,7 +183,7 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
             {/* Mobile-only Stays pill */}
             <Link
               href="/stays"
-              className="sm:hidden inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-[#fff1ef] text-[#ff3823] border border-[#ffe2de] text-xs font-bold whitespace-nowrap"
+              className="sm:hidden inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-[#fff1ef] text-[#ff2800] border border-[#ffe2de] text-xs font-bold whitespace-nowrap"
             >
               <BedDouble className="w-3.5 h-3.5" />
               <span>18 Stays</span>
@@ -190,7 +192,7 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
             {/* Desktop Start Free Trial Button */}
             <Link
               href="/start-trial"
-              className="hidden sm:inline-flex whitespace-nowrap px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-[#ff3823] hover:bg-[#e5220d] text-white font-bold text-xs sm:text-sm shadow-md shadow-[#ff3823]/25 transition-all hover:scale-[1.02]"
+              className="hidden sm:inline-flex whitespace-nowrap px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-[#ff2800] hover:bg-[#e5220d] text-white font-bold text-xs sm:text-sm shadow-md shadow-[#ff2800]/25 transition-all hover:scale-[1.02]"
             >
               Start free trial
             </Link>
@@ -204,7 +206,7 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
               <div className="relative w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-gray-100 flex items-center justify-center text-gray-700 font-bold text-xs">
                 {user ? (
                   <>
-                    <span className="text-[#ff3823]">{user.firstName?.[0]?.toUpperCase() || "H"}</span>
+                    <span className="text-[#ff2800]">{user.firstName?.[0]?.toUpperCase() || "H"}</span>
                     <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-white" />
                   </>
                 ) : (
@@ -234,7 +236,7 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-xs shadow-sm border border-slate-200">
                   {user ? (
-                    <span className="text-[#ff3823] font-bold">{user.firstName?.[0]?.toUpperCase() || "H"}</span>
+                    <span className="text-[#ff2800] font-bold">{user.firstName?.[0]?.toUpperCase() || "H"}</span>
                   ) : (
                     <User className="w-4 h-4 text-slate-500" />
                   )}
@@ -262,7 +264,7 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
               <Link
                 href="/stays"
                 onClick={() => setRightDrawerOpen(false)}
-                className="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-[#ff3823] to-[#e0220d] text-white shadow-md hover:scale-[1.01] transition-transform"
+                className="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-[#ff2800] to-[#e0220d] text-white shadow-md hover:scale-[1.01] transition-transform"
               >
                 <div className="flex items-center gap-2.5">
                   <BedDouble className="w-5 h-5 text-white" />
@@ -302,7 +304,7 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
                 {!user ? (
                   <button
                     onClick={() => { setRightDrawerOpen(false); setAuthModalOpen(true); }}
-                    className="py-1 font-bold text-[#ff3823] hover:text-[#e0220d] transition-colors text-xs uppercase tracking-wider flex items-center gap-1.5 cursor-pointer"
+                    className="py-1 font-bold text-[#ff2800] hover:text-[#e0220d] transition-colors text-xs uppercase tracking-wider flex items-center gap-1.5 cursor-pointer"
                   >
                     <span>Sign In / OTP Login</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -334,17 +336,17 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
                   <Link
                     href="/dashboard"
                     onClick={() => setRightDrawerOpen(false)}
-                    className="block py-1 font-bold text-gray-900 hover:text-[#ff3823] transition-colors flex items-center justify-between"
+                    className="block py-1 font-bold text-gray-900 hover:text-[#ff2800] transition-colors flex items-center justify-between"
                   >
                     <span>Host Control Dashboard</span>
-                    <span className="text-[10px] bg-[#fff1ef] text-[#ff3823] px-2 py-0.5 rounded-full font-bold border border-[#ffe2de]">Live</span>
+                    <span className="text-[10px] bg-[#fff1ef] text-[#ff2800] px-2 py-0.5 rounded-full font-bold border border-[#ffe2de]">Live</span>
                   </Link>
                 </div>
                 <div>
                   <Link
                     href="/unified-calendar"
                     onClick={() => setRightDrawerOpen(false)}
-                    className="block py-1 font-semibold text-gray-700 hover:text-[#ff3823] transition-colors"
+                    className="block py-1 font-semibold text-gray-700 hover:text-[#ff2800] transition-colors"
                   >
                     Unified Timeline Calendar
                   </Link>
@@ -353,7 +355,7 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
                   <Link
                     href="/calendar"
                     onClick={() => setRightDrawerOpen(false)}
-                    className="block py-1 font-semibold text-gray-700 hover:text-[#ff3823] transition-colors"
+                    className="block py-1 font-semibold text-gray-700 hover:text-[#ff2800] transition-colors"
                   >
                     Calendar &amp; Dynamic Pricing
                   </Link>
@@ -362,7 +364,7 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
                   <Link
                     href="/properties"
                     onClick={() => setRightDrawerOpen(false)}
-                    className="block py-1 font-semibold text-gray-700 hover:text-[#ff3823] transition-colors flex items-center justify-between"
+                    className="block py-1 font-semibold text-gray-700 hover:text-[#ff2800] transition-colors flex items-center justify-between"
                   >
                     <span>Properties &amp; Magic Cluster</span>
                     <span className="text-[10px] bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full font-bold">18 Stays</span>
@@ -372,7 +374,7 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
                   <Link
                     href="/reservations"
                     onClick={() => setRightDrawerOpen(false)}
-                    className="block py-1 font-semibold text-gray-700 hover:text-[#ff3823] transition-colors"
+                    className="block py-1 font-semibold text-gray-700 hover:text-[#ff2800] transition-colors"
                   >
                     Manage Reservations &amp; Offline
                   </Link>
@@ -381,7 +383,7 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
                   <Link
                     href="/channel-manager"
                     onClick={() => setRightDrawerOpen(false)}
-                    className="block py-1 font-semibold text-gray-700 hover:text-[#ff3823] transition-colors"
+                    className="block py-1 font-semibold text-gray-700 hover:text-[#ff2800] transition-colors"
                   >
                     Channel Manager (50+ OTAs)
                   </Link>
@@ -390,7 +392,7 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
                   <Link
                     href="/flexi-pricing"
                     onClick={() => setRightDrawerOpen(false)}
-                    className="block py-1 font-semibold text-gray-700 hover:text-[#ff3823] transition-colors"
+                    className="block py-1 font-semibold text-gray-700 hover:text-[#ff2800] transition-colors"
                   >
                     Flexi Pricing&trade; Yield Management
                   </Link>
@@ -399,7 +401,7 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
                   <Link
                     href="/expenses-and-profits"
                     onClick={() => setRightDrawerOpen(false)}
-                    className="block py-1 font-semibold text-gray-700 hover:text-[#ff3823] transition-colors"
+                    className="block py-1 font-semibold text-gray-700 hover:text-[#ff2800] transition-colors"
                   >
                     Property Expenses &amp; True P&amp;L
                   </Link>
@@ -408,7 +410,7 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
                   <Link
                     href="/properties/clone-airbnb"
                     onClick={() => setRightDrawerOpen(false)}
-                    className="block py-1 font-semibold text-amber-700 hover:text-[#ff3823] transition-colors"
+                    className="block py-1 font-semibold text-amber-700 hover:text-[#ff2800] transition-colors"
                   >
                     Clone Airbnb Listing
                   </Link>
@@ -417,7 +419,7 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
                   <Link
                     href="/account"
                     onClick={() => setRightDrawerOpen(false)}
-                    className="block py-1 font-bold text-gray-900 hover:text-[#ff3823] transition-colors flex items-center justify-between"
+                    className="block py-1 font-bold text-gray-900 hover:text-[#ff2800] transition-colors flex items-center justify-between"
                   >
                     <span>Host Identity &amp; KYC</span>
                     <span className="text-[10px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-bold">Aadhaar/Pass</span>
@@ -427,10 +429,10 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
               <div>
                 <button
                   onClick={() => setFeaturesAccordionOpen(!featuresAccordionOpen)}
-                  className="w-full flex items-center justify-between py-1.5 font-bold text-gray-900 hover:text-[#ff3823] transition-colors"
+                  className="w-full flex items-center justify-between py-1.5 font-bold text-gray-900 hover:text-[#ff2800] transition-colors"
                 >
                   <span>PMS Features</span>
-                  <ChevronDown className={`w-4 h-4 transition-transform ${featuresAccordionOpen ? "rotate-180 text-[#ff3823]" : "text-gray-400"}`} />
+                  <ChevronDown className={`w-4 h-4 transition-transform ${featuresAccordionOpen ? "rotate-180 text-[#ff2800]" : "text-gray-400"}`} />
                 </button>
 
                 {featuresAccordionOpen && (
@@ -440,9 +442,9 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
                         key={f.title}
                         href={f.href}
                         onClick={() => setRightDrawerOpen(false)}
-                        className="flex items-center gap-2 py-1 text-xs text-gray-600 hover:text-[#ff3823]"
+                        className="flex items-center gap-2 py-1 text-xs text-gray-600 hover:text-[#ff2800]"
                       >
-                        <f.icon className="w-3.5 h-3.5 text-[#ff3823]" />
+                        <f.icon className="w-3.5 h-3.5 text-[#ff2800]" />
                         <span>{f.title}</span>
                       </Link>
                     ))}
@@ -454,7 +456,7 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
                 <Link
                   href="/pricing"
                   onClick={() => setRightDrawerOpen(false)}
-                  className="block py-1 text-gray-700 hover:text-[#ff3823] transition-colors"
+                  className="block py-1 text-gray-700 hover:text-[#ff2800] transition-colors"
                 >
                   Pricing Calculator
                 </Link>
@@ -464,7 +466,7 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
                 <Link
                   href="/channel-manager"
                   onClick={() => setRightDrawerOpen(false)}
-                  className="block py-1 text-gray-700 hover:text-[#ff3823] transition-colors"
+                  className="block py-1 text-gray-700 hover:text-[#ff2800] transition-colors"
                 >
                   Channel Manager Sync
                 </Link>
@@ -474,7 +476,7 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
                 <Link
                   href="/direct-booking-website"
                   onClick={() => setRightDrawerOpen(false)}
-                  className="block py-1 text-gray-700 hover:text-[#ff3823] transition-colors"
+                  className="block py-1 text-gray-700 hover:text-[#ff2800] transition-colors"
                 >
                   Direct Booking Engine
                 </Link>
@@ -484,7 +486,7 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
                 <Link
                   href="/about-us"
                   onClick={() => setRightDrawerOpen(false)}
-                  className="block py-1 text-gray-700 hover:text-[#ff3823] transition-colors"
+                  className="block py-1 text-gray-700 hover:text-[#ff2800] transition-colors"
                 >
                   About Us & Story
                 </Link>
@@ -494,7 +496,7 @@ export default function Navbar({ showBanner = false }: { showBanner?: boolean })
                 <Link
                   href="/contactus"
                   onClick={() => setRightDrawerOpen(false)}
-                  className="block py-1 text-gray-700 hover:text-[#ff3823] transition-colors"
+                  className="block py-1 text-gray-700 hover:text-[#ff2800] transition-colors"
                 >
                   Contact Us
                 </Link>

@@ -200,7 +200,7 @@ export default function ChannelManagerPage() {
             </button>
             <button
               onClick={triggerDoubleBookingTest}
-              className="px-4 py-2 rounded-xl bg-[#ff3823] text-white font-bold text-xs hover:bg-[#e5220d] transition shadow-lg shadow-[#ff3823]/20 flex items-center gap-1.5"
+              className="px-4 py-2 rounded-xl bg-[#ff2800] text-white font-bold text-xs hover:bg-[#e5220d] transition shadow-lg shadow-[#ff2800]/20 flex items-center gap-1.5"
             >
               <Zap className="w-4 h-4" /> Test Collision Lock
             </button>
@@ -283,7 +283,7 @@ export default function ChannelManagerPage() {
                   </div>
                   <div>
                     <span className="text-slate-400 block text-[10px] uppercase font-bold">Markup Multiplier</span>
-                    <span className="font-bold text-[#ff3823]">+{c.multiplier}%</span>
+                    <span className="font-bold text-[#ff2800]">+{c.multiplier}%</span>
                   </div>
                 </div>
 
@@ -291,7 +291,7 @@ export default function ChannelManagerPage() {
                   <span className="text-slate-500">Min Stay: <strong>{c.minStay} Night{c.minStay > 1 ? "s" : ""}</strong></span>
                   <button
                     onClick={() => showToast(`Channel rules for ${c.name} updated.`)}
-                    className="font-bold text-slate-700 hover:text-[#ff3823] transition flex items-center gap-1"
+                    className="font-bold text-slate-700 hover:text-[#ff2800] transition flex items-center gap-1"
                   >
                     Edit Rules <ArrowRight className="w-3.5 h-3.5" />
                   </button>
@@ -305,7 +305,7 @@ export default function ChannelManagerPage() {
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
             <div>
-              <span className="px-3 py-1 rounded-full bg-[#ff3823]/10 text-[#ff3823] font-bold text-xs uppercase tracking-wider">
+              <span className="px-3 py-1 rounded-full bg-[#ff2800]/10 text-[#ff2800] font-bold text-xs uppercase tracking-wider">
                 Dynamic OTA Markup Engine
               </span>
               <h3 className="text-2xl font-bold text-slate-900 font-display mt-2">
@@ -340,7 +340,7 @@ export default function ChannelManagerPage() {
                 <div key={c.id} className="p-4 rounded-2xl border border-slate-200 space-y-3 bg-white">
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-slate-900 text-sm">{c.name}</span>
-                    <span className="text-xs font-bold text-[#ff3823] bg-[#fff1ef] px-2 py-0.5 rounded-md">
+                    <span className="text-xs font-bold text-[#ff2800] bg-[#fff1ef] px-2 py-0.5 rounded-md">
                       +{c.multiplier}%
                     </span>
                   </div>
@@ -353,7 +353,7 @@ export default function ChannelManagerPage() {
                       max="30"
                       value={c.multiplier}
                       onChange={(e) => handleMultiplierChange(c.id, parseInt(e.target.value))}
-                      className="w-full accent-[#ff3823] cursor-pointer"
+                      className="w-full accent-[#ff2800] cursor-pointer"
                     />
                   </div>
 
@@ -378,7 +378,7 @@ export default function ChannelManagerPage() {
             </span>
             <button
               onClick={() => showToast("Applied rate multipliers across all 50+ channels successfully!")}
-              className="px-6 py-2.5 rounded-xl bg-[#ff3823] text-white font-bold text-xs hover:bg-[#e5220d] transition shadow-lg shadow-[#ff3823]/20"
+              className="px-6 py-2.5 rounded-xl bg-[#ff2800] text-white font-bold text-xs hover:bg-[#e5220d] transition shadow-lg shadow-[#ff2800]/20"
             >
               Save &amp; Propagate Rates
             </button>

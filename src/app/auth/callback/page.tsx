@@ -79,7 +79,7 @@ export default function AuthCallbackPage() {
         </div>
         <h2 className="text-xl font-bold font-display text-gray-900">Email Confirmed!</h2>
         <p className="text-xs text-gray-500 flex items-center justify-center gap-2">
-          <RefreshCw className="w-3.5 h-3.5 animate-spin text-[#ff3823]" />
+          <RefreshCw className="w-3.5 h-3.5 animate-spin text-[#ff2800]" />
           <span>{status}</span>
         </p>
       </div>

@@ -51,7 +51,7 @@ export default function HostNavTabs({ variant = "dark" }: { variant?: "dark" | "
             href={item.href}
             className={`px-3 sm:px-4 py-2 rounded-xl whitespace-nowrap shrink-0 flex items-center gap-1.5 sm:gap-2 transition-all ${
               isActive
-                ? "bg-[#ff3823] text-white font-bold shadow-lg shadow-[#ff3823]/25 scale-[1.02]"
+                ? "bg-[#ff2800] text-white font-bold shadow-lg shadow-[#ff2800]/25 scale-[1.02]"
                 : isLight
                 ? "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
                 : "text-slate-300 hover:text-white hover:bg-slate-800/90"

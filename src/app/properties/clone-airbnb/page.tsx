@@ -109,7 +109,7 @@ export default function CloneAirbnbPage() {
         {/* Input Card */}
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
           <div>
-            <span className="px-3 py-1 rounded-full bg-[#ff3823]/10 text-[#ff3823] font-bold text-xs uppercase tracking-wider">
+            <span className="px-3 py-1 rounded-full bg-[#ff2800]/10 text-[#ff2800] font-bold text-xs uppercase tracking-wider">
               1-Click Smart Importer
             </span>
             <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 font-display mt-2">
@@ -134,13 +134,13 @@ export default function CloneAirbnbPage() {
                     placeholder="https://www.airbnb.com/rooms/..."
                     value={airbnbUrl}
                     onChange={(e) => setAirbnbUrl(e.target.value)}
-                    className="w-full pl-9 pr-4 py-3 rounded-xl border border-slate-200 text-xs font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#ff3823]/20 focus:border-[#ff3823]"
+                    className="w-full pl-9 pr-4 py-3 rounded-xl border border-slate-200 text-xs font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#ff2800]/20 focus:border-[#ff2800]"
                   />
                 </div>
                 <button
                   type="submit"
                   disabled={isImporting}
-                  className="px-6 py-3 rounded-xl bg-[#ff3823] text-white font-bold text-xs hover:bg-[#e5220d] transition shadow-lg shadow-[#ff3823]/20 shrink-0 disabled:opacity-50 flex items-center gap-2"
+                  className="px-6 py-3 rounded-xl bg-[#ff2800] text-white font-bold text-xs hover:bg-[#e5220d] transition shadow-lg shadow-[#ff2800]/20 shrink-0 disabled:opacity-50 flex items-center gap-2"
                 >
                   <Sparkles className="w-4 h-4" /> {isImporting ? "Importing..." : "Clone Listing"}
                 </button>
@@ -245,7 +245,7 @@ export default function CloneAirbnbPage() {
               </span>
               <button
                 onClick={handleConfirmPublish}
-                className="px-6 py-2.5 rounded-xl bg-[#ff3823] text-white font-bold text-xs hover:bg-[#e5220d] transition shadow-lg shadow-[#ff3823]/20 flex items-center gap-1.5"
+                className="px-6 py-2.5 rounded-xl bg-[#ff2800] text-white font-bold text-xs hover:bg-[#e5220d] transition shadow-lg shadow-[#ff2800]/20 flex items-center gap-1.5"
               >
                 <Check className="w-4 h-4" /> Publish Listing Now
               </button>

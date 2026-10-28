@@ -224,8 +224,8 @@ export default function HostDashboardPage() {
           <div className="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm space-y-6">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#fff1ef] text-[#ff3823] text-xs font-bold border border-[#ffe2de] mb-2">
-                <span className="w-2 h-2 rounded-full bg-[#ff3823] animate-pulse" />
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#fff1ef] text-[#ff2800] text-xs font-bold border border-[#ffe2de] mb-2">
+                <span className="w-2 h-2 rounded-full bg-[#ff2800] animate-pulse" />
                 <span>Host Control Centre · Live OTA Sync</span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 font-display tracking-tight">
@@ -240,14 +240,14 @@ export default function HostDashboardPage() {
             <div className="flex flex-wrap items-center gap-2.5">
               <Link
                 href="/unified-calendar"
-                className="px-4 py-2.5 rounded-full bg-white border border-gray-200 text-gray-800 font-bold text-xs hover:border-[#ff3823] hover:text-[#ff3823] shadow-xs transition-colors flex items-center gap-1.5"
+                className="px-4 py-2.5 rounded-full bg-white border border-gray-200 text-gray-800 font-bold text-xs hover:border-[#ff2800] hover:text-[#ff2800] shadow-xs transition-colors flex items-center gap-1.5"
               >
                 <Calendar className="w-4 h-4 text-gray-500" />
                 <span>Unified Calendar</span>
               </Link>
               <Link
                 href="/channel-manager"
-                className="px-4 py-2.5 rounded-full bg-white border border-gray-200 text-gray-800 font-bold text-xs hover:border-[#ff3823] hover:text-[#ff3823] shadow-xs transition-colors flex items-center gap-1.5"
+                className="px-4 py-2.5 rounded-full bg-white border border-gray-200 text-gray-800 font-bold text-xs hover:border-[#ff2800] hover:text-[#ff2800] shadow-xs transition-colors flex items-center gap-1.5"
               >
                 <Layers className="w-4 h-4 text-gray-500" />
                 <span>50+ Channels</span>
@@ -303,7 +303,7 @@ export default function HostDashboardPage() {
                   placeholder="Search guest, ID or stay..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2 rounded-full border border-gray-200 bg-white text-xs focus:border-[#ff3823] focus:outline-none"
+                  className="w-full pl-9 pr-4 py-2 rounded-full border border-gray-200 bg-white text-xs focus:border-[#ff2800] focus:outline-none"
                 />
               </div>
             </div>
@@ -330,7 +330,7 @@ export default function HostDashboardPage() {
                         onClick={() => setSelectedBooking(b)}
                         className="hover:bg-[#fff8eb]/60 transition-colors cursor-pointer group"
                       >
-                        <td className="py-4 px-6 font-mono font-bold text-gray-900 group-hover:text-[#ff3823]">
+                        <td className="py-4 px-6 font-mono font-bold text-gray-900 group-hover:text-[#ff2800]">
                           {b.id}
                         </td>
                         <td className="py-4 px-6">
@@ -392,7 +392,7 @@ export default function HostDashboardPage() {
                   onClick={() => setEarningsTab("payouts")}
                   className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
                     earningsTab === "payouts"
-                      ? "bg-[#ff3823] text-white shadow-sm"
+                      ? "bg-[#ff2800] text-white shadow-sm"
                       : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                   }`}
                 >
@@ -402,7 +402,7 @@ export default function HostDashboardPage() {
                   onClick={() => setEarningsTab("property_wise")}
                   className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
                     earningsTab === "property_wise"
-                      ? "bg-[#ff3823] text-white shadow-sm"
+                      ? "bg-[#ff2800] text-white shadow-sm"
                       : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                   }`}
                 >
@@ -423,7 +423,7 @@ export default function HostDashboardPage() {
 
               <div className="p-5 rounded-2xl bg-white border border-gray-200 shadow-xs space-y-1">
                 <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Yet to Receive (Upcoming Payout)</span>
-                <div className="text-3xl font-extrabold font-mono text-[#ff3823]">
+                <div className="text-3xl font-extrabold font-mono text-[#ff2800]">
                   ₹{yetToReceive.toLocaleString("en-IN")}
                 </div>
                 <span className="text-[10px] text-emerald-600 font-semibold block pt-1">Direct Bank Account Credit (SBI)</span>
@@ -481,7 +481,7 @@ export default function HostDashboardPage() {
             {/* Header */}
             <div className="p-6 border-b border-gray-200 flex items-center justify-between sticky top-0 bg-white/95 backdrop-blur-md z-10">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#ff3823] to-[#e0220d] text-white flex items-center justify-center font-bold text-sm shadow-md">
+                <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#ff2800] to-[#e0220d] text-white flex items-center justify-center font-bold text-sm shadow-md">
                   {selectedBooking.id.slice(-2)}
                 </div>
                 <div>

@@ -9,7 +9,7 @@ export default function FaqSection() {
   const faqs = [
     {
       q: "Which booking channels does Homey India support?",
-      a: "Homey India connects with major Indian and global booking channels, including Airbnb, Booking.com, MakeMyTrip, Agoda, Goibibo, Vrbo, Expedia, and Trip.com. Availability, pricing, and reservations stay synchronized automatically in real time (0.8s sync latency).",
+      a: "Homey India connects with major Indian and global booking channels, including Airbnb, Booking.com, MakeMyTrip, Agoda, Goibibo, Vrbo, Expedia, and Trip.com. Availability, pricing, and reservations stay synchronized automatically in real time (sub-second sync latency).",
     },
     {
       q: "Will Homey India prevent double bookings?",
@@ -37,25 +37,25 @@ export default function FaqSection() {
     },
     {
       q: "Is there a long-term contract or lock-in?",
-      a: "No. There are no contracts, setup fees, or hidden termination clauses. You can upgrade, downgrade, or cancel anytime according to your business needs.",
+      a: "No. There are no setup fees or hidden termination clauses. Pay monthly or annual, and if you ever cancel an annual plan, we refund every unused month.",
     },
     {
       q: "How quickly can I get started?",
-      a: "Getting started takes less than 10 minutes. Sign up, import your existing Airbnb listing, connect your booking channels, and you are ready to manage your business from one place.",
+      a: "Getting started takes less than 10 minutes. Sign up, import your existing Airbnb listing, connect your booking channels, and you are ready to manage your business from one place on mobile and desktop.",
     },
   ];
 
   return (
-    <section id="faq" className="py-24 bg-gray-50/70 border-t border-gray-200/60">
+    <section id="faq" className="py-20 sm:py-24 bg-white border-b border-gray-200/80">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <span className="text-xs font-bold uppercase tracking-wider text-[#ff3823] bg-[#fff1ef] px-3 py-1 rounded-full border border-[#ffe2de]">
+          <p className="text-xs font-bold uppercase tracking-wider text-[#ff2800] bg-[#ffeee9] px-3 py-1 rounded-full border border-[#ffe9e5] inline-block mb-3">
             Got Questions?
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight font-display mt-3">
-            Frequently asked questions
+          </p>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0a1d4b] tracking-tight font-display">
+            Frequently asked <span className="lyp-serif text-[#ff2800]">questions</span>
           </h2>
-          <p className="mt-3 text-base text-gray-600">
+          <p className="mt-3 text-sm sm:text-base text-gray-600">
             Everything you need to know about channel sync, direct bookings, pricing, and features.
           </p>
         </div>
@@ -64,24 +64,25 @@ export default function FaqSection() {
           {faqs.map((faq, i) => (
             <div
               key={i}
-              className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden transition-colors"
+              className="bg-[#faf8f5] rounded-2xl border border-gray-200/90 shadow-xs overflow-hidden transition-colors"
             >
               <button
+                type="button"
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                className="w-full p-5 text-left flex items-center justify-between gap-4 focus:outline-none"
+                className="w-full p-5 text-left flex items-center justify-between gap-4 focus:outline-none cursor-pointer"
               >
-                <span className="font-bold text-sm sm:text-base text-gray-900">
+                <span className="font-bold text-sm sm:text-base text-[#0a1d4b]">
                   {faq.q}
                 </span>
                 <ChevronDown
                   className={`w-5 h-5 text-gray-400 transition-transform shrink-0 ${
-                    openIndex === i ? "rotate-180 text-[#ff3823]" : ""
+                    openIndex === i ? "rotate-180 text-[#ff2800]" : ""
                   }`}
                 />
               </button>
 
               {openIndex === i && (
-                <div className="px-5 pb-5 text-sm text-gray-600 leading-relaxed border-t border-gray-100 pt-3 animate-in fade-in duration-150">
+                <div className="px-5 pb-5 text-xs sm:text-sm text-gray-600 leading-relaxed border-t border-gray-200/60 pt-3 animate-in fade-in duration-150">
                   {faq.a}
                 </div>
               )}

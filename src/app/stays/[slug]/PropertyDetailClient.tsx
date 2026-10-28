@@ -99,14 +99,14 @@ export default function PropertyDetailClient({ prop }: { prop: Property }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4 mb-6">
           <Link
             href="/stays"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-[#ff3823] transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-[#ff2800] transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" /> Back to all 18 Lucknow Stays
           </Link>
 
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div>
-              <div className="flex items-center gap-2 text-xs font-bold text-[#ff3823] mb-1">
+              <div className="flex items-center gap-2 text-xs font-bold text-[#ff2800] mb-1">
                 <span>{prop.zone}</span>
                 <span>•</span>
                 <span>{prop.type}</span>
@@ -124,7 +124,7 @@ export default function PropertyDetailClient({ prop }: { prop: Property }) {
                 <span>{prop.rating}</span>
                 <span className="text-gray-400 font-normal">({prop.reviewsCount} reviews)</span>
               </div>
-              <div className="px-3 py-1.5 rounded-xl bg-[#fff1ef] border border-[#ffe2de] text-xs font-bold text-[#ff3823]">
+              <div className="px-3 py-1.5 rounded-xl bg-[#fff1ef] border border-[#ffe2de] text-xs font-bold text-[#ff2800]">
                 Direct Superhost Listing
               </div>
             </div>
@@ -287,14 +287,14 @@ export default function PropertyDetailClient({ prop }: { prop: Property }) {
                 <div
                   onClick={() => setChefAddon(!chefAddon)}
                   className={`p-4 rounded-2xl border cursor-pointer flex items-start gap-3 transition-colors ${
-                    chefAddon ? "bg-[#fff1ef] border-[#ff3823] text-gray-900" : "bg-gray-50 border-gray-200 text-gray-700"
+                    chefAddon ? "bg-[#fff1ef] border-[#ff2800] text-gray-900" : "bg-gray-50 border-gray-200 text-gray-700"
                   }`}
                 >
-                  <UtensilsCrossed className="w-5 h-5 text-[#ff3823] shrink-0 mt-0.5" />
+                  <UtensilsCrossed className="w-5 h-5 text-[#ff2800] shrink-0 mt-0.5" />
                   <div>
                     <div className="font-bold text-gray-900 flex justify-between">
                       <span>Private Lucknowi Chef</span>
-                      <span className="text-[#ff3823]">+₹3,500</span>
+                      <span className="text-[#ff2800]">+₹3,500</span>
                     </div>
                     <p className="text-[11px] text-gray-500 mt-1">Fresh Awadhi Galawati kebabs & fragrant mutton/veg biryani cooked in villa.</p>
                   </div>
@@ -303,14 +303,14 @@ export default function PropertyDetailClient({ prop }: { prop: Property }) {
                 <div
                   onClick={() => setBonfireAddon(!bonfireAddon)}
                   className={`p-4 rounded-2xl border cursor-pointer flex items-start gap-3 transition-colors ${
-                    bonfireAddon ? "bg-[#fff1ef] border-[#ff3823] text-gray-900" : "bg-gray-50 border-gray-200 text-gray-700"
+                    bonfireAddon ? "bg-[#fff1ef] border-[#ff2800] text-gray-900" : "bg-gray-50 border-gray-200 text-gray-700"
                   }`}
                 >
                   <Flame className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
                   <div>
                     <div className="font-bold text-gray-900 flex justify-between">
                       <span>Bonfire & Ambient Setup</span>
-                      <span className="text-[#ff3823]">+₹2,000</span>
+                      <span className="text-[#ff2800]">+₹2,000</span>
                     </div>
                     <p className="text-[11px] text-gray-500 mt-1">Hardwood logs, open fire pit, acoustic sound speaker, and fairy lights.</p>
                   </div>
@@ -338,7 +338,7 @@ export default function PropertyDetailClient({ prop }: { prop: Property }) {
               <div className="flex items-baseline justify-between pb-4 border-b border-gray-100">
                 <div>
                   <div className="flex items-baseline gap-1.5">
-                    <span className="text-3xl font-extrabold text-[#ff3823] font-display">
+                    <span className="text-3xl font-extrabold text-[#ff2800] font-display">
                       ₹{effectiveBasePrice.toLocaleString("en-IN")}
                     </span>
                     <span className="text-xs text-gray-500">/ night</span>
@@ -415,7 +415,7 @@ export default function PropertyDetailClient({ prop }: { prop: Property }) {
                 </div>
                 <div className="flex justify-between pt-2 border-t border-gray-200 font-extrabold text-base text-gray-900">
                   <span>Total Payable:</span>
-                  <span className="text-[#ff3823]">₹{totalAmount.toLocaleString("en-IN")}</span>
+                  <span className="text-[#ff2800]">₹{totalAmount.toLocaleString("en-IN")}</span>
                 </div>
               </div>
 
@@ -456,7 +456,7 @@ export default function PropertyDetailClient({ prop }: { prop: Property }) {
                 onClick={() => { setSelectedCategory("all"); setActivePhotoIdx(0); }}
                 className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap ${
                   selectedCategory === "all"
-                    ? "bg-[#ff3823] text-white shadow-md shadow-[#ff3823]/30"
+                    ? "bg-[#ff2800] text-white shadow-md shadow-[#ff2800]/30"
                     : "bg-gray-800 text-gray-300 hover:bg-gray-700"
                 }`}
               >
@@ -471,7 +471,7 @@ export default function PropertyDetailClient({ prop }: { prop: Property }) {
                     onClick={() => { setSelectedCategory(cat); setActivePhotoIdx(0); }}
                     className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all whitespace-nowrap ${
                       selectedCategory === cat
-                        ? "bg-[#ff3823] text-white shadow-md shadow-[#ff3823]/30"
+                        ? "bg-[#ff2800] text-white shadow-md shadow-[#ff2800]/30"
                         : "bg-gray-800 text-gray-300 hover:bg-gray-700"
                     }`}
                   >
@@ -536,7 +536,7 @@ export default function PropertyDetailClient({ prop }: { prop: Property }) {
                   onClick={() => setActivePhotoIdx(idx)}
                   className={`relative w-14 h-10 sm:w-16 sm:h-12 rounded-lg overflow-hidden shrink-0 border-2 transition-all ${
                     activePhotoIdx === idx
-                      ? "border-[#ff3823] scale-105 shadow-md shadow-[#ff3823]/40"
+                      ? "border-[#ff2800] scale-105 shadow-md shadow-[#ff2800]/40"
                       : "border-transparent opacity-50 hover:opacity-100"
                   }`}
                 >

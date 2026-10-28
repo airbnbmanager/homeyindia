@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { DM_Sans, DM_Serif_Display } from "next/font/google";
 import "./globals.css";
 import PwaRegistrar from "@/components/PwaRegistrar";
+import MobileBottomNav from "@/components/MobileBottomNav";
 import { AuthProvider } from "@/context/AuthContext";
 
 const dmSans = DM_Sans({
@@ -19,11 +20,12 @@ const dmSerif = DM_Serif_Display({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#ff3823",
+  themeColor: "#ff2800",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
   userScalable: true,
+  viewportFit: "cover",
 };
 
 export const metadata: Metadata = {
@@ -111,10 +113,11 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Homey India" />
       </head>
-      <body className="antialiased selection:bg-[#ff3823]/10 selection:text-[#ff3823]">
+      <body className="antialiased selection:bg-[#ff2800]/10 selection:text-[#ff2800] pb-16 md:pb-0">
         <AuthProvider>
           <PwaRegistrar />
           {children}
+          <MobileBottomNav />
         </AuthProvider>
       </body>
     </html>

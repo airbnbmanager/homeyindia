@@ -2,37 +2,51 @@
 
 @layer base {
   :root {
-    --lyp-font: "DM Sans", system-ui, -apple-system, sans-serif;
-    --lyp-font-accent: "DM Serif Display", Georgia, serif;
-    
+    --font-dm-sans: "DM Sans", system-ui, -apple-system, sans-serif;
+    --font-dm-serif: "DM Serif Display", Georgia, serif;
+    --lyp-font: var(--font-dm-sans);
+    --lyp-font-accent: var(--font-dm-serif);
+
     /* Neutrals */
     --lyp-neutral-0: #ffffff;
-    --lyp-neutral-50: #f8f9fa;
-    --lyp-neutral-100: #eef0f4;
-    --lyp-neutral-200: #e2e5ec;
-    --lyp-neutral-300: #cbd1dc;
-    --lyp-neutral-400: #9aa2b1;
-    --lyp-neutral-500: #6b7280;
-    --lyp-neutral-600: #4b5563;
-    --lyp-neutral-700: #374151;
-    --lyp-neutral-800: #1f2937;
-    --lyp-neutral-900: #0f172a;
-    --lyp-neutral-950: #030712;
+    --lyp-neutral-50: #f5f5f5;
+    --lyp-neutral-100: #e7e7e7;
+    --lyp-neutral-200: #dddddd;
+    --lyp-neutral-300: #cccccc;
+    --lyp-neutral-400: #bbbbbb;
+    --lyp-neutral-500: #a7a7a7;
+    --lyp-neutral-600: #696767;
+    --lyp-neutral-700: #4a4a4a;
+    --lyp-neutral-800: #424242;
+    --lyp-neutral-900: #222222;
+    --lyp-neutral-950: #000000;
 
-    /* Brand Accent - Signature Vibrant Coral-Red */
-    --lyp-brand: #ff3823;
-    --lyp-brand-50: #fff1ef;
-    --lyp-brand-100: #ffe2de;
-    --lyp-brand-200: #ffc8c1;
-    --lyp-brand-600: #e5220d;
-    --lyp-brand-700: #c91805;
+    /* Signature Homey India Brand Color */
+    --lyp-brand: #ff2800;
+    --lyp-brand-50: #ffeee9;
+    --lyp-brand-100: #ffe9e5;
+    --lyp-brand-200: #ffd3cb;
+    --lyp-brand-600: #e52200;
+    --lyp-brand-700: #d7382a;
+    --lyp-bg-brand: var(--lyp-brand);
+    --lyp-bg-brand-hover: var(--lyp-brand-700);
+    --lyp-bg-brand-subtle: var(--lyp-brand-50);
 
-    /* Deep Navy */
-    --lyp-navy-50: #f4f6fb;
-    --lyp-navy-100: #e8ecf7;
-    --lyp-navy-700: #1a2b56;
-    --lyp-navy-900: #0c1838;
-    --lyp-navy-950: #060e24;
+    /* Navy / Dark */
+    --lyp-navy-50: #f3f5fa;
+    --lyp-navy-100: #e7ebf4;
+    --lyp-navy-200: #c9d1e4;
+    --lyp-navy-700: #1c3066;
+    --lyp-navy-900: #0a1d4b;
+    --lyp-navy-950: #06122f;
+
+    /* Ivory Background System */
+    --lyp-ivory-100: #f7ebe0;
+    --lyp-bg-default: var(--lyp-neutral-0);
+    --lyp-bg-secondary: var(--lyp-ivory-100);
+    --lyp-bg-subtle: var(--lyp-neutral-50);
+    --lyp-bg-inverse: var(--lyp-neutral-900);
+    --lyp-bg-overlay: rgba(0, 0, 0, 0.5);
 
     /* Semantic Channels */
     --lyp-ch-airbnb: #ff5a5f;
@@ -51,28 +65,58 @@
     --lyp-ch-agoda-bg: #eee8fb;
     --lyp-ch-agoda-text: #4b2396;
 
-    --lyp-ch-vrbo: #3563e9;
+    --lyp-ch-vrbo: #4c6ef5;
     --lyp-ch-vrbo-bg: #ebf1ff;
 
     --lyp-ch-goibibo: #f58220;
     --lyp-ch-goibibo-bg: #fff2e6;
 
-    --lyp-ch-direct: #0d9488;
-    --lyp-ch-direct-bg: #e6fffa;
-    --lyp-ch-direct-text: #0f766e;
+    --lyp-ch-expedia: #fdbb30;
+    --lyp-ch-expedia-bg: #fef8eb;
+
+    --lyp-ch-trip: #16a9e1;
+    --lyp-ch-trip-bg: #e8f7fc;
+
+    --lyp-ch-direct: #266c62;
+    --lyp-ch-direct-bg: #e6f3f1;
+    --lyp-ch-direct-text: #1d524a;
 
     /* Status */
-    --lyp-success: #10b981;
-    --lyp-success-bg: #d1fae5;
-    --lyp-success-text: #065f46;
+    --lyp-success: #06902c;
+    --lyp-success-bg: #d4edda;
+    --lyp-success-text: #155724;
 
-    --lyp-warning: #f59e0b;
-    --lyp-warning-bg: #fef3c7;
-    --lyp-warning-text: #92400e;
+    --lyp-warning: #f29339;
+    --lyp-warning-bg: #fffcef;
+    --lyp-warning-text: #d7382a;
 
-    --lyp-error: #ef4444;
+    --lyp-error: #e50f0f;
     --lyp-error-bg: #fee2e2;
-    --lyp-error-text: #991b1b;
+    --lyp-error-text: #c13515;
+
+    /* Mac Dots */
+    --lyp-mac-red: #ff5f57;
+    --lyp-mac-yellow: #febc2e;
+    --lyp-mac-green: #28c840;
+
+    /* Borders */
+    --lyp-border-default: var(--lyp-neutral-200);
+    --lyp-border-subtle: var(--lyp-neutral-100);
+    --lyp-border-strong: var(--lyp-neutral-300);
+    --lyp-border-focus: var(--lyp-navy-900);
+
+    /* Text */
+    --lyp-text-primary: var(--lyp-neutral-900);
+    --lyp-text-secondary: var(--lyp-neutral-600);
+    --lyp-text-tertiary: var(--lyp-neutral-500);
+    --lyp-text-inverse: var(--lyp-neutral-0);
+    --lyp-text-brand: var(--lyp-brand-700);
+
+    /* Shadows */
+    --lyp-shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.08);
+    --lyp-shadow-md: 0 3px 12px rgba(0, 0, 0, 0.12);
+    --lyp-shadow-lg: 0 6px 24px rgba(0, 0, 0, 0.16);
+    --lyp-shadow-xl: 0 12px 48px rgba(0, 0, 0, 0.2);
   }
 }
 
@@ -84,8 +128,20 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, .font-display {
-  letter-spacing: -0.025em;
+/* Homey India Signature Editorial Serif */
+.lyp-serif {
+  font-family: var(--font-dm-serif), Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* Signature Accent Class */
+.hp-acc {
+  color: var(--lyp-brand);
+}
+
+.lyp-brand-text {
+  color: var(--lyp-brand);
 }
 
 /* Custom Scrollbar */
@@ -104,32 +160,34 @@ h1, h2, h3, .font-display {
   background: #94a3b8;
 }
 
-/* Keyframes for Smooth Badge Sync Animations */
-@keyframes pulseGlow {
-  0%, 100% { transform: scale(1); opacity: 0.9; }
-  50% { transform: scale(1.08); opacity: 1; box-shadow: 0 0 16px rgba(255, 56, 35, 0.4); }
+/* Progress bar animation for feature tabs */
+@keyframes hpProgress {
+  0% { transform: scaleX(0); }
+  100% { transform: scaleX(1); }
 }
 
-@keyframes floatGentle {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
+/* Pulsing dot */
+@keyframes hpPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.6; }
 }
 
-.animate-pulse-glow {
-  animation: pulseGlow 3s infinite ease-in-out;
-}
-
-.animate-float {
-  animation: floatGentle 4s infinite ease-in-out;
+.hp-dotp {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background-color: var(--lyp-brand);
+  animation: hpPulse 2s infinite ease-in-out;
 }
 
 /* Safe Area Insets for iOS PWA Standalone Mode */
 @supports (padding-bottom: env(safe-area-inset-bottom)) {
   .pb-safe {
-    padding-bottom: env(safe-area-inset-bottom);
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
   }
   .pt-safe {
-    padding-top: env(safe-area-inset-top);
+    padding-top: max(12px, env(safe-area-inset-top));
   }
 }
 

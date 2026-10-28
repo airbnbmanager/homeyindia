@@ -102,7 +102,7 @@ export default function FlexiPricingPage() {
           </div>
 
           <div className="flex items-center gap-3 bg-slate-800/80 p-2 rounded-2xl border border-slate-700">
-            <Building className="w-5 h-5 text-[#ff3823] ml-2" />
+            <Building className="w-5 h-5 text-[#ff2800] ml-2" />
             <select
               value={selectedPropId}
               onChange={(e) => setSelectedPropId(e.target.value)}
@@ -134,7 +134,7 @@ export default function FlexiPricingPage() {
         {/* Selected Property Price Summary Card */}
         <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <span className="px-3 py-1 rounded-full bg-[#ff3823]/20 text-[#ff3823] font-bold text-xs border border-[#ff3823]/30 uppercase tracking-wider">
+            <span className="px-3 py-1 rounded-full bg-[#ff2800]/20 text-[#ff2800] font-bold text-xs border border-[#ff2800]/30 uppercase tracking-wider">
               {selectedProperty.type} &bull; {selectedProperty.zone}
             </span>
             <h2 className="text-2xl font-bold font-display mt-2">{selectedProperty.name}</h2>
@@ -162,10 +162,10 @@ export default function FlexiPricingPage() {
           <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <TrendingUp className="w-5 h-5 text-[#ff3823]" />
+                <TrendingUp className="w-5 h-5 text-[#ff2800]" />
                 <h3 className="font-bold text-slate-900 text-base">Weekend Surcharge</h3>
               </div>
-              <span className="px-2.5 py-0.5 rounded-full bg-[#fff1ef] text-[#ff3823] font-bold text-xs">
+              <span className="px-2.5 py-0.5 rounded-full bg-[#fff1ef] text-[#ff2800] font-bold text-xs">
                 +{weekendSurge}%
               </span>
             </div>
@@ -186,7 +186,7 @@ export default function FlexiPricingPage() {
                 step="5"
                 value={weekendSurge}
                 onChange={(e) => setWeekendSurge(parseInt(e.target.value))}
-                className="w-full accent-[#ff3823] cursor-pointer"
+                className="w-full accent-[#ff2800] cursor-pointer"
               />
               <div className="flex justify-between text-[10px] text-slate-400 font-medium">
                 <span>0% (No surge)</span>
@@ -360,7 +360,7 @@ export default function FlexiPricingPage() {
             </span>
             <button
               onClick={() => showToast("Saved flexi pricing rules and pushed to all channels.")}
-              className="px-6 py-2.5 rounded-xl bg-[#ff3823] text-white font-bold text-xs hover:bg-[#e5220d] transition shadow-lg shadow-[#ff3823]/20 flex items-center gap-1.5"
+              className="px-6 py-2.5 rounded-xl bg-[#ff2800] text-white font-bold text-xs hover:bg-[#e5220d] transition shadow-lg shadow-[#ff2800]/20 flex items-center gap-1.5"
             >
               <Check className="w-4 h-4" /> Save &amp; Push to 50+ Channels
             </button>

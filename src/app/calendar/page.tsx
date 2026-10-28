@@ -2,7 +2,7 @@
 
 import HostNavTabs from "@/components/HostNavTabs";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
@@ -44,7 +44,7 @@ interface DayData {
 export default function CalendarPage() {
   const [selectedPropId, setSelectedPropId] = useState(PROPERTIES[0].id);
   const [currentYear, setCurrentYear] = useState(2026);
-  const [currentMonth, setCurrentMonth] = useState(10); // 10 = Nov (0-indexed) or Nov 2026
+  const [currentMonth, setCurrentMonth] = useState(10); // 10 = Nov (0-indexed)
   const [selectedDates, setSelectedDates] = useState<number[]>([]);
   const [activeTab, setActiveTab] = useState<"pricing" | "availability" | "ical">("pricing");
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -71,47 +71,196 @@ export default function CalendarPage() {
   const [newIcalUrl, setNewIcalUrl] = useState("");
   const [copiedLink, setCopiedLink] = useState(false);
   const [copiedHavenLink, setCopiedHavenLink] = useState(false);
+  const [copiedAirbnbLink, setCopiedAirbnbLink] = useState(false);
   const [isSyncingAll, setIsSyncingAll] = useState(false);
-
-  // iCal feeds connecting Airbnb, The Unique Haven Homes, and Homey India
-  const [icalFeeds, setIcalFeeds] = useState([
-    { id: "1", name: "Airbnb Calendar Feed", url: "https://www.airbnb.com/calendar/ical/9823412.ics?s=fe874e0d9b", status: "Active · 2-Way Lock", lastSync: "Just now", color: "bg-[#ff385c]" },
-    { id: "2", name: "The Unique Haven Homes Direct", url: "https://theuniquehavenhomes.com/feed/ical.ics", status: "Active · Realtime Direct", lastSync: "1 min ago", color: "bg-[#0ea5e9]" },
-    { id: "3", name: "Homey India Master Hub", url: `/api/calendar/${selectedPropId}/export.ics`, status: "Master Engine · Broadcast Enabled", lastSync: "Realtime", color: "bg-[#ff3823]" },
-    { id: "4", name: "Booking.com OTA Feed", url: "https://admin.booking.com/hotel/hoteladmin/ical.html?t=498a-23", status: "Active · iCal Sync", lastSync: "4 mins ago", color: "bg-[#003580]" }
-  ]);
+  const [isLoadingRealtime, setIsLoadingRealtime] = useState(false);
+  const [realtimeMeta, setRealtimeMeta] = useState<{
+    lastSyncedAt: string;
+    totalEvents: number;
+    activeReservationsCount: number;
+    blockedDatesCount: number;
+    airbnbIcalUrl?: string;
+  } | null>(null);
 
   const selectedProperty = useMemo(() => {
     return PROPERTIES.find((p) => p.id === selectedPropId) || PROPERTIES[0];
   }, [selectedPropId]);
 
-  // Generate calendar grid for month
-  const monthNames = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-  ];
+  // iCal feeds connecting Airbnb, The Unique Haven Homes, and Homey India
+  const [icalFeeds, setIcalFeeds] = useState([
+    {
+      id: "1",
+      name: "Airbnb Calendar Feed",
+      url: selectedProperty.airbnbIcalUrl || "https://www.airbnb.co.in/calendar/ical/1798067011361845302.ics?t=b561f047fb10494aa2ac406aa6161f3c",
+      status: "Active · Live 2-Way Sync",
+      lastSync: "Realtime",
+      color: "bg-[#ff385c]"
+    },
+    {
+      id: "2",
+      name: "Homey India Master Hub",
+      url: `/api/calendar/${selectedPropId}/export.ics`,
+      status: "Master Engine · Broadcast Enabled",
+      lastSync: "Realtime",
+      color: "bg-[#ff2800]"
+    },
+    {
+      id: "3",
+      name: "The Unique Haven Homes Direct",
+      url: `/api/calendar/${selectedPropId}/unique-haven.ics`,
+      status: "Active · Realtime Direct",
+      lastSync: "Realtime",
+      color: "bg-[#0ea5e9]"
+    },
+    {
+      id: "4",
+      name: "Booking.com OTA Feed",
+      url: `https://admin.booking.com/hotel/hoteladmin/ical.html?property=${selectedPropId}`,
+      status: "Active · iCal Sync",
+      lastSync: "Realtime",
+      color: "bg-[#003580]"
+    }
+  ]);
 
   // Calendar occupancy state across Airbnb, The Unique Haven Homes, and Homey India
-  const [daysState, setDaysState] = useState<Record<number, Partial<DayData>>>({
-    4: { status: "airbnb", guestName: "Vikram Malhotra (Airbnb)", price: 2950 },
-    5: { status: "airbnb", guestName: "Vikram Malhotra (Airbnb)", price: 2950 },
-    6: { status: "airbnb", guestName: "Vikram Malhotra (Airbnb)", price: 2950 },
-    12: { status: "direct", guestName: "The Unique Haven Homes Direct", price: 2650 },
-    13: { status: "direct", guestName: "The Unique Haven Homes Direct", price: 2650 },
-    19: { status: "blocked", guestName: "Maintenance Block", price: 2650 },
-    20: { status: "blocked", guestName: "Maintenance Block", price: 2650 },
-    25: { status: "booking", guestName: "Karan Johar (Booking.com)", price: 3100 },
-    26: { status: "booking", guestName: "Karan Johar (Booking.com)", price: 3100 },
-    27: { status: "booking", guestName: "Karan Johar (Booking.com)", price: 3100 },
-  });
+  const [daysState, setDaysState] = useState<Record<number, Partial<DayData>>>({});
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 3500);
   };
 
-  const daysInMonth = 30; // standard 30 days
-  const startDayOfWeek = 0; // Sun
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
+  // Dynamic calendar math for any month/year
+  const daysInMonth = useMemo(() => {
+    return new Date(currentYear, currentMonth + 1, 0).getDate();
+  }, [currentYear, currentMonth]);
+
+  const startDayOfWeek = useMemo(() => {
+    return new Date(currentYear, currentMonth, 1).getDay();
+  }, [currentYear, currentMonth]);
+
+  // Fetch realtime synchronized iCal data from Airbnb & PMS
+  const fetchPropertyCalendar = useCallback(async (propId: string) => {
+    setIsLoadingRealtime(true);
+    try {
+      const res = await fetch(`/api/calendar/sync?property_id=${propId}`);
+      const data = await res.json();
+
+      if (data.success && data.property) {
+        const prop = data.property;
+        setRealtimeMeta({
+          lastSyncedAt: prop.lastSyncedAt,
+          totalEvents: prop.totalEvents,
+          activeReservationsCount: prop.activeReservationsCount,
+          blockedDatesCount: prop.blockedDatesCount,
+          airbnbIcalUrl: prop.airbnbIcalUrl,
+        });
+
+        const newDays: Record<number, Partial<DayData>> = {};
+
+        // Populate Airbnb confirmed reservations
+        (prop.reservations || []).forEach((res: any) => {
+          const [startYear, startMonth, startDay] = res.startDate.split("-").map(Number);
+          const [endYear, endMonth, endDay] = res.endDate.split("-").map(Number);
+          const start = new Date(startYear, startMonth - 1, startDay);
+          const end = new Date(endYear, endMonth - 1, endDay);
+
+          const cur = new Date(start);
+          while (cur < end) {
+            if (cur.getFullYear() === currentYear && cur.getMonth() === currentMonth) {
+              const d = cur.getDate();
+              newDays[d] = {
+                status: "airbnb",
+                guestName: res.guestName || `Airbnb (${res.confirmationCode || "Reserved"})`,
+                price: selectedProperty.price,
+              };
+            }
+            cur.setDate(cur.getDate() + 1);
+          }
+        });
+
+        // Populate Airbnb blocked slots
+        (prop.blockedSlots || []).forEach((blk: any) => {
+          const [startYear, startMonth, startDay] = blk.startDate.split("-").map(Number);
+          const [endYear, endMonth, endDay] = blk.endDate.split("-").map(Number);
+          const start = new Date(startYear, startMonth - 1, startDay);
+          const end = new Date(endYear, endMonth - 1, endDay);
+
+          const cur = new Date(start);
+          while (cur < end) {
+            if (cur.getFullYear() === currentYear && cur.getMonth() === currentMonth) {
+              const d = cur.getDate();
+              if (!newDays[d]) {
+                newDays[d] = {
+                  status: "blocked",
+                  guestName: "Airbnb Blocked",
+                  price: selectedProperty.price,
+                };
+              }
+            }
+            cur.setDate(cur.getDate() + 1);
+          }
+        });
+
+        setDaysState(newDays);
+
+        setIcalFeeds([
+          {
+            id: "1",
+            name: "Airbnb Calendar Feed",
+            url: prop.airbnbIcalUrl || selectedProperty.airbnbIcalUrl || "https://www.airbnb.co.in/calendar/ical/...",
+            status: "Active · Live 2-Way Sync",
+            lastSync: "Just now",
+            color: "bg-[#ff385c]"
+          },
+          {
+            id: "2",
+            name: "Homey India Master Hub",
+            url: `/api/calendar/${propId}/export.ics`,
+            status: "Master Engine · Broadcast Enabled",
+            lastSync: "Realtime",
+            color: "bg-[#ff2800]"
+          },
+          {
+            id: "3",
+            name: "The Unique Haven Homes Direct",
+            url: `/api/calendar/${propId}/unique-haven.ics`,
+            status: "Active · Realtime Direct",
+            lastSync: "Realtime",
+            color: "bg-[#0ea5e9]"
+          },
+          {
+            id: "4",
+            name: "Booking.com OTA Feed",
+            url: `https://admin.booking.com/hotel/hoteladmin/ical.html?property=${propId}`,
+            status: "Active · Double-Booking Lock",
+            lastSync: "Realtime",
+            color: "bg-[#003580]"
+          }
+        ]);
+      }
+    } catch (err) {
+      console.warn("Realtime calendar fetch error:", err);
+    } finally {
+      setIsLoadingRealtime(false);
+    }
+  }, [currentYear, currentMonth, selectedProperty.price, selectedProperty.airbnbIcalUrl]);
+
+  // Trigger sync on property change or month change
+  useEffect(() => {
+    fetchPropertyCalendar(selectedPropId);
+  }, [selectedPropId, currentMonth, currentYear, fetchPropertyCalendar]);
+
+  // Update base prices when selectedProperty changes
+  useEffect(() => {
+    setBasePrice(selectedProperty.price);
+    setWeekendPrice(Math.round(selectedProperty.price * 1.15));
+  }, [selectedProperty]);
 
   const handleDateClick = (d: number) => {
     if (selectedDates.length === 0) {
@@ -236,7 +385,7 @@ export default function CalendarPage() {
 
           {/* Property Selector */}
           <div className="flex items-center gap-3 bg-slate-800/80 p-2 rounded-2xl border border-slate-700">
-            <Building className="w-5 h-5 text-[#ff3823] ml-2" />
+            <Building className="w-5 h-5 text-[#ff2800] ml-2" />
             <select
               value={selectedPropId}
               onChange={(e) => setSelectedPropId(e.target.value)}
@@ -298,8 +447,33 @@ export default function CalendarPage() {
               </div>
             </div>
 
+            {/* Status Legend & Realtime Live Sync Bar */}
+            <div className="flex flex-wrap items-center justify-between gap-3 py-3 px-4 rounded-2xl bg-slate-900 text-white text-xs mb-6">
+              <div className="flex items-center gap-2">
+                <span className={`w-2.5 h-2.5 rounded-full ${isLoadingRealtime ? "bg-amber-400 animate-ping" : "bg-emerald-400 animate-pulse"}`}></span>
+                <span className="font-bold text-slate-100">
+                  {isLoadingRealtime ? "Syncing Live with Airbnb..." : "🟢 Realtime 2-Way Sync Active"}
+                </span>
+                {realtimeMeta && (
+                  <span className="hidden sm:inline text-slate-400 font-mono text-[11px]">
+                    &bull; {realtimeMeta.activeReservationsCount} Reservations &bull; {realtimeMeta.blockedDatesCount} Blocks
+                  </span>
+                )}
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => fetchPropertyCalendar(selectedPropId)}
+                  disabled={isLoadingRealtime}
+                  className="px-3 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs flex items-center gap-1.5 transition border border-slate-700"
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 text-emerald-400 ${isLoadingRealtime ? "animate-spin" : ""}`} />
+                  {isLoadingRealtime ? "Syncing..." : "Sync Feed"}
+                </button>
+              </div>
+            </div>
+
             {/* Status Legend */}
-            <div className="flex flex-wrap items-center gap-4 py-4 text-xs font-medium text-slate-600 border-b border-slate-100 mb-6">
+            <div className="flex flex-wrap items-center gap-4 py-3 text-xs font-medium text-slate-600 border-b border-slate-100 mb-6">
               <div className="flex items-center gap-1.5">
                 <span className="w-3 h-3 rounded-full bg-emerald-500"></span> Available
               </div>
@@ -330,6 +504,10 @@ export default function CalendarPage() {
 
             {/* Days Grid */}
             <div className="grid grid-cols-7 gap-2">
+              {/* Empty leading days of the week */}
+              {Array.from({ length: startDayOfWeek }).map((_, i) => (
+                <div key={`empty-${i}`} className="h-24 sm:h-28 rounded-2xl bg-slate-50/40 border border-slate-100" />
+              ))}
               {Array.from({ length: daysInMonth }).map((_, idx) => {
                 const dayNum = idx + 1;
                 const cell = daysState[dayNum] || {};
@@ -338,10 +516,10 @@ export default function CalendarPage() {
                 const price = cell.price || (dayNum % 7 === 5 || dayNum % 7 === 6 ? weekendPrice : basePrice);
 
                 let statusBadge = null;
-                let bgClass = "bg-slate-50/70 border-slate-200/80 text-slate-800 hover:border-[#ff3823]";
+                let bgClass = "bg-slate-50/70 border-slate-200/80 text-slate-800 hover:border-[#ff2800]";
 
                 if (isSelected) {
-                  bgClass = "bg-[#fff1ef] border-[#ff3823] text-[#ff3823] ring-2 ring-[#ff3823]/30 shadow-md";
+                  bgClass = "bg-[#fff1ef] border-[#ff2800] text-[#ff2800] ring-2 ring-[#ff2800]/30 shadow-md";
                 } else if (status === "airbnb") {
                   bgClass = "bg-rose-50 border-rose-200 text-rose-900";
                   statusBadge = <span className="text-[9px] font-bold text-[#ff385c] block truncate">Airbnb</span>;
@@ -366,7 +544,7 @@ export default function CalendarPage() {
                     <div className="flex items-center justify-between w-full">
                       <span className="font-extrabold text-sm">{dayNum}</span>
                       {isSelected && (
-                        <span className="w-2 h-2 rounded-full bg-[#ff3823]"></span>
+                        <span className="w-2 h-2 rounded-full bg-[#ff2800]"></span>
                       )}
                     </div>
 
@@ -394,7 +572,7 @@ export default function CalendarPage() {
                   <div className="text-xs text-slate-400 font-medium">Selected Range</div>
                   <div className="text-base font-bold text-white flex items-center gap-2">
                     {monthNames[currentMonth]} {selectedDates[0]} &ndash; {monthNames[currentMonth]} {selectedDates[selectedDates.length - 1]}
-                    <span className="px-2.5 py-0.5 rounded-full bg-[#ff3823] text-white text-xs font-bold">
+                    <span className="px-2.5 py-0.5 rounded-full bg-[#ff2800] text-white text-xs font-bold">
                       {selectedDates.length} Nights
                     </span>
                   </div>
@@ -405,7 +583,7 @@ export default function CalendarPage() {
                     onClick={() => setShowPriceModal(true)}
                     className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-white text-slate-900 font-bold text-xs hover:bg-slate-100 transition flex items-center justify-center gap-1.5 shadow"
                   >
-                    <DollarSign className="w-4 h-4 text-[#ff3823]" /> Change Price
+                    <DollarSign className="w-4 h-4 text-[#ff2800]" /> Change Price
                   </button>
                   <button
                     onClick={handleBulkBlockToggle}
@@ -473,7 +651,7 @@ export default function CalendarPage() {
                         type="number"
                         value={basePrice}
                         onChange={(e) => setBasePrice(parseInt(e.target.value) || 0)}
-                        className="w-full pl-8 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#ff3823]/20 focus:border-[#ff3823]"
+                        className="w-full pl-8 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#ff2800]/20 focus:border-[#ff2800]"
                       />
                     </div>
                   </div>
@@ -488,7 +666,7 @@ export default function CalendarPage() {
                         type="number"
                         value={weekendPrice}
                         onChange={(e) => setWeekendPrice(parseInt(e.target.value) || 0)}
-                        className="w-full pl-8 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#ff3823]/20 focus:border-[#ff3823]"
+                        className="w-full pl-8 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#ff2800]/20 focus:border-[#ff2800]"
                       />
                     </div>
                   </div>
@@ -600,7 +778,7 @@ export default function CalendarPage() {
 
                 <button
                   onClick={() => showToast("Saved pricing & discount rules. Pushed to all channels in 0.8s.")}
-                  className="w-full py-3 rounded-xl bg-[#ff3823] text-white font-bold text-sm hover:bg-[#e5220d] transition shadow-lg shadow-[#ff3823]/20"
+                  className="w-full py-3 rounded-xl bg-[#ff2800] text-white font-bold text-sm hover:bg-[#e5220d] transition shadow-lg shadow-[#ff2800]/20"
                 >
                   Save &amp; Sync Pricing
                 </button>
@@ -692,6 +870,55 @@ export default function CalendarPage() {
                   </button>
                 </div>
 
+                {/* Active Property Airbnb iCal Feed (Source Feed) */}
+                <div className="space-y-2 p-4 rounded-2xl bg-amber-50/60 border border-amber-200">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-xs font-bold text-amber-900 uppercase tracking-wider flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-[#ff385c] animate-pulse"></span>
+                      Realtime Airbnb iCal Feed for {selectedProperty.name}
+                    </label>
+                    <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100/90 px-2 py-0.5 rounded-full">
+                      Live Feed Connected
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      readOnly
+                      value={selectedProperty.airbnbIcalUrl || "https://www.airbnb.co.in/calendar/ical/..."}
+                      className="flex-1 px-3 py-2 rounded-xl border border-amber-300 bg-white text-xs font-mono text-slate-800 truncate"
+                    />
+                    <button
+                      onClick={() => {
+                        if (selectedProperty.airbnbIcalUrl) {
+                          navigator.clipboard.writeText(selectedProperty.airbnbIcalUrl);
+                          setCopiedAirbnbLink(true);
+                          showToast(`Copied live Airbnb iCal link for ${selectedProperty.name}!`);
+                          setTimeout(() => setCopiedAirbnbLink(false), 2500);
+                        }
+                      }}
+                      className="px-3.5 py-2 rounded-xl bg-slate-900 text-white hover:bg-slate-800 text-xs font-bold transition flex items-center gap-1.5 shrink-0 shadow-sm"
+                    >
+                      {copiedAirbnbLink ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                      {copiedAirbnbLink ? "Copied" : "Copy"}
+                    </button>
+                    {selectedProperty.airbnbIcalUrl && (
+                      <a
+                        href={selectedProperty.airbnbIcalUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="p-2 rounded-xl border border-amber-300 bg-white text-slate-700 hover:bg-amber-100 transition"
+                        title="Download / View iCal"
+                      >
+                        <ExternalLink className="w-4 h-4 text-amber-700" />
+                      </a>
+                    )}
+                  </div>
+                  <p className="text-[11px] text-amber-800">
+                    Sourced directly from Airbnb Host Calendar for <strong>{selectedProperty.id}</strong>. Syncs reservations and locks automatically.
+                  </p>
+                </div>
+
                 {/* Export Link 1: Airbnb & OTAs */}
                 <div className="space-y-2 p-4 rounded-2xl bg-rose-50/50 border border-rose-100">
                   <div className="flex items-center justify-between">
@@ -758,7 +985,7 @@ export default function CalendarPage() {
                     <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Interconnected Channels (Live)</h4>
                     <button
                       onClick={() => setShowAddIcalModal(true)}
-                      className="text-xs font-bold text-[#ff3823] hover:underline flex items-center gap-1"
+                      className="text-xs font-bold text-[#ff2800] hover:underline flex items-center gap-1"
                     >
                       <Plus className="w-3.5 h-3.5" /> Add External Feed
                     </button>
@@ -809,7 +1036,7 @@ export default function CalendarPage() {
                   placeholder="e.g. 5500"
                   value={bulkPriceInput}
                   onChange={(e) => setBulkPriceInput(e.target.value)}
-                  className="w-full pl-9 pr-4 py-3 rounded-2xl border border-slate-200 text-lg font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#ff3823]/20 focus:border-[#ff3823]"
+                  className="w-full pl-9 pr-4 py-3 rounded-2xl border border-slate-200 text-lg font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#ff2800]/20 focus:border-[#ff2800]"
                   autoFocus
                 />
               </div>
@@ -824,7 +1051,7 @@ export default function CalendarPage() {
               </button>
               <button
                 onClick={handleBulkPriceUpdate}
-                className="flex-1 py-3 rounded-xl bg-[#ff3823] text-white font-bold text-sm hover:bg-[#e5220d] transition shadow-lg shadow-[#ff3823]/20"
+                className="flex-1 py-3 rounded-xl bg-[#ff2800] text-white font-bold text-sm hover:bg-[#e5220d] transition shadow-lg shadow-[#ff2800]/20"
               >
                 Apply &amp; Sync
               </button>
@@ -872,7 +1099,7 @@ export default function CalendarPage() {
                   placeholder="https://www.airbnb.com/calendar/ical/..."
                   value={newIcalUrl}
                   onChange={(e) => setNewIcalUrl(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#ff3823]/20 focus:border-[#ff3823]"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#ff2800]/20 focus:border-[#ff2800]"
                 />
               </div>
             </div>

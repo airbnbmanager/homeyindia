@@ -46,14 +46,14 @@ export default function PropertyCard({ prop }: { prop: Property }) {
           <>
             <button
               onClick={prevPhoto}
-              className="absolute left-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 hover:bg-white text-gray-800 shadow-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute left-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/85 hover:bg-white text-gray-800 shadow-md flex items-center justify-center opacity-90 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity"
               aria-label="Previous photo"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
             <button
               onClick={nextPhoto}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 hover:bg-white text-gray-800 shadow-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/85 hover:bg-white text-gray-800 shadow-md flex items-center justify-center opacity-90 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity"
               aria-label="Next photo"
             >
               <ChevronRight className="w-4 h-4" />
@@ -98,11 +98,11 @@ export default function PropertyCard({ prop }: { prop: Property }) {
       <div className="p-6 space-y-4 flex-grow flex flex-col justify-between">
         <div>
           <div className="flex items-center gap-1.5 text-xs text-gray-500 mb-1">
-            <MapPin className="w-3.5 h-3.5 text-[#ff3823]" />
+            <MapPin className="w-3.5 h-3.5 text-[#ff2800]" />
             <span>{prop.location}</span>
           </div>
           <Link href={`/stays/${prop.slug}`}>
-            <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#ff3823] transition-colors leading-snug">
+            <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#ff2800] transition-colors leading-snug">
               {prop.name}
             </h3>
           </Link>
@@ -128,7 +128,7 @@ export default function PropertyCard({ prop }: { prop: Property }) {
         <div className="flex items-end justify-between pt-1">
           <div>
             <div className="flex items-baseline gap-1.5">
-              <span className="text-2xl font-extrabold text-[#ff3823] font-display">
+              <span className="text-2xl font-extrabold text-[#ff2800] font-display">
                 ₹{prop.price.toLocaleString("en-IN")}
               </span>
               <span className="text-xs text-gray-500">/ night</span>
@@ -140,7 +140,7 @@ export default function PropertyCard({ prop }: { prop: Property }) {
 
           <Link
             href={`/stays/${prop.slug}`}
-            className="px-4 py-2.5 rounded-full bg-gray-900 hover:bg-[#ff3823] text-white font-bold text-xs shadow-md transition-all flex items-center gap-1.5"
+            className="px-4 py-2.5 rounded-full bg-gray-900 hover:bg-[#ff2800] text-white font-bold text-xs shadow-md transition-all flex items-center gap-1.5"
           >
             <span>View Stay</span>
             <ArrowRight className="w-3.5 h-3.5" />

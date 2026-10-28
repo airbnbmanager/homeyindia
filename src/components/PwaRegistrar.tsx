@@ -75,7 +75,7 @@ export default function PwaRegistrar() {
     <div className="fixed top-20 left-4 right-4 sm:left-auto sm:right-6 sm:w-96 z-50 animate-in slide-in-from-top-4 duration-300 pointer-events-auto">
       <div className="bg-[#0c1838] text-white p-4 rounded-2xl shadow-2xl border border-gray-700/80 flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#ff3823] to-[#d42211] flex items-center justify-center shrink-0 shadow-md">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#ff2800] to-[#d42211] flex items-center justify-center shrink-0 shadow-md">
             <Smartphone className="w-5 h-5 text-white" />
           </div>
           <div className="space-y-0.5">
@@ -89,7 +89,7 @@ export default function PwaRegistrar() {
         <div className="flex items-center gap-1.5 shrink-0">
           <button
             onClick={handleInstallClick}
-            className="px-3 py-1.5 rounded-full bg-[#ff3823] hover:bg-[#e5220d] text-white font-bold text-xs shadow-sm transition-all flex items-center gap-1"
+            className="px-3 py-1.5 rounded-full bg-[#ff2800] hover:bg-[#e5220d] text-white font-bold text-xs shadow-sm transition-all flex items-center gap-1"
           >
             <Download className="w-3.5 h-3.5" />
             <span>Install</span>
